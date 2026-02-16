@@ -43,12 +43,11 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            ${{ vars.DOCKERHUB_USERNAME != '' && format('{0}/blockscout-frontend', vars.DOCKERHUB_USERNAME) || '' }}
+            ${{ vars.DOCKERHUB_ORG != '' && format('{0}/blockscout-frontend', vars.DOCKERHUB_ORG) || '' }}
           tags: |
-            type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest
 
       - name: Get short SHA
         run: echo "SHORT_SHA=${GITHUB_SHA::8}" >> $GITHUB_ENV
