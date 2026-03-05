@@ -23,12 +23,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # PAT required to push .github/workflows/ changes
+          # GITHUB_TOKEN cannot modify workflow files
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
 
       - name: Add upstream remote
         run: |
           git remote add upstream https://github.com/blockscout/frontend.git || true
-          git fetch upstream --tags
+          git fetch upstream --tags --force
 
       - name: Determine target tag
         id: target
