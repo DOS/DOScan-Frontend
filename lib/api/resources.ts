@@ -62,9 +62,6 @@ export const RESOURCES = {
   // external API resources
   // there is no type definition for them, use valibot to parse the response
   external: {
-    gas_hawk_saving_potential: {
-      path: '/api/v2/gas-hawk-saving-potential',
-    },
     safe_transaction_api: {
       path: '',
     },
@@ -172,6 +169,5 @@ export const b: PaginatedResourceName = 'general:addresses';
 export const c: PaginatedResourceResponseItems<'general:addresses'> = [];
 
 export const d: ResourcePathParams<'bens:address_domain'> = {
-  chainId: '1',
   address: '123',
 };

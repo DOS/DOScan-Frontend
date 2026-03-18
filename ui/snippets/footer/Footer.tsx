@@ -9,7 +9,6 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-import useIssueUrl from 'lib/hooks/useIssueUrl';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { copy } from 'toolkit/utils/htmlEntities';
@@ -31,29 +30,41 @@ const Footer = () => {
   const { data: backendVersionData } = useApiQuery('general:config_backend_version', {
     queryOptions: {
       staleTime: Infinity,
-      enabled: !config.features.opSuperchain.isEnabled,
+      enabled: !config.features.multichain.isEnabled,
+      refetchOnMount: false,
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  const issueUrl = useIssueUrl(backendVersionData?.backend_version);
 
   const BLOCKSCOUT_LINKS = [
     {
-      icon: 'edit' as const,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
       icon: 'social/git' as const,
-      iconSize: '18px',
+      iconSize: '20px',
       text: 'Contribute',
       url: 'https://github.com/blockscout/blockscout',
     },
     {
+      icon: 'brands/pro_api' as const,
+      iconSize: '20px',
+      text: 'PRO API',
+      url: 'https://dev.blockscout.com',
+    },
+    {
+      icon: 'brands/autoscout' as const,
+      iconSize: '20px',
+      text: 'Autoscout',
+      url: 'https://autoscout.blockscout.com',
+    },
+    {
+      icon: 'docs' as const,
+      iconSize: '20px',
+      text: 'Docs',
+      url: 'https://docs.blockscout.com',
+    },
+    {
       icon: 'social/twitter' as const,
       iconSize: '24px',
-      text: 'X (ex-Twitter)',
+      text: 'X',
       url: 'https://x.com/blockscout',
     },
     {
@@ -64,23 +75,11 @@ const Footer = () => {
     },
     {
       icon: 'brands/blockscout' as const,
-      iconSize: '18px',
+      iconSize: '20px',
       text: 'All chains',
-      url: 'https://www.blockscout.com/chains-and-projects',
+      url: 'https://chains.blockscout.com',
     },
-    {
-      icon: 'docs' as const,
-      iconSize: '20px',
-      text: 'Docs',
-      url: 'https://docs.blockscout.com',
-    },
-    {
-      icon: 'AI' as const,
-      iconSize: '20px',
-      text: 'llms.txt',
-      url: `${ config.app.baseUrl }/llms.txt`,
-    },
-  ];
+  ].filter(Boolean);
 
   const frontendLink = (() => {
     if (config.UI.footer.frontendVersion) {
@@ -119,7 +118,7 @@ const Footer = () => {
         _empty={{ display: 'none' }}
       >
         { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
-        { !config.features.opSuperchain.isEnabled && <NetworkAddToWallet source="Footer"/> }
+        { !config.features.multichain.isEnabled && <NetworkAddToWallet source="Footer"/> }
       </Flex>
     );
   }, []);
