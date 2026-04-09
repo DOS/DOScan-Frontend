@@ -112,6 +112,7 @@ jobs:
           # Stage everything including conflict markers
           git add -A
           git commit -m "WIP: Merge upstream $TAG (has conflicts)" --no-verify || true
+          git push origin --delete "$BRANCH" 2>/dev/null || true
           git push origin "$BRANCH"
 
           gh pr create \
