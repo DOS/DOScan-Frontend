@@ -1,10 +1,14 @@
 {
   "name": "feature-reporter",
   "version": "1.0.0",
+<<<<<<< HEAD
   "private": true,
   "type": "module",
   "main": "dist/index.js",
   "license": "MIT",
+=======
+  "main": "index.js",
+>>>>>>> v2.7.3
   "scripts": {
     "build": "vite build --logLevel error",
     "print_report": "node ./dist/index.js",
