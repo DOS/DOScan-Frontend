@@ -1,20 +1,25 @@
 import type { NextRequest } from 'next/server';
 
+import appConfig from 'configs/app';
+import * as essentialDappsChainsConfig from 'configs/essential-dapps-chains/config.edge';
+import * as multichainConfig from 'configs/multichain/config.edge';
+import * as cookiesLib from 'lib/cookies';
+
 import generateCspPolicy from './generateCspPolicy';
 import generateNftHtmlEmbedCspPolicy from './generateNftHtmlEmbedCspPolicy';
 
-<<<<<<< HEAD
-=======
 const marketplaceFeature = appConfig.features.marketplace;
 
 const NFT_HTML_EMBED_PATH = '/nft-html-embed.html';
 
->>>>>>> v2.7.3
 let cspPolicies: { 'private': string; 'default': string } | undefined = undefined;
 let nftHtmlEmbedCsp: string | undefined = undefined;
 
 async function initializeCspPolicies() {
   if (!cspPolicies) {
+    appConfig.features.multichain.isEnabled && await multichainConfig.load();
+    marketplaceFeature.isEnabled && marketplaceFeature.essentialDapps && await essentialDappsChainsConfig.load();
+
     // Generate and cache both policies upfront
     cspPolicies = {
       'private': generateCspPolicy(true),
@@ -30,7 +35,7 @@ export async function get(req?: NextRequest): Promise<string> {
   const appProfile = req ? (
     req.headers.get('x-app-profile') ||
     req.nextUrl.searchParams.get('app-profile') ||
-    req.cookies.get('app_profile')?.value
+    cookiesLib.getFromCookieString(req.headers.get('cookie') || '', cookiesLib.NAMES.APP_PROFILE)
   ) : undefined;
 
   const isPrivateMode = appProfile === 'private';
