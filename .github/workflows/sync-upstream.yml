@@ -137,17 +137,29 @@ jobs:
           # longer replication lag against new branches (>30s observed).
           # REST /pulls accepts the head SHA directly and works immediately.
           PR_TITLE="Sync upstream $TAG (merge conflicts)"
+
+          # Check if PR already exists for this branch — skip if so
+          EXISTING_PR=$(gh api "repos/${GITHUB_REPOSITORY}/pulls?state=open" --jq ".[] | select(.head.ref==\"$BRANCH\") | .number" 2>/dev/null | head -1)
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already exists for $BRANCH, skipping creation"
+            exit 0
+          fi
+
           for attempt in 1 2 3 4 5 6; do
-            HTTP_CODE=$(jq -n --arg t "$PR_TITLE" --arg b "$PR_BODY" --arg h "$BRANCH" \
+            HTTP_RESPONSE=$(jq -n --arg t "$PR_TITLE" --arg b "$PR_BODY" --arg h "$BRANCH" \
               '{title:$t, body:$b, head:$h, base:"main"}' | \
               gh api -X POST "repos/${GITHUB_REPOSITORY}/pulls" \
-                --input - \
-                --silent 2>&1)
-            if [ $? -eq 0 ]; then
+                --input - 2>&1)
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 0 ]; then
               echo "PR created successfully on attempt $attempt"
               exit 0
             fi
-            echo "PR creation failed (attempt $attempt): $HTTP_CODE"
+            if echo "$HTTP_RESPONSE" | grep -q "A pull request already exists"; then
+              echo "PR already exists for $BRANCH"
+              exit 0
+            fi
+            echo "PR creation failed (attempt $attempt): $HTTP_RESPONSE"
             echo "Retrying in 5s..."
             sleep 5
           done
