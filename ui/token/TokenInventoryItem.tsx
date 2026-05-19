@@ -5,12 +5,14 @@ import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import { route } from 'nextjs/routes';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftMedia from 'ui/shared/nft/NftMedia';
 
 type Props = { item: TokenInstance; token: TokenInfo; isLoading: boolean };

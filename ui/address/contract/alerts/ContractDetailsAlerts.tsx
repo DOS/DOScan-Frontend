@@ -2,16 +2,18 @@ import { chakra, Box, Flex } from '@chakra-ui/react';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
-import type { Address } from 'types/api/address';
+import type { SocketMessage } from 'client/api/socket/types';
+import type { Address } from 'client/slices/address/types/api';
 import type { SmartContract } from 'types/api/contract';
 
 import { route } from 'nextjs-routes';
 
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import ContractDetailsAlertProxyPattern from './ContractDetailsAlertProxyPattern';
 import ContractDetailsAlertVerificationStatus from './ContractDetailsAlertVerificationStatus';

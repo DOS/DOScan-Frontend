@@ -15,7 +15,7 @@
         "playwright/fixtures/rewards.ts",
         "public/static/capybara/index.js",
         "ui/showcases/utils.ts",
-        "ui/tx/TxExternalTxs.pw.tsx"
+        "client/features/external-txs/components/TxExternalTxs.pw.tsx"
     ],
     "enableGlobDot": true,
     "ignoreRandomStrings": true,
@@ -82,8 +82,6 @@
         "chainscout",
         "chakra",
         "clstr",
-        "coinzilla",
-        "coinzillatag",
         "commitish",
         "Computor",
         "contentscript",
@@ -261,6 +259,7 @@
         "utka",
         "utko",
         "UUPS",
+        "Valibot",
         "VCALENDAR",
         "vercel",
         "verifreg",

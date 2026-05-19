@@ -3,9 +3,12 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import { TX } from 'stubs/tx';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import { TX } from 'client/slices/tx/stubs/tx';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { Link } from 'toolkit/chakra/link';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 

@@ -5,8 +5,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Alert } from 'toolkit/chakra/alert';
 import { Heading } from 'toolkit/chakra/heading';

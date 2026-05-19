@@ -4,17 +4,19 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { currencyUnits } from 'lib/units';
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import { TX_INTERNALS_ITEMS } from 'client/slices/internal-tx/utils/utils';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+import TxStatus from 'client/slices/tx/components/TxStatus';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
 

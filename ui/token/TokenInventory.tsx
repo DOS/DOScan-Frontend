@@ -4,13 +4,16 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import type { ResourceError } from 'lib/api/resources';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useIsMounted from 'lib/hooks/useIsMounted';
+import type { ResourceError } from 'client/api/resources';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import ResetIconButton from 'ui/shared/ResetIconButton';

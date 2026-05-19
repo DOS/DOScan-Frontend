@@ -2,9 +2,11 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

@@ -5,14 +5,16 @@ import type { ItemsProps } from './types';
 import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'types/api/search';
 import type * as multichain from 'types/client/multichainAggregator';
 
-import { toBech32Address } from 'lib/address/bech32';
+import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { toBech32Address } from 'client/slices/address/utils/bech32';
+
+import highlightText from 'client/shared/text/highlight-text';
+
 import dayjs from 'lib/date/dayjs';
-import highlightText from 'lib/highlightText';
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = ItemsProps<SearchResultAddressOrContract | SearchResultMetadataTag | multichain.QuickSearchResultAddress>;

@@ -5,9 +5,11 @@ import type { ItemsProps } from './types';
 import type * as multichain from 'types/client/multichainAggregator';
 import type { SearchResultBlock } from 'types/client/search';
 
-import highlightText from 'lib/highlightText';
+import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+
+import highlightText from 'client/shared/text/highlight-text';
+
 import { Tag } from 'toolkit/chakra/tag';
-import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import Time from 'ui/shared/time/Time';
 

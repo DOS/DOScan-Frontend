@@ -1,15 +1,17 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import Block from 'client/slices/block/pages/details/Block';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import Block from 'ui/pages/Block';
 
 const MultichainBlock = () => {
   const router = useRouter();
-  const chainSlug = getQueryParamString(router.query.chain_slug);
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+  const chainSlugOrId = getQueryParamString(router.query.chain_slug_or_id);
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlugOrId || chain.id === chainSlugOrId);
 
   return (
     <MultichainProvider chainId={ chainData?.id }>

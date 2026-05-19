@@ -1,4 +1,4 @@
-import type { Address3rdPartyWidget } from 'types/views/address';
+import type { Address3rdPartyWidget } from 'client/features/address-3rd-party-widgets/types/view';
 
 export const widgets = [
   'widget-1',
@@ -23,6 +23,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     title: 'Value',
     hint: 'Hint',
     valuePath: 'value',
+    valueTitlePath: 'valueTitle',
   },
   'widget-2': {
     name: 'Widget 2',

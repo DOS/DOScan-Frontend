@@ -2,15 +2,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
-import type { Address } from 'types/api/address';
+import type { SocketMessage } from 'client/api/socket/types';
+import type { Address } from 'client/slices/address/types/api';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
-import delay from 'lib/delay';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import delay from 'client/shared/utils/delay';
+
 import type { Props as RoutedTabsProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { SECOND } from 'toolkit/utils/consts';

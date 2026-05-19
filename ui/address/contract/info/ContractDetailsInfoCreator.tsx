@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { SmartContractCreationStatus } from 'types/api/contract';
 
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import ContractCreationStatus from 'ui/shared/statusTag/ContractCreationStatus';
 
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';

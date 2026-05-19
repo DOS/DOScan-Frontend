@@ -1,9 +1,11 @@
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import { ADDRESS_INFO } from 'stubs/address';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
+
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
   hash: string;

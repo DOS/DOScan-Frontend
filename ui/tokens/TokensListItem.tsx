@@ -5,14 +5,17 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+
+import getItemIndex from 'client/shared/lists/get-item-index';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import getItemIndex from 'lib/getItemIndex';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import SimpleValue from 'ui/shared/value/SimpleValue';
@@ -97,7 +100,7 @@ const TokensListItem = ({
             link={{ variant: 'secondary' }}
             noIcon
           />
-          <AddressAddToWallet token={ token } isLoading={ isLoading }/>
+          <TokenAddToWallet token={ token } isLoading={ isLoading }/>
         </Flex>
       ) }
       { exchangeRate && (

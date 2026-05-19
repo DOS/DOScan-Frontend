@@ -4,11 +4,13 @@ import React from 'react';
 import type { FeaturedNetwork } from 'types/networks';
 import { NETWORK_GROUPS } from 'types/networks';
 
+import useFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import type { ResourceError } from 'lib/api/resources';
-import useFetch from 'lib/hooks/useFetch';
-import * as mixpanel from 'lib/mixpanel/index';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 export default function useNetworkMenu() {

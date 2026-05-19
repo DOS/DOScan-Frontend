@@ -1,13 +1,15 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import useGradualIncrement from 'lib/hooks/useGradualIncrement';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 
 import LatestTxsFallback from '../fallbacks/LatestTxsFallback';

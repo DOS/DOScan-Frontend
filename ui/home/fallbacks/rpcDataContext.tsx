@@ -1,12 +1,14 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Block } from 'types/api/block';
-import type { Transaction } from 'types/api/transaction';
+import type { Block } from 'client/slices/block/types/api';
+import type { Transaction } from 'client/slices/tx/types/api';
 
-import { publicClient } from 'lib/web3/client';
-import formatBlockData from 'lib/web3/rpc/formatBlockData';
-import formatTxData from 'lib/web3/rpc/formatTxData';
+import formatBlockRpcData from 'client/slices/block/utils/format-rpc-data';
+import formatTxRpcData from 'client/slices/tx/utils/format-rpc-data';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { SECOND } from 'toolkit/utils/consts';
 
 export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets';
@@ -46,7 +48,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
         onBlock: (block) => {
           setTxs((prevTxs) => {
             try {
-              const newTxs = block.transactions.map((tx) => formatTxData(tx, null, null, block)).filter(Boolean);
+              const newTxs = block.transactions.map((tx) => formatTxRpcData(tx, null, null, block)).filter(Boolean);
               const nextTxs = prevTxs.length < ITEMS_LIMIT ? [ ...prevTxs, ...newTxs ].slice(0, ITEMS_LIMIT) : prevTxs;
 
               const totalTxs = prevTxs.length + newTxs.length;
@@ -61,7 +63,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
           setBlocks((prev) => {
             try {
               return [
-                formatBlockData({
+                formatBlockRpcData({
                   ...block,
                   transactions: block.transactions.map((tx) => tx.hash),
                 }),

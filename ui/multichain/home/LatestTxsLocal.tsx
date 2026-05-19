@@ -5,13 +5,15 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { route } from 'nextjs/routes';
 
-import getSocketUrl from 'lib/api/getSocketUrl';
-import useApiQuery from 'lib/api/useApiQuery';
+import getSocketUrl from 'client/api/get-socket-url';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import { SocketProvider } from 'client/api/socket/context';
+
+import TxsContent from 'client/slices/tx/pages/index/list/TxsContent';
+import { TX } from 'client/slices/tx/stubs/tx';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { SocketProvider } from 'lib/socket/context';
-import { TX } from 'stubs/tx';
 import { Link } from 'toolkit/chakra/link';
-import TxsContent from 'ui/txs/TxsContent';
 
 const PAGINATION_PARAMS: PaginationParams = {
   page: 1,

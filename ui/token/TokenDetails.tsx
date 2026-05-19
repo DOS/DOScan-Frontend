@@ -7,12 +7,16 @@ import { scroller } from 'react-scroll';
 
 import type { TokenInfo } from 'types/api/token';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsMounted from 'lib/hooks/useIsMounted';
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import { Link } from 'toolkit/chakra/link';
@@ -22,7 +26,6 @@ import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AssetValue from 'ui/shared/value/AssetValue';
 
 import TokenNftMarketplaces from './TokenNftMarketplaces';
@@ -51,7 +54,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
     router.push(
       chainSlug ?
-        { pathname: '/chain/[chain_slug]/token/[hash]', query: { hash: hash || '', tab, chain_slug: chainSlug } } :
+        { pathname: '/chain/[chain_slug_or_id]/token/[hash]', query: { hash: hash || '', tab, chain_slug_or_id: chainSlug } } :
         { pathname: '/token/[hash]', query: { hash: hash || '', tab } },
       undefined,
       { shallow: true },

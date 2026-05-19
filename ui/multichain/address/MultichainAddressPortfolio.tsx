@@ -5,15 +5,17 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import AddressCollections from 'client/slices/token/pages/address/AddressCollections';
+import AddressNftDisplayTypeRadio from 'client/slices/token/pages/address/AddressNftDisplayTypeRadio';
+import AddressNFTs from 'client/slices/token/pages/address/AddressNFTs';
+import AddressNftTypeFilter from 'client/slices/token/pages/address/AddressNftTypeFilter';
+import useAddressNftQuery from 'client/slices/token/pages/address/useAddressNftQuery';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressCollections from 'ui/address/tokens/AddressCollections';
-import AddressNftDisplayTypeRadio from 'ui/address/tokens/AddressNftDisplayTypeRadio';
-import AddressNFTs from 'ui/address/tokens/AddressNFTs';
-import AddressNftTypeFilter from 'ui/address/tokens/AddressNftTypeFilter';
-import useAddressNftQuery from 'ui/address/tokens/useAddressNftQuery';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 

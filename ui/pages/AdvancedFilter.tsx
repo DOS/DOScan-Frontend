@@ -12,14 +12,19 @@ import React from 'react';
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
+import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
+import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
-import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
-import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
@@ -28,7 +33,6 @@ import { Tag } from 'toolkit/chakra/tag';
 import ColumnsButton from 'ui/advancedFilter/ColumnsButton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import { getAdvancedFilterTypes, TABLE_COLUMNS } from 'ui/advancedFilter/constants';
-import ExportCSV from 'ui/advancedFilter/ExportCSV';
 import FilterByColumn from 'ui/advancedFilter/FilterByColumn';
 import ItemByColumn from 'ui/advancedFilter/ItemByColumn';
 import { getDurationFromAge, getFilterTags } from 'ui/advancedFilter/lib';
@@ -230,8 +234,17 @@ const AdvancedFilter = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <ExportCSV filters={ filters }/>
       <ColumnsButton columns={ columns } onChange={ setColumns }/>
+      <CsvExport
+        type="advanced_filters"
+        resourceName="general:advanced_filter_csv"
+        queryParams={ filters }
+        extraParams={{
+          created_at: dayjs().toISOString(),
+        }}
+        periodFilter={ false }
+        ml={ 3 }
+      />
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );

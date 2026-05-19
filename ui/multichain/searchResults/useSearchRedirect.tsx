@@ -4,10 +4,12 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import type { ResourceError } from 'client/api/resources';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import removeQueryParam from 'client/shared/router/remove-query-param';
+
 import multichainConfig from 'configs/multichain';
-import type { ResourceError } from 'lib/api/resources';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import removeQueryParam from 'lib/router/removeQueryParam';
 
 interface Params {
   checkRedirectQuery: UseQueryResult<multichain.CheckRedirectResponse, ResourceError<unknown>>;
@@ -36,8 +38,8 @@ export default function useSearchRedirect({ checkRedirectQuery, hasSearchTerm }:
           const chainInfo = multichainConfig()?.chains.find((chain) => chain.id === checkRedirectQuery.data.chain_id);
           if (chainInfo) {
             router.replace({
-              pathname: '/chain/[chain_slug]/block/[height_or_hash]',
-              query: { height_or_hash: checkRedirectQuery.data.parameter, chain_slug: chainInfo?.slug },
+              pathname: '/chain/[chain_slug_or_id]/block/[height_or_hash]',
+              query: { height_or_hash: checkRedirectQuery.data.parameter, chain_slug_or_id: chainInfo.slug },
             });
             return;
           }
@@ -51,10 +53,10 @@ export default function useSearchRedirect({ checkRedirectQuery, hasSearchTerm }:
           const chainInfo = multichainConfig()?.chains.find((chain) => chain.id === checkRedirectQuery.data.chain_id);
           if (chainInfo) {
             router.replace({
-              pathname: '/chain/[chain_slug]/tx/[hash]',
+              pathname: '/chain/[chain_slug_or_id]/tx/[hash]',
               query: {
                 hash: checkRedirectQuery.data.parameter,
-                chain_slug: chainInfo?.slug,
+                chain_slug_or_id: chainInfo.slug,
               },
             });
             return;

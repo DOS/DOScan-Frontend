@@ -1,13 +1,16 @@
 import { Box, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Block } from 'types/api/block';
+import type { Block } from 'client/slices/block/types/api';
 
 import { route } from 'nextjs-routes';
 
-import useInitialList from 'lib/hooks/useInitialList';
-import { publicClient } from 'lib/web3/client';
-import { BLOCK } from 'stubs/block';
+import { BLOCK } from 'client/slices/block/stubs/block';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
+import useInitialList from 'client/shared/lists/useInitialList';
+
 import { Link } from 'toolkit/chakra/link';
 
 import LatestBlocksItem from '../LatestBlocksItem';

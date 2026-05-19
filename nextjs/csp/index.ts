@@ -8,8 +8,11 @@ import * as cookiesLib from 'lib/cookies';
 import generateCspPolicy from './generateCspPolicy';
 import generateNftHtmlEmbedCspPolicy from './generateNftHtmlEmbedCspPolicy';
 
+<<<<<<< HEAD
 const marketplaceFeature = appConfig.features.marketplace;
 
+=======
+>>>>>>> v2.8.0-alpha.1
 const NFT_HTML_EMBED_PATH = '/nft-html-embed.html';
 
 let cspPolicies: { 'private': string; 'default': string } | undefined = undefined;

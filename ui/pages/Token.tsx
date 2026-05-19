@@ -3,29 +3,33 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenInfo } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import * as addressStubs from 'client/slices/address/stubs/address';
+
+import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import * as metadata from 'client/shared/metadata';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
+
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as metadata from 'lib/metadata';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import { getTokenHoldersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
-import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressContract from 'ui/address/AddressContract';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
@@ -44,7 +48,6 @@ export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   alignItems: 'center',
-  columnGap: 4,
 };
 
 const TokenPageContent = () => {
@@ -109,7 +112,7 @@ const TokenPageContent = () => {
   });
 
   const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
-    pathParams: { hash: tokenQuery.data?.address_hash, chainId: config.chain.id },
+    pathParams: { hash: tokenQuery.data?.address_hash, instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: { enabled: Boolean(tokenQuery.data) && !tokenQuery.isPlaceholderData && config.features.verifiedTokens.isEnabled },
   });
 
@@ -262,14 +265,18 @@ const TokenPageContent = () => {
           <TokenAdvancedFilterLink token={ tokenQuery.data } ml={ 6 }/>
         ) }
         { tab === 'holders' && (
-          <AddressCsvExportLink
-            address={ hashString }
-            params={{ type: 'holders' }}
-            isLoading={ pagination?.isLoading }
+          <CsvExport
+            type="token_holders"
+            resourceName="general:token_csv_export_holders"
+            pathParams={{ hash: hashString }}
+            queryParams={{ from_period: null, to_period: null }}
+            extraParams={{ token_name: tokenQuery.data?.name || 'Unknown token' }}
+            periodFilter={ false }
+            loadingInitial={ pagination?.isLoading }
             ml={ 6 }
           />
         ) }
-        { pagination?.isVisible && <Pagination { ...pagination }/> }
+        { pagination?.isVisible && <Pagination ml={ 6 } { ...pagination }/> }
       </>
     );
   }, [ hashString, isMobile, pagination, tab, tokenQuery.data ]);

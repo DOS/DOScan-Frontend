@@ -4,14 +4,17 @@ import React from 'react';
 import type { SmartContractVerificationMethodApi } from 'types/api/contract';
 import type { SmartContractVerificationMethod } from 'types/client/contract';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import useFormConfigQuery from 'ui/contractVerification/useFormConfigQuery';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerificationForAddress = () => {

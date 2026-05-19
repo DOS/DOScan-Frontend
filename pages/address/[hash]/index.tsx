@@ -8,10 +8,12 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import Address from 'client/slices/address/pages/details/Address';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import MultichainAddress from 'ui/multichain/address/MultichainAddress';
-import Address from 'ui/pages/Address';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 

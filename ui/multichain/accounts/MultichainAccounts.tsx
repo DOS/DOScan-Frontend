@@ -2,12 +2,14 @@ import { Box } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
+import AddressesListItem from 'client/slices/address/pages/index/AddressesListItem';
+import AddressesTable from 'client/slices/address/pages/index/AddressesTable';
+import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
+
+import getItemIndex from 'client/shared/lists/get-item-index';
+
 import { MultichainProvider } from 'lib/contexts/multichain';
-import getItemIndex from 'lib/getItemIndex';
-import { TOP_ADDRESS } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
-import AddressesListItem from 'ui/addresses/AddressesListItem';
-import AddressesTable from 'ui/addresses/AddressesTable';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
