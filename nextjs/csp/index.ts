@@ -2,19 +2,17 @@
 
 import type { NextRequest } from 'next/server';
 
+import * as cookiesLib from 'client/shared/storage/cookies';
+
 import appConfig from 'configs/app';
-import * as essentialDappsChainsConfig from 'configs/essential-dapps-chains/config.edge';
-import * as multichainConfig from 'configs/multichain/config.edge';
-import * as cookiesLib from 'lib/cookies';
+import * as essentialDappsChainsConfig from 'configs/essential-dapps-chains/config.nodejs';
+import * as multichainConfig from 'configs/multichain/config.nodejs';
 
 import generateCspPolicy from './generateCspPolicy';
 import generateNftHtmlEmbedCspPolicy from './generateNftHtmlEmbedCspPolicy';
 
-<<<<<<< HEAD
 const marketplaceFeature = appConfig.features.marketplace;
 
-=======
->>>>>>> v2.8.0-alpha.2
 const NFT_HTML_EMBED_PATH = '/nft-html-embed.html';
 
 let cspPolicies: { 'private': string; 'default': string } | undefined = undefined;
@@ -53,12 +51,9 @@ export async function get(req?: NextRequest, nonce?: string): Promise<string> {
     return nftHtmlEmbedCsp;
   }
 
-<<<<<<< HEAD
-=======
   if (nonce) {
     return generateCspPolicy(isPrivateMode, nonce);
   }
 
->>>>>>> v2.8.0-alpha.2
   return isPrivateMode ? cspPolicies?.private || '' : cspPolicies?.default || '';
 }

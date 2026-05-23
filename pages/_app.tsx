@@ -28,14 +28,7 @@ import { AppContextProvider } from 'lib/contexts/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-<<<<<<< HEAD
-import { initGrowthBook } from 'lib/growthbook/init';
-import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import usePageViewTracking from 'lib/monitoring/usePageViewTracking';
-import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
-import { SocketProvider } from 'lib/socket/context';
-=======
->>>>>>> v2.8.0-alpha.2
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';

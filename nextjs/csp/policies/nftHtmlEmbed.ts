@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
->>>>>>> v2.8.0-alpha.2
 import type CspDev from 'csp-dev';
 
 import { KEY_WORDS } from '../utils';
