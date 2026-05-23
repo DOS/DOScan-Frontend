@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { defineRecipe } from '@chakra-ui/react';
 
 export const recipe = defineRecipe({
@@ -33,14 +35,14 @@ export const recipe = defineRecipe({
       },
       solid_danger: {
         bg: 'red.600',
-        color: 'button.solid.text',
+        color: 'white',
         _hover: {
           bg: 'red.500',
         },
         _loading: {
           opacity: 1,
           '& .chakra-spinner': {
-            borderColor: 'button.solid.text',
+            borderColor: 'white',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
@@ -317,6 +319,14 @@ export const recipe = defineRecipe({
         },
         _expanded: {
           color: 'hover',
+        },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'selected.option.bg',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
         },
       },
       pagination: {

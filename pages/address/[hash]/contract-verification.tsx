@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import React from 'react';
 
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-import ContractVerificationForAddress from 'ui/pages/ContractVerificationForAddress';
+import ContractVerificationForAddress from 'client/slices/contract/pages/contract-verification/ContractVerificationForAddress';
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

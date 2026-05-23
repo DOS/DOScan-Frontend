@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const PrivateTags = dynamic(() => import('ui/pages/PrivateTags'), { ssr: false });
+const PrivateTags = dynamic(() => import('client/features/account/pages/private-tags/PrivateTags'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

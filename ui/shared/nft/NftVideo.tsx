@@ -1,7 +1,9 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 
 import useLoadImageViaIpfs from './useLoadImageViaIpfs';
 import useNftMediaInfo from './useNftMediaInfo';

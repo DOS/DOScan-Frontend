@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { defineSlotRecipe } from '@chakra-ui/react';
 
 export const recipe = defineSlotRecipe({
@@ -204,6 +206,16 @@ export const recipe = defineSlotRecipe({
         },
       },
       none: {},
+    },
+    adaptive: {
+      'true': {
+        content: {
+          '--dialog-base-margin': { base: '0', lg: 'auto' },
+          '--dialog-margin': { base: '0', lg: 'auto' },
+          borderTopRadius: { base: 'base', lg: 'xl' },
+          borderBottomRadius: { base: '0', lg: 'xl' },
+        },
+      },
     },
   },
 

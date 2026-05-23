@@ -1,4 +1,6 @@
-import type { AddressMetadataTagType } from 'types/api/addressMetadata';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { AddressMetadataTagType } from 'client/features/address-metadata/types/api';
 
 export interface FormFields {
   requesterName: string;

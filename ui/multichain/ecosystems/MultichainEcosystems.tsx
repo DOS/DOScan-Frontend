@@ -1,11 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, createListCollection } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ChainMetricsSorting, ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichainAggregator';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import multichainConfig from 'configs/multichain';
-import useApiQuery from 'lib/api/useApiQuery';
 import { CHAIN_METRICS } from 'stubs/multichain';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

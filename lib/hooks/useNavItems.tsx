@@ -1,10 +1,13 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 
 const marketplaceFeature = config.features.marketplace;
@@ -42,7 +45,7 @@ export default function useNavItems(): ReturnType {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
       icon: 'navigation/block',
-      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]' || pathname === '/chain/[chain_slug]/block/[height_or_hash]',
+      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]' || pathname === '/chain/[chain_slug_or_id]/block/[height_or_hash]',
     };
     const txs: NavItem | null = {
       text: 'Transactions',
@@ -52,7 +55,7 @@ export default function useNavItems(): ReturnType {
         // sorry, but this is how it was designed
         (pathname === '/txs' && (!config.features.zetachain.isEnabled || !tab || !tab.includes('cctx'))) ||
         pathname === '/tx/[hash]' ||
-        pathname === '/chain/[chain_slug]/tx/[hash]',
+        pathname === '/chain/[chain_slug_or_id]/tx/[hash]',
     };
     const cctxs: NavItem | null = config.features.zetachain.isEnabled ? {
       text: 'Cross-chain transactions',
@@ -66,17 +69,17 @@ export default function useNavItems(): ReturnType {
       icon: 'navigation/operation',
       isActive: pathname === '/operations' || pathname === '/operation/[id]',
     } : null;
-    const internalTxs: NavItem | null = {
+    const internalTxs: NavItem | null = config.UI.views.internalTx.isEnabled ? {
       text: 'Internal transactions',
       nextRoute: { pathname: '/internal-txs' as const },
       icon: 'navigation/internal_txns',
       isActive: pathname === '/internal-txs',
-    };
+    } : null;
     const userOps: NavItem | null = config.features.userOps.isEnabled ? {
       text: 'User operations',
       nextRoute: { pathname: '/ops' as const },
       icon: 'navigation/user_op',
-      isActive: pathname === '/ops' || pathname === '/op/[hash]' || pathname === '/chain/[chain_slug]/op/[hash]',
+      isActive: pathname === '/ops' || pathname === '/op/[hash]' || pathname === '/chain/[chain_slug_or_id]/op/[hash]',
     } : null;
 
     const verifiedContracts: NavItem | null =
@@ -153,7 +156,6 @@ export default function useNavItems(): ReturnType {
     if (rollupFeature.isEnabled && (
       rollupFeature.type === 'optimistic' ||
       rollupFeature.type === 'arbitrum' ||
-      rollupFeature.type === 'zkEvm' ||
       rollupFeature.type === 'scroll'
     )) {
       blockchainNavItems = [
@@ -188,7 +190,7 @@ export default function useNavItems(): ReturnType {
           internalTxs,
           rollupDeposits,
           rollupWithdrawals,
-        ],
+        ].filter(Boolean),
         [
           blocks,
           userOps,
@@ -295,6 +297,12 @@ export default function useNavItems(): ReturnType {
           nextRoute: { pathname: '/gas-tracker' as const },
           icon: 'navigation/gas_tracker',
           isActive: pathname.startsWith('/gas-tracker'),
+        },
+        config.features.crossChainTxs.isEnabled && {
+          text: 'ICTT users',
+          nextRoute: { pathname: '/ictt-users' as const },
+          icon: 'navigation/ictt_users',
+          isActive: pathname.startsWith('/ictt-users'),
         },
       ].filter(Boolean);
 

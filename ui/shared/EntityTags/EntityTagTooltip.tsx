@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag } from './types';
 
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';

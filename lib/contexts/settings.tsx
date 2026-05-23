@@ -1,9 +1,11 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
+import { ADDRESS_FORMATS, type AddressFormat } from 'client/slices/address/types/config';
 import type { TimeFormat } from 'types/settings';
-import { ADDRESS_FORMATS, type AddressFormat } from 'types/views/address';
 
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 
 import { useAppContext } from './app';
 

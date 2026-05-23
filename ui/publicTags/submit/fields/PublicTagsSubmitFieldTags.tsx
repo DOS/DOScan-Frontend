@@ -1,8 +1,10 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { PublicTagType } from 'types/api/addressMetadata';
+import type { PublicTagType } from 'client/features/address-metadata/types/api';
 
 import PublicTagsSubmitFieldTag from './PublicTagsSubmitFieldTag';
 

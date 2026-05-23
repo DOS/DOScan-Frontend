@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
@@ -5,8 +7,9 @@ import React from 'react';
 
 import type { BannerProps } from './types';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import { connectAdbutler, placeAd, ADBUTLER_ACCOUNT } from 'ui/shared/ad/adbutlerScript';
 

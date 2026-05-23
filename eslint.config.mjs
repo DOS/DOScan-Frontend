@@ -3,6 +3,7 @@ import jsPlugin from '@eslint/js';
 import nextJsPlugin from '@next/eslint-plugin-next';
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import reactQueryPlugin from '@tanstack/eslint-plugin-query';
+import boundariesPlugin from 'eslint-plugin-boundaries';
 import consistentDefaultExportNamePlugin from 'eslint-plugin-consistent-default-export-name';
 import importPlugin from 'eslint-plugin-import';
 import importHelpersPlugin from 'eslint-plugin-import-helpers';
@@ -17,6 +18,32 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import tseslint from 'typescript-eslint';
+
+const SPDX_HEADER = '// SPDX-License-Identifier: LicenseRef-Blockscout';
+
+const spdxLicenseRule = {
+  meta: {
+    type: 'layout',
+    fixable: 'code',
+    messages: { missing: `File must start with: ${ SPDX_HEADER }` },
+    schema: [],
+  },
+  create(context) {
+    return {
+      Program() {
+        const src = context.sourceCode.getText();
+        if (src.startsWith(SPDX_HEADER + '\n')) {
+          return;
+        }
+        context.report({
+          loc: { line: 1, column: 0 },
+          messageId: 'missing',
+          fix: (fixer) => fixer.replaceTextRange([ 0, 0 ], SPDX_HEADER + '\n\n'),
+        });
+      },
+    };
+  },
+};
 
 const RESTRICTED_MODULES = {
   paths: [
@@ -57,6 +84,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const gitignorePath = path.resolve(__dirname, '.gitignore');
 
+/** @see client/ARCH_REDESIGN.md §8 — dependency layers for migrated code */
+const ARCH_BOUNDARY_ELEMENTS = [
+  { type: 'client-api', pattern: 'client/api/**', mode: 'full' },
+  { type: 'client-slices', pattern: 'client/slices/**', mode: 'full' },
+  { type: 'client-features', pattern: 'client/features/**', mode: 'full' },
+  { type: 'client-shared', pattern: 'client/shared/**', mode: 'full' },
+  { type: 'client-shell', pattern: 'client/shell/**', mode: 'full' },
+  { type: 'configs', pattern: 'configs/**', mode: 'full' },
+  { type: 'toolkit', pattern: 'toolkit/**', mode: 'full' },
+  { type: 'nextjs', pattern: 'nextjs/**', mode: 'full' },
+  { type: 'legacy-lib', pattern: 'lib/**', mode: 'full' },
+  { type: 'legacy-ui', pattern: 'ui/**', mode: 'full' },
+];
+
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
   includeIgnoreFile(gitignorePath),
@@ -72,7 +113,12 @@ export default tseslint.config(
 
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
 
-  { settings: { react: { version: 'detect' } } },
+  {
+    settings: {
+      react: { version: 'detect' },
+      'boundaries/elements': ARCH_BOUNDARY_ELEMENTS,
+    },
+  },
 
   jsPlugin.configs.recommended,
 
@@ -288,6 +334,105 @@ export default tseslint.config(
     },
   },
 
+  // I have to disable this rule because of performance issues:
+  //    https://github.com/import-js/eslint-plugin-import/issues/3060
+  // Examples in our CI:
+  //    before: 1m15s - https://github.com/blockscout/frontend/actions/runs/23210591334/job/67457992864
+  //    after: 4m27s - https://github.com/blockscout/frontend/actions/runs/25108323146/job/73585871924
+  //
+  // {
+  //   files: [ 'client/**' ],
+  //   plugins: {
+  //     'import': importPlugin,
+  //   },
+  //   rules: {
+  //     'import/no-cycle': [ 'error', { maxDepth: 10 } ],
+  //   },
+  // },
+  // {
+  //   files: [ 'lib/**', 'ui/**' ],
+  //   plugins: {
+  //     'import': importPlugin,
+  //   },
+  //   rules: {
+  //     'import/no-cycle': 'warn',
+  //   },
+  // },
+
+  /*
+   * ARCH_REDESIGN.md §10 — public type surface: consumers should import slice/feature types only from
+   * `types/api.ts`. eslint-plugin-boundaries can enforce this with `capture` on element patterns and
+   * targeted `disallow` rules; that is left for a follow-up once more slices/features exist under client/.
+   * Type-only cross-layer imports are approximated via per-rule `importKind: 'type'` (v4 has no `allowTypeImports` option).
+   */
+  {
+    files: [
+      'client/**/*.{ts,tsx}',
+      'configs/**/*.{ts,tsx,mjs}',
+    ],
+    plugins: {
+      boundaries: boundariesPlugin,
+    },
+    rules: {
+      'boundaries/element-types': [ 'error', {
+        'default': 'disallow',
+        rules: [
+          {
+            from: 'client-api',
+            allow: [ 'client-shared', 'legacy-lib' ],
+          },
+          {
+            from: 'client-api',
+            allow: [ 'client-slices', 'client-features' ],
+            importKind: 'type',
+          },
+          {
+            from: 'client-slices',
+            allow: [ 'client-api', 'client-shared', 'client-slices', 'legacy-lib', 'legacy-ui', 'toolkit', 'configs' ],
+          },
+          {
+            from: 'client-slices',
+            allow: [ 'client-features' ],
+            importKind: 'type',
+          },
+          {
+            from: 'client-features',
+            allow: [ 'client-api', 'client-shared', 'client-slices', 'client-features', 'legacy-lib', 'legacy-ui', 'toolkit', 'configs' ],
+          },
+          {
+            from: 'client-shared',
+            allow: [ 'client-shared', 'legacy-lib', 'legacy-ui', 'toolkit', 'configs' ],
+          },
+          {
+            from: 'client-shared',
+            allow: [ 'client-slices' ],
+            importKind: 'type',
+          },
+          {
+            from: 'client-shell',
+            allow: [
+              'client-api',
+              'client-slices',
+              'client-features',
+              'client-shared',
+              'client-shell',
+              'legacy-lib',
+              'legacy-ui',
+              'toolkit',
+              'nextjs',
+              'configs',
+            ],
+          },
+          {
+            from: 'configs',
+            // `configs` must not import `client/*`; `lib/*` stays allowed until config-owned types move out of legacy paths
+            allow: [ 'configs', 'legacy-lib' ],
+          },
+        ],
+      } ],
+    },
+  },
+
   {
     plugins: {
       'import-helpers': importHelpersPlugin,
@@ -301,6 +446,10 @@ export default tseslint.config(
             'module',
             '/types/',
             [ '/^nextjs/' ],
+            [ '/^client/api/' ],
+            [ '/^client/slices/' ],
+            [ '/^client/features/' ],
+            [ '/^client/shared/' ],
             [
               '/^configs/',
               '/^data/',
@@ -337,6 +486,7 @@ export default tseslint.config(
     },
     files: [
       'ui/**/[A-Z]*.tsx',
+      'client/**/*.tsx',
     ],
     ignores: [
       '**/*.pw.*',
@@ -409,6 +559,9 @@ export default tseslint.config(
       '@stylistic/template-curly-spacing': [ 'error', 'always' ],
       '@stylistic/wrap-iife': [ 'error', 'inside' ],
     },
+    ignores: [
+      'next-env.d.ts',
+    ],
   },
 
   {
@@ -424,7 +577,7 @@ export default tseslint.config(
       'no-redeclare': 'off',
 
       // rules customizations
-      eqeqeq: [ 'error', 'allow-null' ],
+      eqeqeq: [ 'error' ],
       'id-match': [ 'error', '^[\\w$]+$' ],
       'max-len': [ 'error', 160, 4 ],
       'no-console': 'error',
@@ -477,6 +630,31 @@ export default tseslint.config(
     rules: {
       // for toolkit components allow to import @chakra-ui/react directly
       'no-restricted-imports': 'off',
+    },
+  },
+
+  {
+    plugins: { 'spdx-license': { rules: { header: spdxLicenseRule } } },
+    files: [ '**/*.{ts,tsx,js}' ],
+    ignores: [
+      '**/*.d.ts',
+      '**/*.pw.tsx',
+      '**/*.spec.{ts,tsx}',
+      '**/*.config.{ts,js}',
+      '**.config.{ts,js}',
+      'mocks/**',
+      '**/mocks/**',
+      '**/mocks.ts',
+      'playwright/**',
+      'stubs/**',
+      '**/stubs/**',
+      '**/stubs.ts',
+      'vitest/**',
+      'tools/**',
+      '.agents/**',
+    ],
+    rules: {
+      'spdx-license/header': 'error',
     },
   },
 );

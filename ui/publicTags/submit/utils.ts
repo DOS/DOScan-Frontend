@@ -1,11 +1,13 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { pickBy, isEqual } from 'es-toolkit';
 
 import type { FormFieldTag, FormFields, FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped, SubmitRequestBody } from './types';
-import type { UserInfo } from 'types/api/account';
+import type { UserInfo } from 'client/features/account/types/api';
 
 import type { Route } from 'nextjs-routes';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitRequestBody> {
   const result: Array<SubmitRequestBody> = [];

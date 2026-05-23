@@ -1,15 +1,17 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import { uniq } from 'es-toolkit';
 import { useCallback } from 'react';
 import { getAddress, formatUnits, slice } from 'viem';
 import type { PublicClient, Log } from 'viem';
 
-import type { AddressTokenBalancesResponse } from 'types/api/address';
-import type { TokenInfo } from 'types/api/token';
+import type { AddressTokenBalancesResponse } from 'client/slices/address/types/api';
+import type { TokenInfo } from 'client/slices/token/types/api';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import useGetBlockTimestamp from './useGetBlockTimestamp';
 
@@ -133,7 +135,7 @@ const useGetERC20Allowances = () => {
     }) as AddressTokenBalancesResponse;
 
     balances = Object.fromEntries(
-      response.map((entry) => [ entry.token.address_hash, BigInt(entry.value) ]),
+      response.map((entry) => [ entry.token.address_hash, BigInt(entry.value ?? '0') ]),
     );
 
     await Promise.all(

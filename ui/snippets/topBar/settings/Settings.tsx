@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Separator, VStack } from '@chakra-ui/react';
 import React from 'react';
 
@@ -31,7 +33,7 @@ const Settings = () => {
 
   return (
     <PopoverRoot
-      positioning={{ placement: 'bottom-start' }}
+      positioning={{ placement: 'bottom-end' }}
       open={ popover.open }
       onOpenChange={ handlePopoverOpenChange }
       // should be false to enable auto-switch to default color theme

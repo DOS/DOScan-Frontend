@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as bens from '@blockscout/bens-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
 
 // ts-proto generates the wrong token types for AggregatedTokenInfo
 // moreover, the default values of the fields (= undefined) cannot be stripped off from the generated types
@@ -18,10 +20,14 @@ export interface AggregatedTokenInfo extends Pick<multichain.AggregatedTokenInfo
   reputation: null;
 }
 
-export interface AddressTokenItem extends Omit<multichain.ListAddressTokensResponse_AggregatedTokenBalanceInfo, 'token' | 'token_id'> {
+export interface AddressTokenItem extends
+  Omit<multichain.ListAddressTokensResponse_AggregatedTokenBalanceInfo, 'token' | 'token_id' | 'chain_values' | 'value'>
+{
   token: AggregatedTokenInfo;
   token_id: string | null;
   token_instance: null;
+  chain_values: Record<string, string | null>;
+  value: string | null;
 }
 
 export interface AddressTokensResponse extends Omit<multichain.ListAddressTokensResponse, 'items'> {

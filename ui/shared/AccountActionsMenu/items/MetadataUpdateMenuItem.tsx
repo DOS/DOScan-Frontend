@@ -1,10 +1,13 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { ItemProps } from '../types';
 
+import { useMetadataUpdateContext } from 'client/slices/token/pages/instance/metadata-update-context';
+
 import { MenuItem } from 'toolkit/chakra/menu';
 import IconSvg from 'ui/shared/IconSvg';
-import { useMetadataUpdateContext } from 'ui/tokenInstance/contexts/metadataUpdate';
 
 import ButtonItem from '../parts/ButtonItem';
 

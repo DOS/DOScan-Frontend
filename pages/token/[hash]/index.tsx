@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
@@ -8,9 +10,11 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import Token from 'client/slices/token/pages/details/Token';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import Token from 'ui/pages/Token';
 
 const pathname: Route['pathname'] = '/token/[hash]';
 

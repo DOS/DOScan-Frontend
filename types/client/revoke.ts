@@ -1,4 +1,6 @@
-import type { TokenReputation } from 'types/api/token';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { TokenReputation } from 'client/slices/token/types/api';
 
 export interface ContractAllowanceType {
   transactionId: `0x${ string }` | null;

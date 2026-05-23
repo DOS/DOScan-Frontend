@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
@@ -15,7 +17,7 @@ const TextareaShowcase = () => {
         <SectionHeader>Variant</SectionHeader>
         <SamplesStack >
           <Sample label="variant: outline" w="360px">
-            <Field label="Description" required floating size="2xl">
+            <Field label="Description (very long label to test truncation)" required floating size="2xl">
               <Textarea/>
             </Field>
             <Field label="Description" required floating size="2xl">

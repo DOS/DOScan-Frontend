@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -7,16 +9,19 @@ import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import useFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
+
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import * as metadata from 'client/shared/metadata';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useFetch from 'lib/hooks/useFetch';
-import * as metadata from 'lib/metadata';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { useColorMode } from 'toolkit/chakra/color-mode';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import MarketplaceAppIframe from '../marketplace/MarketplaceAppIframe';
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
@@ -50,7 +55,7 @@ export default function MarketplaceApp() {
         }
         return item;
       } else {
-        return apiFetch('admin:marketplace_dapp', { pathParams: { chainId: config.chain.id, dappId: id } });
+        return apiFetch('admin:marketplace_dapp', { pathParams: { instanceId: config.apis.admin?.instanceId, dappId: id } });
       }
     },
     enabled: feature.isEnabled,

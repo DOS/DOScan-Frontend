@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -11,7 +13,7 @@ const TokenTransfers = dynamic(() => {
     return import('ui/multichain/tokenTransfers/MultichainTokenTransfers');
   }
 
-  return import('ui/pages/TokenTransfers');
+  return import('client/slices/token-transfer/pages/index/TokenTransfers');
 }, { ssr: false });
 
 const Page: NextPage = () => {

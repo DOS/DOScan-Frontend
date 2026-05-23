@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
@@ -23,12 +25,6 @@ const RadioShowcase = () => {
       <Section>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack>
-          <Sample label="size: xs">
-            <RadioGroup defaultValue="1" size="xs">
-              <Radio value="1">Option 1</Radio>
-              <Radio value="2">Option 2</Radio>
-            </RadioGroup>
-          </Sample>
           <Sample label="size: sm">
             <RadioGroup defaultValue="1" size="sm">
               <Radio value="1">Option 1</Radio>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -11,7 +13,7 @@ const InternalTxs = dynamic(() => {
     return import('ui/multichain/internalTxs/MultichainInternalTxs');
   }
 
-  return import('ui/pages/InternalTxs');
+  return import('client/slices/internal-tx/pages/index/InternalTxs');
 }, { ssr: false });
 
 const Page: NextPage = () => {
@@ -24,4 +26,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { base as getServerSideProps } from 'nextjs/getServerSideProps/main';
+export { internalTx as getServerSideProps } from 'nextjs/getServerSideProps/main';

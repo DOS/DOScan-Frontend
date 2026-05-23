@@ -1,12 +1,16 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import type { Route } from 'nextjs-routes';
+import { CSP_NONCE_HEADER } from 'nextjs/constants';
+
+import type * as metadata from 'client/shared/metadata';
+import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
-import type * as metadata from 'lib/metadata';
 
 import { isLikelyHumanBrowser, isKnownBotRequest } from '../utils/checkRealBrowser';
 
@@ -21,11 +25,20 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   // so we force it to be always present in the props but it can be null
   apiData: metadata.ApiData<Pathname> | null;
   uuid: string;
+  cspNonce: string | null;
+  onionDomain: string | null;
 }
 
 export const base = async <Pathname extends Route['pathname'] = never>({ req, res, query }: GetServerSidePropsContext):
 Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const appProfile = req.headers?.['x-app-profile'] || cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.APP_PROFILE);
+
+  const cspNonceHeader = res.getHeader(CSP_NONCE_HEADER);
+  const cspNonceValue = Array.isArray(cspNonceHeader) ? cspNonceHeader[0] : cspNonceHeader;
+  const cspNonce = cspNonceValue ? String(cspNonceValue) : null;
+
+  const onionDomain = Array.isArray(req.headers?.['onion-location']) ? req.headers?.['onion-location'][0] : req.headers?.['onion-location'] ?? null;
+
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
       if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
@@ -80,6 +93,8 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
       adBannerProvider: adBannerProvider,
       apiData: null,
       uuid,
+      cspNonce,
+      onionDomain,
     },
   };
 };

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Text, chakra } from '@chakra-ui/react';
 import { useCallback, useMemo, useState } from 'react';
 
@@ -5,11 +7,15 @@ import { getFeaturePayload } from 'configs/app/features/types';
 
 import { route } from 'nextjs-routes';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import dayjs from 'lib/date/dayjs';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { USER_ACTIVITY } from 'stubs/rewards';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
@@ -19,7 +25,6 @@ import { Hint } from 'toolkit/components/Hint/Hint';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import MeritsIcon from '../../MeritsIcon';
 import RewardsActivityPassCard from '../RewardsActivityPassCard';

@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as guards from './guards';
 import { factory } from './utils';
 
 export const base = factory([ ]);
 export const block = factory([ guards.notMultichain ]);
 export const tx = factory([ guards.notMultichain ]);
+export const internalTx = factory([ guards.internalTx ]);
 export const token = factory([ guards.notMultichain ]);
 export const account = factory([ guards.account ]);
 export const accountAuth0 = factory([ guards.accountAuth0 ]);
@@ -12,7 +15,6 @@ export const userOps = factory([ guards.userOps ]);
 export const marketplace = factory([ guards.marketplace ]);
 export const marketplaceEssentialDapp = factory([ guards.marketplaceEssentialDapp ]);
 export const apiDocs = factory([ guards.apiDocs ]);
-export const csvExport = factory([ guards.csvExport ]);
 export const stats = factory([ guards.stats ]);
 export const suave = factory([ guards.suave ]);
 export const nameServiceEns = factory([ guards.nameServiceEns ]);

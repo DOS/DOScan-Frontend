@@ -1,7 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Grid, HStack, type JsxStyleProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
+
+import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
+import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
@@ -9,9 +14,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
-import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
-import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TextSeparator from 'ui/shared/TextSeparator';

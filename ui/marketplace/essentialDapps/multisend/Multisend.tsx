@@ -1,12 +1,15 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';
 
 import { getFeaturePayload } from 'configs/app/features/types';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
 const feature = getFeaturePayload(config.features.marketplace);

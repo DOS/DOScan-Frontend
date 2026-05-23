@@ -1,5 +1,8 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 
 const feature = config.features.nameServices;
 

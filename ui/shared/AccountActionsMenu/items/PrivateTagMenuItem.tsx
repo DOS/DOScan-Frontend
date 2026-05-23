@@ -1,19 +1,24 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from '../types';
-import type { Address } from 'types/api/address';
-import type { Transaction } from 'types/api/transaction';
+import type { Address } from 'client/slices/address/types/api';
+import type { Transaction } from 'client/slices/tx/types/api';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
-import getPageType from 'lib/mixpanel/getPageType';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+
+import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthGuard';
+import AddressModal from 'client/features/account/pages/private-tags/AddressModal/AddressModal';
+import TransactionModal from 'client/features/account/pages/private-tags/TransactionModal/TransactionModal';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
-import TransactionModal from 'ui/privateTags/TransactionModal/TransactionModal';
 import IconSvg from 'ui/shared/IconSvg';
-import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
 
 import ButtonItem from '../parts/ButtonItem';
 
@@ -44,7 +49,7 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
     return null;
   }
 
-  const pageType = getPageType(router.pathname);
+  const pageType = mixpanel.getPageType(router.pathname);
   const modalProps = {
     open: modal.open,
     onOpenChange: modal.onOpenChange,

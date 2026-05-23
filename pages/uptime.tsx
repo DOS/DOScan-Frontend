@@ -1,9 +1,11 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import Uptime from 'ui/megaEth/uptime/Uptime';
+import Uptime from 'client/features/chain-variants/mega-eth/pages/uptime/Uptime';
 
 const Page: NextPage = () => {
   return (

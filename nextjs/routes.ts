@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ExternalChain } from 'types/externalChains';
 
 import type { Route } from 'nextjs-routes';
@@ -22,8 +24,8 @@ export const route = (route: Route, params?: RouteParams | null) => {
 
 export const routeParams = (route: Route, params?: RouteParams | null): Route => {
   if (!params?.external && params?.chain?.slug) {
-    const pathname = '/chain/[chain_slug]' + route.pathname;
-    return { ...route, pathname, query: { ...route.query, chain_slug: params.chain.slug } } as Route;
+    const pathname = '/chain/[chain_slug_or_id]' + route.pathname;
+    return { ...route, pathname, query: { ...route.query, chain_slug_or_id: params.chain.slug } } as Route;
   }
   return route;
 };

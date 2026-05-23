@@ -1,4 +1,6 @@
-import type { ApiName } from 'lib/api/types';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { ApiName } from 'client/api/types';
 
 import { stripTrailingSlash } from 'toolkit/utils/url';
 
@@ -8,6 +10,7 @@ export interface ApiPropsBase {
   endpoint: string;
   basePath?: string;
   socketEndpoint?: string;
+  instanceId?: string;
 }
 
 export interface ApiPropsFull extends ApiPropsBase {
@@ -58,6 +61,7 @@ const adminApi = (() => {
 
   return Object.freeze({
     endpoint: apiHost,
+    instanceId: getEnvValue('NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID') || getEnvValue('NEXT_PUBLIC_NETWORK_ID'),
   });
 })();
 
@@ -80,6 +84,7 @@ const contractInfoApi = (() => {
 
   return Object.freeze({
     endpoint: apiHost,
+    instanceId: getEnvValue('NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID') || getEnvValue('NEXT_PUBLIC_NETWORK_ID'),
   });
 })();
 

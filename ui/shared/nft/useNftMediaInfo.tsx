@@ -1,7 +1,9 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 
 import type { DynamicRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';

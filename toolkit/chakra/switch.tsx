@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Switch as ChakraSwitch } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -31,7 +33,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
             </ChakraSwitch.Indicator>
           ) }
         </ChakraSwitch.Control >
-        { children != null && (
+        { children !== undefined && children !== null && (
           <ChakraSwitch.Label { ...labelProps }>{ children }</ChakraSwitch.Label>
         ) }
       </ChakraSwitch.Root>

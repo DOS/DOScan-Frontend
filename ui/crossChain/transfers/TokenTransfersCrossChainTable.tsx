@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

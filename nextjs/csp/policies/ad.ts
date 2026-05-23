@@ -1,19 +1,19 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import Base64 from 'crypto-js/enc-base64';
 import sha256 from 'crypto-js/sha256';
 import type CspDev from 'csp-dev';
 
 import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
 
-export function ad(): CspDev.DirectiveDescriptor {
+export function ad(nonce?: string): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
-      // coinzilla
-      'coinzilla.com',
-      '*.coinzilla.com',
-      'https://request-global.czilladx.com',
-
-      // sevio (coinzilla text ad)
+      // sevio
       '*.adx.ws',
+      'https://request.adx.ws',
+      'https://id5-sync.com',
+      'https://lb.eu-1-id5-sync.com/lb/v1',
 
       // adbutler
       'servedbyadbutler.com',
@@ -24,14 +24,8 @@ export function ad(): CspDev.DirectiveDescriptor {
       // specify
       'app.specify.sh',
     ],
-    'frame-src': [
-      // coinzilla
-      'https://request-global.czilladx.com',
-    ],
+    'frame-src': [],
     'script-src': [
-      // coinzilla
-      'coinzillatag.com',
-
       // adbutler
       'servedbyadbutler.com',
       `'sha256-${ Base64.stringify(sha256(connectAdbutler)) }'`,
@@ -43,20 +37,15 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // sevio
       'cdn.adx.ws',
+      ...(nonce ? [ `'nonce-${ nonce }'` ] : []),
     ],
     'img-src': [
-      // coinzilla
-      'cdn.coinzilla.io',
-
       // adbutler
       'servedbyadbutler.com',
 
       // sevio
       '*.adx.ws',
     ],
-    'font-src': [
-      // coinzilla
-      'https://request-global.czilladx.com',
-    ],
+    'font-src': [],
   };
 }

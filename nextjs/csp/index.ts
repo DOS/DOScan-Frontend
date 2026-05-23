@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRequest } from 'next/server';
 
 import appConfig from 'configs/app';
@@ -8,8 +10,11 @@ import * as cookiesLib from 'lib/cookies';
 import generateCspPolicy from './generateCspPolicy';
 import generateNftHtmlEmbedCspPolicy from './generateNftHtmlEmbedCspPolicy';
 
+<<<<<<< HEAD
 const marketplaceFeature = appConfig.features.marketplace;
 
+=======
+>>>>>>> v2.8.0-alpha.2
 const NFT_HTML_EMBED_PATH = '/nft-html-embed.html';
 
 let cspPolicies: { 'private': string; 'default': string } | undefined = undefined;
@@ -28,7 +33,7 @@ async function initializeCspPolicies() {
   }
 }
 
-export async function get(req?: NextRequest): Promise<string> {
+export async function get(req?: NextRequest, nonce?: string): Promise<string> {
   await initializeCspPolicies();
 
   // Get appProfile from request (header, query param, or cookie)
@@ -48,5 +53,12 @@ export async function get(req?: NextRequest): Promise<string> {
     return nftHtmlEmbedCsp;
   }
 
+<<<<<<< HEAD
+=======
+  if (nonce) {
+    return generateCspPolicy(isPrivateMode, nonce);
+  }
+
+>>>>>>> v2.8.0-alpha.2
   return isPrivateMode ? cspPolicies?.private || '' : cspPolicies?.default || '';
 }

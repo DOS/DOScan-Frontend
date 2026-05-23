@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
-import type { RollupType } from 'types/client/rollup';
+import type { RollupType } from 'client/features/rollup/common/types/config';
 
 import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
@@ -9,6 +11,14 @@ import config from 'configs/app';
 
 export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext) =>
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;
+
+export const internalTx: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.UI.views.internalTx.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
 
 export const account: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.account.isEnabled) {
@@ -62,14 +72,6 @@ export const marketplaceEssentialDapp: Guard = (chainConfig: typeof config) => a
 
 export const apiDocs: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.apiDocs.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
-export const csvExport: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.csvExport.isEnabled) {
     return {
       notFound: true,
     };
@@ -224,7 +226,7 @@ export const rollup: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
+const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'arbitrum', 'scroll' ];
 export const deposits: Guard = (chainConfig: typeof config) => async() => {
   const rollupFeature = chainConfig.features.rollup;
   const beaconChainFeature = chainConfig.features.beaconChain;
@@ -237,7 +239,7 @@ export const deposits: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'arbitrum', 'scroll' ];
 export const withdrawals: Guard = (chainConfig: typeof config) => async() => {
   const rollupFeature = chainConfig.features.rollup;
   if (
@@ -250,7 +252,7 @@ export const withdrawals: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic', 'scroll' ];
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkSync', 'arbitrum', 'optimistic', 'scroll' ];
 export const batch: Guard = (chainConfig: typeof config) => async() => {
   const rollupFeature = chainConfig.features.rollup;
   if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {

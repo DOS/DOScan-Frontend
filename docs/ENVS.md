@@ -116,7 +116,7 @@ Also, be aware that if you customize the name of the currency or any of its deno
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL | `string` | Network secondary coin symbol.  | - | - | `GNO` | v1.29.0+ |
 | NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES | `boolean` | Set to `true` for networks where users can pay transaction fees in either the native coin or ERC-20 tokens.  | - | `false` | `true` | v1.33.0+ |
-| NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` \| `mining` \| 'fee reception' | Verification type in the network. Irrelevant for Arbitrum (verification type is always `posting`) and ZkEvm (verification type is always `sequencing`) L2s | - | `mining` | `validation` | v1.0.x+ |
+| NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` \| `mining` \| 'fee reception' | Verification type in the network. Irrelevant for Arbitrum (verification type is always `posting`) L2s | - | `mining` | `validation` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME | `string` | Name of the standard for creating tokens | - | `ERC` | `BEP` | v1.31.0+ |
 | NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES | `Array<{id: string; name: string;}>` | List of additional **ERC-20-like (fungible)** token types supported by the explorer UI (extends token type filters/labels). *Note: the token type id must also be supported by the backend API responses and filters.* | - | `[]` | `'[{"id":"ERC-777","name":"ERC-777"}]'` | v2.6.0+ |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` | v1.0.x+ |
@@ -142,16 +142,17 @@ Also, be aware that if you customize the name of the currency or any of its deno
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'daily_operational_txs' \| 'coin_price'  \| 'secondary_coin_price' \| 'market_cap' \| 'tvl'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` | v1.0.x+ |
-| NEXT_PUBLIC_HOMEPAGE_STATS | `Array<'latest_batch' \| 'total_blocks'  \| 'average_block_time' \| 'total_txs' \| 'total_operational_txs' \| 'latest_l1_state_batch' \| 'wallet_addresses' \| 'gas_tracker' \| 'btc_locked' \| 'current_epoch'>` | List of stats widgets displayed on the home page | - | For zkSync, zkEvm and Arbitrum rollups: `['latest_batch','average_block_time','total_txs','wallet_addresses','gas_tracker']`, for other cases: `['total_blocks','average_block_time','total_txs','wallet_addresses','gas_tracker']` | `['total_blocks','total_txs','wallet_addresses']` | v1.35.x+ |
+| NEXT_PUBLIC_HOMEPAGE_STATS | `Array<'latest_batch' \| 'total_blocks'  \| 'average_block_time' \| 'total_txs' \| 'total_operational_txs' \| 'latest_l1_state_batch' \| 'wallet_addresses' \| 'gas_tracker' \| 'btc_locked' \| 'current_epoch'>` | List of stats widgets displayed on the home page | - | For zkSync and Arbitrum rollups: `['latest_batch','average_block_time','total_txs','wallet_addresses','gas_tracker']`, for other cases: `['total_blocks','average_block_time','total_txs','wallet_addresses','gas_tracker']` | `['total_blocks','total_txs','wallet_addresses']` | v1.35.x+ |
 | NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG | `HeroBannerConfig`, see details [below](#hero-banner-configuration-properties) | Configuration of hero banner appearance. | - | - | See [below](#hero-banner-configuration-properties) | v1.35.0+ |
 | NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG | `string` | URL of the file (in `.json` format only) that contains the configuration for banners on the application's homepage, showcasing some of its key functionality. See the full config format [below](#highlights-banner-configuration-properties). The config should contain at least 2 banners, but only 3 banners will be visible at the same time. A larger number of banners in the config allows for random banner rotation upon page load. | - | - | See [below](#highlights-banner-configuration-properties) | v2.6.0+ |
 
 #### Hero banner configuration properties
 
-_Note_ Here, all values are arrays of up to two strings. The first string represents the value for the light color mode, and the second string represents the value for the dark color mode. If the array contains only one string, it will be used for both color modes.
+_Note_ Here, some values are arrays of up to two strings. The first string represents the value for the light color mode, and the second string represents the value for the dark color mode. If the array contains only one string, it will be used for both color modes.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
+| text | `string` | The text on the banner | - | `{ chain_name } explorer` | `Duck migration observer` |
 | background | `[string, string]` | Banner background (could be a solid color, gradient or picture). The string should be a valid `background` CSS property value. | - | `['radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)']` | `['lightpink','no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)']` |
 | text_color | `[string, string]` | Banner text background. The string should be a valid `color` CSS property value. | - | `['white']` | `['lightpink','#DCFE76']` |
 | border | `[string, string]` | Banner border. The string should be a valid `border` CSS property value. | - | - | `['1px solid yellow','4px dashed #DCFE76']` |
@@ -321,6 +322,7 @@ Settings for meta tags, OG tags and SEO
 | NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS | `Array<TxFieldsId>` | Array of the transaction fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["value","tx_fee"]'` | v1.15.0+ |
 | NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS | `Array<TxAdditionalFieldsId>` | Array of the additional fields ids that should be added to the transaction details. See below the list of the possible id values. | - | - | `'["fee_per_gas"]'` | v1.15.0+ |
 | NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES | `boolean` | In the detailed view group transaction fees under one collapsible section. | - | - | `true` | v2.3.5+ |
+| NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS | `Array<TxViewId>` | Transaction views that should be hidden. See below the list of the possible id values.  | - | - | `'["pending_txs"]'` | v2.8.0+ |
 
 ##### Transaction fields list
 | Id | Description |
@@ -339,6 +341,18 @@ Settings for meta tags, OG tags and SEO
 | --- | --- |
 | `fee_per_gas` | Amount of total fee divided by total amount of gas used by transaction |
 | `set_max_gas_limit` | Max gas price established by the sender |
+
+##### Transaction views list
+| Id | Description |
+| --- | --- |
+| `pending_txs` | Pending transactions |
+
+&nbsp;
+
+#### Internal transactions
+| Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_INTERNAL_TXS_ENABLED | `boolean` | Set to `false` to hide all internal transaction UI in the explorer, including the global list page and tabs on transaction, address, and block detail pages. | - | `true` | `false` | v2.8.0+ |
 
 &nbsp;
 
@@ -462,7 +476,9 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <v2.8.0+> |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | Required | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <v2.8.0+> |
 
 &nbsp;
 
@@ -487,8 +503,9 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \| `none` | Ads provider  | - | `slise` | `coinzilla` | v1.0.x+ |
+| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `sevio` \| `none` | Ads provider | - | `slise` | `sevio` | v1.0.x+ |
 | NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER | `adbutler` | Additional ads provider to mix with the main one | - | - | `adbutler` | v1.28.0+ |
+| NEXT_PUBLIC_AD_BANNER_SEVIO_ZONES | `Array<string>` | Optional Sevio banner zone overrides in `[mobileZone, desktopZone]` format | - | `['52909312-7ebb-4bd5-9006-5e4f7041ed63','07cabd45-77f1-4203-8081-868bae776981']` | `['52909312-7ebb-4bd5-9006-5e4f7041ed63','07cabd45-77f1-4203-8081-868bae776981']` | v2.8.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP | `{ id: string; width: string; height: string }` | Placement config for desktop Adbutler banner | - | - | `{'id':'123456','width':'728','height':'90'}` | v1.3.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE | `{ id: string; width: number; height: number }` | Placement config for mobile Adbutler banner | - | - | `{'id':'654321','width':'300','height':'100'}` | v1.3.0+ |
 | NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY | `boolean` | Enables Specify ads in addition to the main ad banner provider | - | - | `true` | v2.4.0+ |
@@ -501,7 +518,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_AD_TEXT_PROVIDER | `coinzilla` \| `none` | Ads provider | - | `coinzilla` | `none` | v1.0.x+ |
+| NEXT_PUBLIC_AD_TEXT_PROVIDER | `sevio` \| `none` | Ads provider | - | `sevio` | `none` | v1.0.x+ |
 
 &nbsp;
 
@@ -529,7 +546,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'arbitrum' \| 'shibarium' \| 'zkEvm' \| 'zkSync' \| 'scroll'` | Rollup chain type | Required | - | `'optimistic'` | v1.24.0+ |
+| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'arbitrum' \| 'shibarium' \| 'zkSync' \| 'scroll'` | Rollup chain type | Required | - | `'optimistic'` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_PARENT_CHAIN | `ParentChain`, see details [below](#parent-chain-configuration-properties) | Configuration parameters for the parent chain. | Required | - | `{'baseUrl':'https://explorer.duckchain.io'}` | v1.38.0+ |
 | NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL | `string` | URL for rollup to parent chain withdrawals (Optimistic stack only) | - | - | `https://app.optimism.io/bridge/withdraw` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_LAYER_NUMBER | `number` | Layer number of the rollup | - | `2` | `3` | v2.7.0+ |
@@ -605,6 +622,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_MARKETPLACE_ENABLED | `boolean` | `true` means that the marketplace page will be enabled | Required | - | `true` | v1.24.1+ |
 | NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains list of apps that will be shown on the marketplace page. See [below](#marketplace-app-configuration-properties) list of available properties for an app. Can be replaced with NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | Required | - | `https://example.com/marketplace_config.json` | v1.0.x+ |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url. Can be used instead of NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | - | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <v2.8.0+> |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | Required | - | `https://airtable.com/shrqUAcjgGJ4jU88C` | v1.0.x+ |
 | NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM | `string` | Link to form where users can suggest ideas for the marketplace | - | - | `https://airtable.com/appiy5yijZpMMSKjT/pag3t82DUCyhGRZZO/form` | v1.24.0+ |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string` | See in [Blockchain parameters](#blockchain-parameters) section | Required | - | `https://core.poa.network` | v1.0.x+ |
@@ -701,6 +719,7 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <v2.8.0+> |
 
 &nbsp;
 
@@ -745,6 +764,7 @@ This feature allows you to submit an application with a public address tag.
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` | v1.30.0+ |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | Required | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <v2.8.0+> |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | See [below](#google-recaptcha) | true | - | `<your-secret>` | v1.0.x+ |
 
 &nbsp;
@@ -980,6 +1000,7 @@ This feature enables Blockscout Merits program. It requires that the [My account
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_DEX_POOLS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | v1.37.0+ |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <v2.8.0+> |
 
 &nbsp;
 
@@ -1022,6 +1043,7 @@ This feature allows to display widgets on the address page with data from 3rd pa
 | title | `string` | Title of displayed data | Required | - | `'Multichain balance'` |
 | hint | `string` | Hint for displayed data | - | - | `'Widget hint'` |
 | valuePath | `string` | Path to the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
+| valueTitlePath | `string` | Path in the API response that contains the text to display next to the widget title | - | - | `'result.risk.status'` |
 | pages | `Array<'eoa' \| 'contract' \| 'token'>` | List of pages where the widget should be displayed | Required | - | `['eoa']` |
 | chainIds | `Record<string, string>` | Mapping of chain IDs to custom values that will be used in `url` template | - | - | `{'1': 'eth', '10': 'op'}` |
 
@@ -1073,7 +1095,7 @@ This feature enables cross-chain transaction tracking and visualization, allowin
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | v2.7.0+ |
-| NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST | `string` | Interchain indexer API service host used to fetch cross-chain transaction data and metadata | Required | - | `https://interchain-indexer.k8s-dev.blockscout.com` | v2.7.0+ |
+| NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST | `string` | Interchain indexer API service host used to fetch cross-chain transaction data and metadata | Required | - | `https://bridge-indexer.k8s-dev.blockscout.com` | v2.7.0+ |
 
 
 &nbsp;

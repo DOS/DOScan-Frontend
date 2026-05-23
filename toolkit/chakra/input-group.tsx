@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BoxProps, InputElementProps } from '@chakra-ui/react';
 import { Group, InputElement } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
@@ -97,7 +99,20 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
     }, [ ref ]);
 
     return (
-      <Group ref={ combinedRef } w="100%" { ...rest }>
+      <Group
+        ref={ combinedRef }
+        w="100%"
+        css={{
+          ...(startElement && {
+            '--input-label-padding-start': startOffset ?? (inlinePaddings?.start ? `${ inlinePaddings.start }px` : undefined),
+          }),
+          ...(endElement && {
+            '--group-end-element-width': endOffset ?? (inlinePaddings?.end ? `${ inlinePaddings.end }px` : undefined),
+            '--input-label-padding-end': '0px',
+          }),
+        }}
+        { ...rest }
+      >
         { startElement && (
           <InputElement pointerEvents="none" ref={ startElementRef } px={ 0 } color="input.element" { ...startElementProps }>
             { startElement }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
@@ -51,6 +53,12 @@ const IconButtonShowcase = () => {
               <IconSvg name="heart_filled"/>
             </IconButton>
             <IconButton size="md" variant="icon_background" selected disabled>
+              <IconSvg name="heart_filled"/>
+            </IconButton>
+            <IconButton size="md" variant="icon_background" loading>
+              <IconSvg name="heart_filled"/>
+            </IconButton>
+            <IconButton size="md" variant="icon_background" loadingSkeleton>
               <IconSvg name="heart_filled"/>
             </IconButton>
           </Sample>

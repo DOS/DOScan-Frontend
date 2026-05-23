@@ -8,8 +8,9 @@
 	  "skipLibCheck": true,
 	  "forceConsistentCasingInFileNames": true,
 	  "outDir": "./dist",
-	  "baseUrl": ".",
+	  "rootDir": "../../../",
 	  "paths": {
+		"client/*": ["../../../client/*"],
 		"configs/*": ["../../../configs/*"],
 		"lib/*": ["../../../lib/*"],
 		"toolkit/*": ["../../../toolkit/*"],

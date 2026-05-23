@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 const OLD_UI_URLS = [
   // ACCOUNT
   {
@@ -243,14 +245,6 @@ const OLD_UI_URLS = [
   {
     source: '/l2-txn-batches',
     destination: '/batches',
-  },
-  {
-    source: '/zkevm-l2-txn-batches',
-    destination: '/batches',
-  },
-  {
-    source: '/zkevm-l2-txn-batch/:path*',
-    destination: '/batches/:path*',
   },
   {
     source: '/l2-deposits',

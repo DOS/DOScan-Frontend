@@ -1,13 +1,16 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, VStack, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+
 import {
   getSearchPlaceholder,
   shouldShowActionBar,
 } from 'lib/clusters/actionBarUtils';
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';

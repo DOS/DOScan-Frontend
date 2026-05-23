@@ -1,14 +1,18 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { FormSubmitResult } from 'ui/publicTags/submit/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import PublicTagsSubmitForm from 'ui/publicTags/submit/PublicTagsSubmitForm';
 import PublicTagsSubmitResult from 'ui/publicTags/submit/PublicTagsSubmitResult';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Screen = 'form' | 'result' | 'initializing' | 'error';
 

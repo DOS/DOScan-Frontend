@@ -1,22 +1,26 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenType } from 'client/slices/token/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { TokenType } from 'types/api/token';
+
+import useTokenTransfersQuery from 'client/slices/token-transfer/hooks/useTokenTransfersQuery';
+import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
+import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import { getTokenFilterValue } from 'ui/tokens/utils';
-import useTokenTransfersQuery from 'ui/tokenTransfers/useTokenTransfersQuery';
 
 import MultichainTokenTransfersLocal from './MultichainTokenTransfersLocal';
 

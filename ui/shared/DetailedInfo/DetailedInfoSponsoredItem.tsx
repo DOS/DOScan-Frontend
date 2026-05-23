@@ -1,7 +1,10 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
 import * as DetailedInfo from './DetailedInfo';

@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import buildUrl from 'nextjs/utils/buildUrl';
 import fetchFactory from 'nextjs/utils/fetchProxy';
 import { httpLogger } from 'nextjs/utils/logger';
 
-import isNeedProxy from 'lib/api/isNeedProxy';
+import isNeedProxy from 'client/api/is-need-proxy';
 
 export default async function csrfHandler(_req: NextApiRequest, res: NextApiResponse) {
   if (!isNeedProxy()) {

@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 import type { IncomingMessage } from 'http';
+=======
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { GetServerSidePropsContext } from 'next';
+>>>>>>> v2.8.0-alpha.2
 
 const GENERIC_BOT_MARKERS = [
   'bot',

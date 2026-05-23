@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import type { EssentialDappsConfig, MarketplaceTitles } from 'types/client/marketplace';
 
@@ -5,7 +7,7 @@ import apis from '../apis';
 import app from '../app';
 import chain from '../chain';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from '../utils';
-import blockchainInteraction from './blockchainInteraction';
+import blockchainInteraction from './blockchain-interaction';
 
 const defaultTitles: MarketplaceTitles = {
   entity_name: 'Dapp',

@@ -1,8 +1,10 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // eslint-disable-next-line no-restricted-imports
 import { Dialog as ChakraDialog } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 
 import { DialogContent, DialogRoot, DialogCloseTrigger } from 'toolkit/chakra/dialog';
 

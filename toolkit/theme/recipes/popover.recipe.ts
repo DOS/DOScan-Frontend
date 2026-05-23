@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { defineSlotRecipe } from '@chakra-ui/react';
 
 export const recipe = defineSlotRecipe({
@@ -40,6 +42,7 @@ export const recipe = defineSlotRecipe({
     body: {
       padding: 'var(--popover-padding)',
       flex: '1',
+      overflowY: 'auto',
     },
     footer: {
       display: 'flex',

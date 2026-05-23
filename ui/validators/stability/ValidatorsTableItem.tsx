@@ -1,10 +1,13 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { ValidatorStability } from 'types/api/validators';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ValidatorStatus from 'ui/shared/statusTag/ValidatorStabilityStatus';
 
 interface Props {

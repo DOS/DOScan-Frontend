@@ -1,11 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { getFeaturePayload } from 'configs/app/features/types';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
+
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverTrigger } from 'toolkit/chakra/popover';

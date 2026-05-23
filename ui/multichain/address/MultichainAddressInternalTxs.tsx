@@ -1,15 +1,19 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import useAddressInternalTxsQuery from 'client/slices/address/pages/details/internal-txs/useAddressInternalTxsQuery';
+import AddressTxsFilter from 'client/slices/address/pages/details/txs/AddressTxsFilter';
+import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
+import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
+
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import AddressTxsFilter from 'ui/address/AddressTxsFilter';
-import useAddressInternalTxsQuery from 'ui/address/useAddressInternalTxsQuery';
-import InternalTxsList from 'ui/internalTxs/InternalTxsList';
-import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -67,14 +71,19 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
         chainIds={ chainIds }
         ml={ 2 }
       />
-      <AddressCsvExportLink
-        address={ hash }
-        isLoading={ pagination.isLoading }
-        params={{ type: 'internal-transactions', filterType: 'address', filterValue }}
-        ml={{ base: 2, lg: 'auto' }}
+      <CsvExport
+        type="address_internal_txs"
+        resourceName="general:address_csv_export_internal_txs"
+        pathParams={{ hash }}
+        queryParams={ filterValue ? {
+          filter_type: 'address',
+          filter_value: filterValue,
+        } : undefined }
+        loadingInitial={ pagination.isLoading }
         chainData={ chainData }
+        ml={ 2 }
       />
-      <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
+      <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
 

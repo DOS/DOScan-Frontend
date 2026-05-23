@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { defineRecipe } from '@chakra-ui/react';
 
 export const recipe = defineRecipe({
@@ -115,7 +117,6 @@ export const recipe = defineRecipe({
       sm: {
         textStyle: 'xs',
         p: '1',
-        h: '4.5',
         minH: '4.5',
       },
       md: {
