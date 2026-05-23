@@ -1,19 +1,24 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import LogItem from 'client/slices/log/components/LogItem';
+import { LOG } from 'client/slices/log/stubs/log';
+
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import LogItem from 'ui/shared/logs/LogItem';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -61,15 +66,16 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
         mode={ isMobile ? 'compact' : 'default' }
       />
       { (data?.items.length ?? 0) > 0 && (
-        <AddressCsvExportLink
-          address={ hash }
-          isLoading={ pagination.isLoading }
-          params={{ type: 'logs' }}
-          ml={{ base: 2, lg: 'auto' }}
+        <CsvExport
+          type="address_logs"
+          resourceName="general:address_csv_export_logs"
+          pathParams={{ hash }}
+          loadingInitial={ pagination.isLoading }
           chainData={ chainData }
+          ml={ 2 }
         />
       ) }
-      <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
+      <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
 

@@ -1,17 +1,22 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import getSocketUrl from 'client/api/get-socket-url';
+import { SocketProvider } from 'client/api/socket/context';
+
+import TokenInstance from 'client/slices/token/pages/instance/TokenInstance';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { SocketProvider } from 'lib/socket/context';
-import TokenInstance from 'ui/pages/TokenInstance';
 
 const MultichainTokenInstance = () => {
   const router = useRouter();
-  const chainSlug = getQueryParamString(router.query.chain_slug);
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+  const chainSlugOrId = getQueryParamString(router.query.chain_slug_or_id);
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlugOrId || chain.id === chainSlugOrId);
 
   return (
     <MultichainProvider chainId={ chainData?.id }>

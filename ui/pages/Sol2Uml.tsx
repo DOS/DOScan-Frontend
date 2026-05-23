@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Sol2UmlDiagram from 'ui/sol2uml/Sol2UmlDiagram';

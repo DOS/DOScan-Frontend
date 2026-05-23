@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -12,14 +14,14 @@ const Transactions = dynamic(() => {
   }
 
   if (config.features.zetachain.isEnabled) {
-    return import('ui/pages/TransactionsZetaChain');
+    return import('client/features/chain-variants/zeta-chain/pages/cctx-index/TransactionsZetaChain');
   }
 
   if (config.features.crossChainTxs.isEnabled) {
     return import('ui/crossChain/txs/Transactions');
   }
 
-  return import('ui/pages/Transactions');
+  return import('client/slices/tx/pages/index/TxIndex');
 }, { ssr: false });
 
 const Page: NextPage = () => {

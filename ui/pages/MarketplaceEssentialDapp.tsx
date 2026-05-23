@@ -1,11 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { EssentialDappsConfig } from 'types/client/marketplace';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import Multisend from 'ui/marketplace/essentialDapps/multisend/Multisend';
 import Revoke from 'ui/marketplace/essentialDapps/revoke/Revoke';
 import Swap from 'ui/marketplace/essentialDapps/swap/Swap';

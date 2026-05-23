@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 import * as v from 'valibot';
 
+import buildUrl from 'client/api/build-url';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
-import buildUrl from 'lib/api/buildUrl';
-import useApiQuery from 'lib/api/useApiQuery';
 
 interface Params {
   hash: string;

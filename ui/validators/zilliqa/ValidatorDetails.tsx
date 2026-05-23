@@ -1,16 +1,19 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ValidatorZilliqa } from 'types/api/validators';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {

@@ -1,11 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeFormat } from 'types/settings';
 
+import useTimeAgoIncrement from 'client/shared/date-and-time/useTimeAgoIncrement';
+
 import { useSettingsContext } from 'lib/contexts/settings';
 import dayjs from 'lib/date/dayjs';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 

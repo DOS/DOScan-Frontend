@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { IncomingMessage } from 'http';
 
 const GENERIC_BOT_MARKERS = [

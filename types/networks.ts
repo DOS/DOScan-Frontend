@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ArrayElement } from 'types/utils';
 
 export const NETWORK_GROUPS = [ 'Mainnets', 'Testnets', 'Other' ] as const;
@@ -26,5 +28,5 @@ export interface NetworkExplorer {
 }
 
 export type NetworkVerificationTypeEnvs = 'mining' | 'validation' | 'fee reception';
-export type NetworkVerificationTypeComputed = 'posting' | 'sequencing';
+export type NetworkVerificationTypeComputed = 'posting';
 export type NetworkVerificationType = NetworkVerificationTypeEnvs | NetworkVerificationTypeComputed;

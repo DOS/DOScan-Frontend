@@ -1,18 +1,23 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from '../types';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthGuard';
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
+import AddressVerificationModal from 'client/features/account/pages/verified-addresses/address-verification/AddressVerificationModal';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
-import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import IconSvg from 'ui/shared/IconSvg';
-import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import ButtonItem from '../parts/ButtonItem';
 
@@ -22,19 +27,19 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
   const isAuth = useIsAuth();
 
   const verifiedAddressesQuery = useApiQuery('contractInfo:verified_addresses', {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: {
       enabled: isAuth,
     },
   });
   const applicationsQuery = useApiQuery('admin:token_info_applications', {
-    pathParams: { chainId: config.chain.id, id: undefined },
+    pathParams: { instanceId: config.apis.admin?.instanceId, id: undefined },
     queryOptions: {
       enabled: isAuth,
     },
   });
   const tokenInfoQuery = useApiQuery('contractInfo:token_verified_info', {
-    pathParams: { hash, chainId: config.chain.id },
+    pathParams: { hash, instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: {
       refetchOnMount: false,
     },
@@ -101,7 +106,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
       { element }
       <AddressVerificationModal
         defaultAddress={ hash }
-        pageType={ PAGE_TYPE_DICT['/token/[hash]'] }
+        pageType={ mixpanel.getPageType('/token/[hash]') }
         open={ modal.open }
         onOpenChange={ modal.onOpenChange }
         onSubmit={ handleVerifiedAddressSubmit }

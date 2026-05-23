@@ -1,10 +1,13 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
+
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
 
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import IconSvg from 'ui/shared/IconSvg';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
 import NavLink from '../vertical/NavLink';

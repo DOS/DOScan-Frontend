@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -5,22 +7,26 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import getSocketUrl from 'client/api/get-socket-url';
+import { SocketProvider } from 'client/api/socket/context';
+
+import useAddressCountersQuery from 'client/slices/address/hooks/useAddressCountersQuery';
+import AddressTxsFilter from 'client/slices/address/pages/details/txs/AddressTxsFilter';
+import useAddressTxsQuery from 'client/slices/address/pages/details/txs/useAddressTxsQuery';
+import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
+
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { SocketProvider } from 'lib/socket/context';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import AddressTxsFilter from 'ui/address/AddressTxsFilter';
-import useAddressTxsQuery from 'ui/address/useAddressTxsQuery';
-import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
-import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
 import ListCounterText from '../components/ListCounterText';
 import getAvailableChainIds from './getAvailableChainIds';
@@ -35,6 +41,7 @@ const TAB_LIST_PROPS = {
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'space-between' },
+  alignItems: 'center',
   ml: { base: 0, lg: 8 },
   widthAllocation: 'available' as const,
 };
@@ -119,17 +126,20 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
           <HStack gap={ 2 }>
             { txsLocalFilter }
             { chainSelect }
-            { countersText }
-          </HStack>
-          <HStack gap={ 6 }>
-            <AddressCsvExportLink
-              address={ hash }
-              params={{ type: 'transactions', filterType: 'address', filterValue: txsQueryLocal.filterValue }}
-              isLoading={ txsQueryLocal.query.pagination.isLoading }
+            <CsvExport
+              type="address_txs"
+              resourceName="general:address_csv_export_txs"
+              pathParams={{ hash }}
+              queryParams={ txsQueryLocal.filterValue ? {
+                filter_type: 'address',
+                filter_value: txsQueryLocal.filterValue,
+              } : undefined }
               chainData={ chainData }
+              loadingInitial={ txsQueryLocal.query.pagination.isLoading }
             />
-            <Pagination { ...txsQueryLocal.query.pagination }/>
           </HStack>
+          { countersText }
+          <Pagination ml="auto" { ...txsQueryLocal.query.pagination }/>
         </>
       );
     }
@@ -150,7 +160,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
         <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
           <MultichainProvider chainId={ chainId }>
             { isMobile && countersText }
-            <TxsWithAPISorting
+            <TxsWithApiSorting
               filter={ txsLocalFilter }
               filterValue={ txsQueryLocal.filterValue }
               query={ txsQueryLocal.query }

@@ -1,5 +1,7 @@
-import type { AddressParam } from 'types/api/addressParams';
-import type { TokenInfo } from 'types/api/token';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { AddressParam } from 'client/slices/address/types/api';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 export interface TxInterpretationResponse {
   data: {

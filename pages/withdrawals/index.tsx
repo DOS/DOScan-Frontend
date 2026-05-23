@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -10,27 +12,23 @@ const beaconChainFeature = config.features.beaconChain;
 
 const Withdrawals = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
-    return import('ui/pages/OptimisticL2Withdrawals');
+    return import('client/features/rollup/optimism/pages/withdrawals/OptimisticL2Withdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
-    return import('ui/pages/ArbitrumL2Withdrawals');
+    return import('client/features/rollup/arbitrum/pages/withdrawals/ArbitrumL2Withdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
-    return import('ui/pages/ShibariumWithdrawals');
-  }
-
-  if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
-    return import('ui/pages/ZkEvmL2Withdrawals');
+    return import('client/features/rollup/shibarium/pages/withdrawals/ShibariumWithdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
-    return import('ui/pages/ScrollL2Withdrawals');
+    return import('client/features/rollup/scroll/pages/withdrawals/ScrollL2Withdrawals');
   }
 
   if (beaconChainFeature.isEnabled) {
-    return import('ui/pages/BeaconChainWithdrawals');
+    return import('client/features/chain-variants/beacon-chain/pages/withdrawals/BeaconChainWithdrawals');
   }
 
   throw new Error('Withdrawals feature is not enabled.');

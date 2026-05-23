@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MudWorlds = dynamic(() => import('ui/pages/MudWorlds'), { ssr: false });
+const MudWorlds = dynamic(() => import('client/features/chain-variants/mud/pages/mud-worlds/MudWorlds'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

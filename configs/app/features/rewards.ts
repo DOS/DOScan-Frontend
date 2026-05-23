@@ -1,9 +1,11 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 
 import apis from '../apis';
 import app from '../app';
 import account from './account';
-import blockchainInteraction from './blockchainInteraction';
+import blockchainInteraction from './blockchain-interaction';
 
 const title = 'Rewards service integration';
 

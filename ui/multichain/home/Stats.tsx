@@ -1,10 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import type { HomeStatsWidgetItem } from 'client/slices/home/utils/stats';
+import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'client/slices/home/utils/stats';
+
 import { HOMEPAGE_STATS } from 'stubs/multichain';
-import type { HomeStatsItem } from 'ui/home/utils';
-import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'ui/home/utils';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 import ChainIndicators from './ChainIndicators';
@@ -17,7 +21,7 @@ const Stats = () => {
     },
   });
 
-  const items: Array<HomeStatsItem> = React.useMemo(() => {
+  const items: Array<HomeStatsWidgetItem> = React.useMemo(() => {
     return [
       statsQuery.data?.total_multichain_txns && {
         id: 'total_txs' as const,

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -11,7 +13,7 @@ const UserOps = dynamic(() => {
     return import('ui/multichain/userOps/MultichainUserOps');
   }
 
-  return import('ui/pages/UserOps');
+  return import('client/features/user-ops/pages/index/UserOps');
 }, { ssr: false });
 
 const Page: NextPage = () => {

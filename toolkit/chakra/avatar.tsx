@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 'use client';
 
 import type { GroupProps, SlotRecipeProps } from '@chakra-ui/react';
@@ -42,8 +44,8 @@ const AvatarFallback = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
     return (
       <ChakraAvatar.Fallback ref={ ref } { ...rest }>
         { children }
-        { name != null && children == null && <>{ getInitials(name) }</> }
-        { name == null && children == null && (
+        { name !== undefined && children === undefined && <>{ getInitials(name) }</> }
+        { name === undefined && children === undefined && (
           <ChakraAvatar.Icon asChild={ Boolean(icon) }>{ icon }</ChakraAvatar.Icon>
         ) }
       </ChakraAvatar.Fallback>
@@ -53,7 +55,7 @@ const AvatarFallback = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
 
 function getInitials(name: string) {
   const names = name.trim().split(' ');
-  const firstName = names[0] != null ? names[0] : '';
+  const firstName = names[0] !== undefined ? names[0] : '';
   const lastName = names.length > 1 ? names[names.length - 1] : '';
   return firstName && lastName ?
     `${ firstName.charAt(0) }${ lastName.charAt(0) }` :

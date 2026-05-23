@@ -1,11 +1,16 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Text, Box, Flex, Separator } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+import useWallet from 'client/features/connect-wallet/hooks/useWallet';
+
+import * as cookies from 'client/shared/storage/cookies';
+
 import { useRewardsContext } from 'lib/contexts/rewards';
-import * as cookies from 'lib/cookies';
-import useWallet from 'lib/web3/useWallet';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Field } from 'toolkit/chakra/field';
@@ -15,7 +20,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
 import { apos } from 'toolkit/utils/htmlEntities';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {
   goNext: (isReferral: boolean, reward: string | undefined) => void;
@@ -37,8 +41,8 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   const isAddressMismatch = React.useMemo(() =>
     Boolean(address) &&
     Boolean(profileQuery.data?.address_hash) &&
-    profileQuery.data?.address_hash !== address,
-  [ address, profileQuery.data ]);
+    profileQuery.data?.address_hash?.toLowerCase() !== address?.toLowerCase(),
+  [ address, profileQuery.data?.address_hash ]);
 
   const isLoggedIntoAccountWithWallet = React.useMemo(() =>
     !profileQuery.isLoading && profileQuery.data?.address_hash,

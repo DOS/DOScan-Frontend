@@ -1,9 +1,11 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { createListCollection } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { FormFields } from '../types';
-import type { PublicTagType } from 'types/api/addressMetadata';
+import type { PublicTagType } from 'client/features/address-metadata/types/api';
 
 import type { SelectOption } from 'toolkit/chakra/select';
 import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';

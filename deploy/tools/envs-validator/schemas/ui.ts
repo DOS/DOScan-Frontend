@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { CHAIN_INDICATOR_IDS, ChainIndicatorId, HeroBannerConfig, HeroBannerButtonState, HOME_STATS_WIDGET_IDS, HomeStatsWidgetId } from 'types/homepage';
+import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type HeroBannerButtonState, HOME_STATS_WIDGET_IDS, type HomeStatsWidgetId } from 'client/slices/home/types/config';
 import { replaceQuotes } from 'configs/app/utils';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
 import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'types/client/navigation';
@@ -7,14 +7,14 @@ import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks
 import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
 import { COLOR_THEME_IDS } from 'types/settings';
 import { FontFamily } from 'types/ui';
-import { ContractCodeIde, SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'types/client/contract';
-import type { AddressFormat, AddressViewId } from 'types/views/address';
-import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
+import type { ContractCodeIde } from 'client/slices/contract/types/config';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
+import type { AddressFormat, AddressViewId } from 'client/slices/address/types/config';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
 import { BLOCK_FIELDS_IDS } from 'types/views/block';
 import type { BlockFieldId } from 'types/views/block';
-import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
-import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from 'types/views/tx';
-import type { VerifiedContractsFilter } from 'types/api/contracts';
+import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from 'client/slices/tx/types/config';
+import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'client/slices/tx/types/config';
 import * as regexp from 'toolkit/utils/regexp';
 import { NftMarketplaceItem } from 'types/views/nft';
 
@@ -38,6 +38,7 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
       search: yup.object({
         border_width: yup.array().max(2).of(yup.string()),
       }),
+      text: yup.string(),
     });
 
 export const homepageSchema = yup.object({
@@ -335,6 +336,14 @@ export const viewsSchema = yup.object({
       .json()
       .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
     NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxViewId>().oneOf(TX_VIEWS_IDS)),
+
+    NEXT_PUBLIC_INTERNAL_TXS_ENABLED: yup.boolean(),
+
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
       .array()
       .transform(replaceQuotes)

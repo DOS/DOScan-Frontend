@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SwaggerRequest } from './types';
 
 import config from 'configs/app';
@@ -5,6 +7,7 @@ import type { ApiPropsBase, ApiPropsFull } from 'configs/app/apis';
 
 const DEFAULT_SERVER = 'blockscout.com/poa/core';
 const DEFAULT_SERVER_NEW = 'http://localhost/api';
+const DEFAULT_SERVER_NEW_BASE = 'http://localhost';
 
 export const coreApiRequestInterceptorFactory = (api: ApiPropsFull) => (req: SwaggerRequest): SwaggerRequest => {
   if (!req.loadSpec) {
@@ -28,6 +31,10 @@ export const coreApiRequestInterceptorFactory = (api: ApiPropsFull) => (req: Swa
 
         if (req.url.includes(DEFAULT_SERVER_NEW)) {
           return new URL(req.url.replace(DEFAULT_SERVER_NEW, `${ api.endpoint }${ api.basePath ?? '' }/api`));
+        }
+
+        if (req.url.includes(DEFAULT_SERVER_NEW_BASE)) {
+          return new URL(req.url.replace(DEFAULT_SERVER_NEW_BASE, `${ api.endpoint }${ api.basePath ?? '' }`));
         }
 
       } catch (error) {}

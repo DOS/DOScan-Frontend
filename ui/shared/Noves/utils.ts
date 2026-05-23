@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NovesResponseData, NovesSentReceived } from 'types/api/noves';
 
-import type { NovesFlowViewItem } from 'ui/tx/assetFlows/utils/generateFlowViewData';
+import type { NovesFlowViewItem } from 'client/features/tx-interpretation/noves/utils/generateFlowViewData';
 
 export interface FromToData {
   text: string;

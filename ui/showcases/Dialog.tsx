@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { noop } from 'es-toolkit';
 import React from 'react';
 
@@ -81,6 +83,35 @@ const DialogShowcase = () => {
                     <Button variant="outline">Cancel</Button>
                   </DialogActionTrigger>
                   <Button>Save</Button>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>Adaptive</SectionHeader>
+        <SamplesStack>
+          <Sample label="adaptive: true">
+            <DialogRoot adaptive>
+              <DialogTrigger asChild>
+                <Button size="sm">
+                  Open Dialog
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Dialog Title</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <p>{ TEXT }</p>
+                </DialogBody>
+                <DialogFooter>
+                  <Button>Save</Button>
+                  <DialogActionTrigger asChild>
+                    <Button variant="link">I'll do it later</Button>
+                  </DialogActionTrigger>
                 </DialogFooter>
               </DialogContent>
             </DialogRoot>

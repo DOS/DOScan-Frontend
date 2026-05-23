@@ -1,8 +1,11 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { usePathname, useSearchParams } from 'next/navigation';
 import React from 'react';
 
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
 
 // const ALLOWED_DOMAINS = [ 'eth.blockscout.com', 'localhost' ];
 const ALLOWED_DOMAINS = [ 'eth.blockscout.com', 'localhost', 'eth-sepolia.k8s-dev.blockscout.com' ];

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { clamp, omit } from 'es-toolkit';
@@ -9,15 +11,17 @@ import type { PaginationParams } from './types';
 
 import type { Route } from 'nextjs-routes';
 
+import getResourceParams from 'client/api/get-resource-params';
+import type { Params as UseApiQueryParams } from 'client/api/hooks/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'client/api/resources';
+import { SORTING_FIELDS } from 'client/api/resources';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
-import getResourceParams from 'lib/api/getResourceParams';
-import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
-import { SORTING_FIELDS } from 'lib/api/resources';
-import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
 
 type NextPageParams = Record<string, unknown>;
 

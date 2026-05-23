@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { createListCollection, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
@@ -5,10 +7,11 @@ import type { MouseEvent } from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useGraphLinks from 'lib/hooks/useGraphLinks';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
@@ -263,6 +266,8 @@ const Marketplace = () => {
           isOpen={ isDisclaimerModalOpen }
           onClose={ clearSelectedAppId }
           appId={ selectedApp.id }
+          external={ selectedApp.external }
+          url={ selectedApp.url }
         />
       ) }
     </>

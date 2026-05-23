@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -5,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const ZetaChainCCTX = dynamic(() => import('ui/pages/ZetaChainCCTX'), { ssr: false });
+const ZetaChainCCTX = dynamic(() => import('client/features/chain-variants/zeta-chain/pages/cctx-details/ZetaChainCCTX'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

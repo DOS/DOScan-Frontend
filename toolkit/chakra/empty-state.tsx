@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { EmptyState as ChakraEmptyState, VStack } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import * as React from 'react';
@@ -21,11 +23,12 @@ export interface EmptyStateProps extends ChakraEmptyState.RootProps {
   term?: string;
   type?: EmptyStateType;
   icon?: React.ReactNode;
+  noIcon?: boolean;
 }
 
 export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
   function EmptyState(props, ref) {
-    const { title, description, term, type = 'query', icon, children, ...rest } = props;
+    const { title, description, term, type = 'query', icon, children, noIcon, ...rest } = props;
 
     const titleContent = (() => {
       if (title) {
@@ -62,6 +65,10 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     })();
 
     const iconContent = (() => {
+      if (noIcon) {
+        return null;
+      }
+
       const Icon = ICONS[type];
       if (Icon) {
         return <Icon/>;

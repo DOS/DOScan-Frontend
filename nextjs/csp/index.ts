@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRequest } from 'next/server';
 
+import * as cookiesLib from 'client/shared/storage/cookies';
+
 import appConfig from 'configs/app';
-import * as essentialDappsChainsConfig from 'configs/essential-dapps-chains/config.edge';
-import * as multichainConfig from 'configs/multichain/config.edge';
-import * as cookiesLib from 'lib/cookies';
+import * as essentialDappsChainsConfig from 'configs/essential-dapps-chains/config.nodejs';
+import * as multichainConfig from 'configs/multichain/config.nodejs';
 
 import generateCspPolicy from './generateCspPolicy';
 import generateNftHtmlEmbedCspPolicy from './generateNftHtmlEmbedCspPolicy';
@@ -28,7 +31,7 @@ async function initializeCspPolicies() {
   }
 }
 
-export async function get(req?: NextRequest): Promise<string> {
+export async function get(req?: NextRequest, nonce?: string): Promise<string> {
   await initializeCspPolicies();
 
   // Get appProfile from request (header, query param, or cookie)
@@ -46,6 +49,10 @@ export async function get(req?: NextRequest): Promise<string> {
     }
 
     return nftHtmlEmbedCsp;
+  }
+
+  if (nonce) {
+    return generateCspPolicy(isPrivateMode, nonce);
   }
 
   return isPrivateMode ? cspPolicies?.private || '' : cspPolicies?.default || '';

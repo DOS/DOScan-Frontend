@@ -1,11 +1,15 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Spinner, chakra } from '@chakra-ui/react';
 import { isEqual, differenceBy } from 'es-toolkit';
 import React from 'react';
 
 import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from 'types/api/advancedFilter';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import useDebounce from 'lib/hooks/useDebounce';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import useDebounce from 'client/shared/hooks/useDebounce';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

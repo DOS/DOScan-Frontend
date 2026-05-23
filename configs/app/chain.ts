@@ -1,5 +1,7 @@
-import type { RollupType } from 'types/client/rollup';
-import type { AdditionalTokenType } from 'types/client/token';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { RollupType } from 'client/features/rollup/common/types/config';
+import type { AdditionalTokenType } from 'client/slices/token/types/client';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
 import { urlValidator } from 'toolkit/components/forms/validators/url';
@@ -13,9 +15,6 @@ const rollupType = getEnvValue('NEXT_PUBLIC_ROLLUP_TYPE') as RollupType;
 const verificationType: NetworkVerificationType = (() => {
   if (rollupType === 'arbitrum') {
     return 'posting';
-  }
-  if (rollupType === 'zkEvm') {
-    return 'sequencing';
   }
   return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'mining';
 })();

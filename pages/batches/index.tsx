@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -13,16 +15,14 @@ const Batches = dynamic(() => {
   }
 
   switch (rollupFeature.type) {
-    case 'zkEvm':
-      return import('ui/pages/ZkEvmL2TxnBatches');
     case 'zkSync':
-      return import('ui/pages/ZkSyncL2TxnBatches');
+      return import('client/features/rollup/zk-sync/pages/batches/ZkSyncL2TxnBatches');
     case 'optimistic':
-      return import('ui/pages/OptimisticL2TxnBatches');
+      return import('client/features/rollup/optimism/pages/batches/OptimisticL2TxnBatches');
     case 'arbitrum':
-      return import('ui/pages/ArbitrumL2TxnBatches');
+      return import('client/features/rollup/arbitrum/pages/batches/ArbitrumL2TxnBatches');
     case 'scroll':
-      return import('ui/pages/ScrollL2TxnBatches');
+      return import('client/features/rollup/scroll/pages/batches/ScrollL2TxnBatches');
   }
   throw new Error('Txn batches feature is not enabled.');
 }, { ssr: false });

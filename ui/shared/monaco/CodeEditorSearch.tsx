@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -5,7 +7,8 @@ import React from 'react';
 
 import type { File, Monaco, SearchResult } from './types';
 
-import useDebounce from 'lib/hooks/useDebounce';
+import useDebounce from 'client/shared/hooks/useDebounce';
+
 import { AccordionRoot } from 'toolkit/chakra/accordion';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';

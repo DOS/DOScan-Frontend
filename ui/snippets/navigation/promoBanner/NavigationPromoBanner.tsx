@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import React, { useCallback, useState, useEffect } from 'react';
 import { keccak256, stringToBytes } from 'viem';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 

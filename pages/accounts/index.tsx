@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -11,7 +13,7 @@ const Accounts = dynamic(() => {
     return import('ui/multichain/accounts/MultichainAccounts');
   }
 
-  return import('ui/pages/Accounts');
+  return import('client/slices/address/pages/index/Accounts');
 }, { ssr: false });
 
 const Page: NextPage = () => {

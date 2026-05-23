@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { useQueryParams } from 'lib/router/useQueryParams';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { useQueryParams } from 'client/shared/router/useQueryParams';
 
 export function useClusterPagination(hasNextPage: boolean, isLoading: boolean) {
   const router = useRouter();

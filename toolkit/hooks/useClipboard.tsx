@@ -1,7 +1,9 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useCopyToClipboard } from '@uidotdev/usehooks';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { SECOND } from '../utils/consts';
 import { useDisclosure } from './useDisclosure';

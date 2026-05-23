@@ -1,16 +1,21 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import getSocketUrl from 'client/api/get-socket-url';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import { SocketProvider } from 'client/api/socket/context';
+
+import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
+import Contract from 'client/slices/contract/pages/details/Contract';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
-import useApiQuery from 'lib/api/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import { SocketProvider } from 'lib/socket/context';
-import { ADDRESS_INFO } from 'stubs/address';
-import AddressContract from 'ui/address/AddressContract';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 
 import getAvailableChainIds from './getAvailableChainIds';
@@ -58,7 +63,7 @@ const MultichainAddressContract = ({ addressHash, isLoading, data }: Props) => {
   return (
     <MultichainProvider key={ chainSelect.value?.[0] } chainId={ chainSelect.value?.[0] }>
       <SocketProvider url={ getSocketUrl(chain?.app_config) }>
-        <AddressContract
+        <Contract
           addressData={ addressQuery.data }
           isLoading={ isLoading || addressQuery.isPlaceholderData }
           hasMudTab={ false }

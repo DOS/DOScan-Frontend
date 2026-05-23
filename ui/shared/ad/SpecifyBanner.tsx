@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, chakra } from '@chakra-ui/react';
 import type { SpecifyAd } from '@specify-sh/sdk';
 import Specify, { ImageFormat } from '@specify-sh/sdk';
@@ -5,7 +7,8 @@ import React from 'react';
 
 import type { BannerProps } from './types';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { Image } from 'toolkit/chakra/image';
 
 import {

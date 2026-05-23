@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { TabsProps } from '../../chakra/tabs';
@@ -15,6 +17,7 @@ const AdaptiveTabs = (props: Props) => {
     defaultValue,
     isLoading,
     listProps,
+    listItemProps,
     rightSlot,
     rightSlotProps,
     leftSlot,
@@ -60,6 +63,7 @@ const AdaptiveTabs = (props: Props) => {
         key={ isLoading + '_' + viewportSize.width + '_' + tabs.map((tab) => tab.id).join(':') }
         tabs={ tabs }
         listProps={ listProps }
+        listItemProps={ listItemProps }
         leftSlot={ leftSlot }
         leftSlotProps={ leftSlotProps }
         rightSlot={ rightSlot }

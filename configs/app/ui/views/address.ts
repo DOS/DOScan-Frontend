@@ -1,7 +1,9 @@
-import type { SmartContractVerificationMethodExtra } from 'types/client/contract';
-import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS } from 'types/client/contract';
-import type { AddressFormat, AddressViewId, IdenticonType } from 'types/views/address';
-import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { AddressFormat, AddressViewId, IdenticonType } from 'client/slices/address/types/config';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
+import type { SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS } from 'client/slices/contract/types/config';
 
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 
@@ -36,7 +38,7 @@ const bech32Prefix = (() => {
 const hiddenViews = (() => {
   const parsedValue = parseEnvJson<Array<AddressViewId>>(getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS')) || [];
 
-  if (!Array.isArray(parsedValue)) {
+  if (!Array.isArray(parsedValue) || parsedValue.length === 0) {
     return undefined;
   }
 

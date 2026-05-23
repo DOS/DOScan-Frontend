@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
-import useFetch from 'lib/hooks/useFetch';
+import useFetch from 'client/api/hooks/useFetch';
 
 interface Params {
   path: string;

@@ -1,11 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Flex, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 import { type FieldError, type FieldErrorsImpl, type Merge } from 'react-hook-form';
 
 import type { FormFields, FormFieldTag } from '../types';
-import type { PublicTagType } from 'types/api/addressMetadata';
+import type { PublicTagType } from 'client/features/address-metadata/types/api';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import AddButton from 'toolkit/components/buttons/AddButton';
 import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';

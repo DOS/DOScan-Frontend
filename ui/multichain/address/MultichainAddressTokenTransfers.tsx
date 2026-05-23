@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -5,23 +7,27 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import getSocketUrl from 'client/api/get-socket-url';
+import { SocketProvider } from 'client/api/socket/context';
+
+import useAddressCountersQuery from 'client/slices/address/hooks/useAddressCountersQuery';
+import AddressTokenTransfersLocal from 'client/slices/address/pages/details/token-transfers/AddressTokenTransfersLocal';
+import useAddressTokenTransfersQuery from 'client/slices/address/pages/details/token-transfers/useAddressTokenTransfersQuery';
+import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
+import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
+
+import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { SocketProvider } from 'lib/socket/context';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import AddressTokenTransfersLocal from 'ui/address/AddressTokenTransfersLocal';
-import useAddressTokenTransfersQuery from 'ui/address/useAddressTokenTransfersQuery';
-import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
-import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
-import { getTokenFilterValue } from 'ui/tokens/utils';
 
 import ListCounterText from '../components/ListCounterText';
 import getAvailableChainIds from './getAvailableChainIds';
@@ -30,6 +36,7 @@ export const ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS = [ 'token_transfers_cro
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'space-between' },
+  alignItems: 'center',
   ml: { base: 0, lg: 8 },
   widthAllocation: 'available' as const,
 };
@@ -132,9 +139,17 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               chainConfig={ chainData?.app_config }
             />
             { chainSelect }
-            { countersText }
-          </HStack>
-          <HStack gap={ 6 }>
+            <CsvExport
+              type="address_token_transfers"
+              resourceName="general:address_csv_export_token_transfers"
+              pathParams={{ hash }}
+              queryParams={ transfersQueryLocal.filters.filter ? {
+                filter_type: 'address',
+                filter_value: transfersQueryLocal.filters.filter,
+              } : undefined }
+              chainData={ chainData }
+              loadingInitial={ transfersQueryLocal.query.pagination.isLoading }
+            />
             <AddressAdvancedFilterLink
               isLoading={ transfersQueryLocal.query.isPlaceholderData }
               address={ hash }
@@ -142,14 +157,9 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               directionFilter={ transfersQueryLocal.filters.filter }
               chainData={ chainData }
             />
-            <AddressCsvExportLink
-              address={ hash }
-              params={{ type: 'token-transfers', filterType: 'address', filterValue: transfersQueryLocal.filters.filter }}
-              isLoading={ transfersQueryLocal.query.pagination.isLoading }
-              chainData={ chainData }
-            />
-            <Pagination { ...transfersQueryLocal.query.pagination }/>
           </HStack>
+          { countersText }
+          <Pagination ml="auto" { ...transfersQueryLocal.query.pagination }/>
         </>
       );
     }

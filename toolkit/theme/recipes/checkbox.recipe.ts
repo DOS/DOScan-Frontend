@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { defineSlotRecipe } from '@chakra-ui/react';
 
 import { recipe as checkmarkRecipe } from './checkmark.recipe';
@@ -35,6 +37,11 @@ export const recipe = defineSlotRecipe({
 
   variants: {
     size: {
+      sm: {
+        root: { gap: '2' },
+        label: { textStyle: 'sm' },
+        control: checkmarkRecipe.variants?.size?.md,
+      },
       md: {
         root: { gap: '2' },
         label: { textStyle: 'md' },
