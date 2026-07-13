@@ -29,6 +29,47 @@ const fetchResource = async(url, formatter) => {
   }
 };
 
+const fetchDapps = async() => {
+  if(process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true'){
+    return;
+  }
+
+  const formatter = (data) => {
+    if(!Array.isArray(data)){
+      return [];
+    }
+
+    return data
+      .sort((a, b) => {
+        const priorityA = a.priority || 0;
+        const priorityB = b.priority || 0;
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA;
+        }
+        if (a.internalWallet !== b.internalWallet) {
+          return a.internalWallet ? -1 : 1;
+        }
+        if (a.external !== b.external) {
+          return a.external ? 1 : -1;
+        }
+        return 0;
+      })
+      .slice(0, 50)
+      .map(({ id }) => ({ path: `/apps/${ id }/info` }))
+  };
+
+  const configUrl = process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL;
+  if(configUrl){
+    return fetchResource(configUrl, formatter);
+  }
+
+  const api = process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST;
+  const instanceId = process.env.NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID || process.env.NEXT_PUBLIC_NETWORK_ID;
+  if(api && instanceId){
+    return fetchResource(`${ stripTrailingSlash(api) }/api/v1/chains/${ instanceId }/marketplace/dapps`, formatter);
+  }
+}
+
 const siteUrl = [
   process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
   '://',
@@ -48,6 +89,30 @@ const apiUrl = (() => {
 
   return `${ baseUrl }${ basePath }/api/v2`;
 })();
+
+const statsApiUrl = (() => {
+  const baseUrl = process.env.NEXT_PUBLIC_STATS_API_HOST;
+  if (!baseUrl) {
+    return;
+  }
+
+  const basePath = stripTrailingSlash(process.env.NEXT_PUBLIC_STATS_API_BASE_PATH || '');
+
+  return `${ stripTrailingSlash(baseUrl) }${ basePath }/api/v1`;
+})();
+
+const fetchStatsCharts = async() => {
+  if (!statsApiUrl) {
+    return;
+  }
+
+  return fetchResource(
+    `${ statsApiUrl }/lines`,
+    (data) => (data.sections || []).flatMap(
+      (section) => (section.charts || []).map(({ id }) => ({ path: `/stats/${ id }` })),
+    ),
+  );
+}
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
@@ -74,11 +139,6 @@ module.exports = {
   ],
   transform: async({ lastmod, ...config }, path) => {
     switch (path) {
-      case '/mud-worlds':
-        if (process.env.NEXT_PUBLIC_HAS_MUD_FRAMEWORK !== 'true') {
-          return null;
-        }
-        break;
       case '/batches':
       case '/deposits':
         if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE && (process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN !== 'true' || process.env.NEXT_PUBLIC_BEACON_CHAIN_WITHDRAWALS_ONLY === 'true')) {
@@ -247,6 +307,8 @@ module.exports = {
           path: `/address/${ address.hash }?tab=contract`
         })),
       );
+    const dapps = fetchDapps();
+    const statsCharts = fetchStatsCharts();
 
     return Promise.all([
       ...(await addresses || []),
@@ -254,6 +316,8 @@ module.exports = {
       ...(await blocks || []),
       ...(await tokens || []),
       ...(await contracts || []),
+      ...(await dapps || []),
+      ...(await statsCharts || []),
     ].map(({ path, lastmod }) => config.transform({ ...config, lastmod }, path)));
   },
 };

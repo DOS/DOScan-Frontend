@@ -5,19 +5,21 @@ import { http } from 'viem';
 import { WagmiProvider, createConfig, mock } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
+import type { Props as PageProps } from 'src/server/getServerSideProps/handlers';
 
-import { SocketProvider } from 'client/api/socket/context';
+import { SocketProvider } from 'src/api/socket/context';
 
-import { currentChain } from 'client/features/connect-wallet/utils/chains';
-import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
+import { AppContextProvider } from 'src/shell/app/context';
+import { SettingsContextProvider } from 'src/shell/top-bar/settings/context';
 
-import config from 'configs/app';
-import { AppContextProvider } from 'lib/contexts/app';
-import { MarketplaceContext } from 'lib/contexts/marketplace';
-import { RewardsContextProvider } from 'lib/contexts/rewards';
-import { SettingsContextProvider } from 'lib/contexts/settings';
-import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
+import { currentChain } from 'src/features/connect-wallet/utils/chains';
+import { CsvExportContextProvider } from 'src/features/csv-export/utils/context';
+import { MarketplaceContext } from 'src/features/marketplace/context';
+import { RewardsContextProvider } from 'src/features/rewards/context';
+
+import config from 'src/config';
+
+import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
 
 import { port as socketPort } from './utils/socket';
 
@@ -26,7 +28,7 @@ export type Props = {
   withSocket?: boolean;
   withWalletClient?: boolean;
   appContext?: {
-    pageProps: PageProps;
+    pageProps: Partial<PageProps>;
   };
   marketplaceContext?: {
     isAutoConnectDisabled: boolean;
@@ -34,7 +36,7 @@ export type Props = {
   };
 };
 
-const defaultAppContext = {
+export const defaultAppContext = {
   pageProps: {
     cookies: '',
     referrer: '',
@@ -66,7 +68,7 @@ const wagmiConfig = createConfig({
   },
 });
 
-const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
+const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -76,11 +78,13 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketp
     },
   }));
 
+  const pageProps = { ...defaultAppContext.pageProps, ...appContext?.pageProps };
+
   return (
     <ChakraProvider>
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
-          <AppContextProvider { ...appContext }>
+          <AppContextProvider pageProps={ pageProps }>
             <MarketplaceContext.Provider value={ marketplaceContext }>
               <SettingsContextProvider>
                 <GrowthBookProvider>
