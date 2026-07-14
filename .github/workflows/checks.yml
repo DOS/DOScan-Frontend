@@ -39,7 +39,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -63,6 +63,9 @@ jobs:
       - name: Check spelling
         run: pnpm lint:cspell --no-progress
 
+      - name: Check preset lists are in sync with registry
+        run: pnpm presets:lint
+
   toolkit_build_check:
     name: Toolkit build check
     needs: [ code_quality ]
@@ -74,7 +77,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -94,7 +97,7 @@ jobs:
 
       - name: Verify build output
         run: |
-          cd ./toolkit/package
+          cd ./src/toolkit/package
           if [ ! -d "dist" ]; then
             echo "Build failed: dist directory not found"
             exit 1
@@ -121,7 +124,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -149,7 +152,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -178,7 +181,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -229,7 +232,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -296,7 +299,7 @@ jobs:
         if: steps.check-reports.outputs.has_reports == 'true'
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node

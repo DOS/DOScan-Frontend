@@ -1,6 +1,6 @@
-import type { EssentialDappsChainConfig } from 'types/client/marketplace';
-import type { MultichainConfig } from 'types/multichain';
-import type { WalletProvider } from 'types/web3';
+import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
+import type { MultichainConfig } from 'src/features/multichain/types/client';
+import type { WalletProvider } from 'src/features/web3-wallet/types/wallet-provider';
 import 'vitest-fetch-mock';
 
 declare global {
@@ -18,6 +18,9 @@ declare global {
     __envs: Record<string, string>;
     __multichainConfig?: MultichainConfig;
     __essentialDappsChains?: { chains: Array<EssentialDappsChainConfig> };
+    __ucCmp?: {
+      showSecondLayer: () => void;
+    };
   }
 
   namespace NodeJS {
