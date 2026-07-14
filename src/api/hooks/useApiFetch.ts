@@ -85,11 +85,7 @@ export default function useApiFetch() {
         // In some scenarios, we need to include credentials for request to non-core API which is on the same origin as the core API.
         // For example, the request to the Stats API which is behind Claudflare authentication.
         // So we use the "same-origin" option for all requests which is the default behavior of fetch API.
-<<<<<<< HEAD:client/api/hooks/useApiFetch.ts
-        // credentials: apiName === 'general' ? 'same-origin' : 'omit',
-=======
         // credentials: apiName === 'core' ? 'same-origin' : 'omit',
->>>>>>> v2.9.1:src/api/hooks/useApiFetch.ts
         headers,
         ...(fetchParams ? omit(fetchParams, [ 'headers' ]) : {}),
       },

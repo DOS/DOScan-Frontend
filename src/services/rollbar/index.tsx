@@ -80,6 +80,4 @@ export const clientConfig: Configuration | undefined = config.services.rollbar.c
     'cancelled navigation',
   ],
   maxItems: 10, // Max items per page load
-  captureUncaught: true,
-  captureUnhandledRejections: true,
 } : undefined;

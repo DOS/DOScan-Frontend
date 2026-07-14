@@ -26,21 +26,6 @@ import Web3Provider from 'src/features/connect-wallet/components/Web3Provider';
 import { CsvExportContextProvider } from 'src/features/csv-export/utils/context';
 import { MarketplaceContextProvider } from 'src/features/marketplace/context';
 
-<<<<<<< HEAD:pages/_app.tsx
-import config from 'configs/app';
-import { AppContextProvider } from 'lib/contexts/app';
-import { FallbackProvider } from 'lib/contexts/fallback';
-import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
-import { SettingsContextProvider } from 'lib/contexts/settings';
-import usePageViewTracking from 'lib/monitoring/usePageViewTracking';
-import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
-import { Toaster } from 'toolkit/chakra/toaster';
-import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
-import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
-import Layout from 'ui/shared/layout/Layout';
-import Web3Provider from 'ui/shared/web3/Web3Provider';
-=======
 import config from 'src/config';
 import GoogleAnalytics from 'src/services/google-analytics/GoogleAnalytics';
 import useLoadFeatures from 'src/services/growthbook/useLoadFeatures';
@@ -48,7 +33,6 @@ import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'src/
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'src/shared/errors/AppErrorGlobalContainer';
 import { FallbackProvider } from 'src/shared/utils/fallback-provider';
->>>>>>> v2.9.1:src/pages/_app.tsx
 
 import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
 import { Toaster } from 'src/toolkit/chakra/toaster';
@@ -85,13 +69,6 @@ const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
 
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
-<<<<<<< HEAD:pages/_app.tsx
-  const growthBook = initGrowthBook(pageProps.uuid);
-  useLoadFeatures(growthBook);
-  usePageViewTracking(pageProps.referrer);
-
-=======
->>>>>>> v2.9.1:src/pages/_app.tsx
   const queryClient = useQueryClientConfig();
   const growthBook = useLoadFeatures(pageProps.uuid);
 

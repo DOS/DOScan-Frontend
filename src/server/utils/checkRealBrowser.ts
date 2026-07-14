@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { IncomingMessage } from 'http';
+import type { GetServerSidePropsContext } from 'next';
 
 const GENERIC_BOT_MARKERS = [
   'bot',
@@ -32,7 +32,7 @@ function isGenericBotUA(userAgent: string): boolean {
   return GENERIC_BOT_MARKERS.some((m) => ua.includes(m));
 }
 
-function hasBrowserHeuristics(req: IncomingMessage): boolean {
+function hasBrowserHeuristics(req: GetServerSidePropsContext['req']): boolean {
   const acceptLanguage = req.headers['accept-language'];
   const secChUa = req.headers['sec-ch-ua'];
   const secFetchSite = req.headers['sec-fetch-site'];
@@ -45,7 +45,7 @@ function hasBrowserHeuristics(req: IncomingMessage): boolean {
   return hasLang && hasSecHeaders;
 }
 
-export function isLikelyHumanBrowser(req: IncomingMessage): boolean {
+export function isLikelyHumanBrowser(req: GetServerSidePropsContext['req']): boolean {
   const userAgent = req.headers['user-agent'];
   if (!userAgent) return false;
 
@@ -59,7 +59,7 @@ export function isLikelyHumanBrowser(req: IncomingMessage): boolean {
   return hasEngineToken && hasKnownBrowserBrand;
 }
 
-export function isKnownBotRequest(req: IncomingMessage): boolean {
+export function isKnownBotRequest(req: GetServerSidePropsContext['req']): boolean {
   const ua = toLower(req.headers['user-agent']);
   if (!ua) return false;
 
