@@ -1,6 +1,6 @@
-import config from 'configs/app';
+import config from 'src/config';
 import dedent from 'dedent';
-import { layerLabels } from 'client/features/rollup/common/utils/layer';
+import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 const PRO_API_URL = 'https://api.blockscout.com';
 
@@ -213,32 +213,6 @@ export function generateProApi(): string {
         \`\`\`
     ` : undefined;
 
-    const REDSTONE_CHAIN_TEMPLATE = config.features.mudFramework.isEnabled ? `
-        ### MUD Worlds
-
-        \`\`\`bash
-        curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds'
-        \`\`\`
-
-        ### MUD World Tables
-
-        \`\`\`bash
-        curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds/{contract_address}/tables'
-        \`\`\`
-
-        ### MUD World Table Records
-
-        \`\`\`bash
-        curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records'
-        \`\`\`
-
-        ### MUD World Table Record
-
-        \`\`\`bash
-        curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records/{record_id}'
-        \`\`\`
-    ` : undefined;
-
     const SCROLL_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'scroll' ? `
         ### Latest Committed Batch Number (top of)
 
@@ -316,7 +290,6 @@ export function generateProApi(): string {
         CELO_CHAIN_TEMPLATE,
         ZKSYNC_CHAIN_TEMPLATE,
         TAC_CHAIN_TEMPLATE,
-        REDSTONE_CHAIN_TEMPLATE,
         SCROLL_CHAIN_TEMPLATE,
         ZILLIQA_CHAIN_TEMPLATE,
         STABILITY_CHAIN_TEMPLATE,

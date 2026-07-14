@@ -5,7 +5,7 @@ FROM node:22.14.0-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat python3 make g++
 RUN ln -sf /usr/bin/python3 /usr/bin/python
-RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
+RUN corepack enable && corepack prepare pnpm@11.5.1 --activate
 
 ### Install all workspace dependencies in one place
 WORKDIR /app
@@ -19,7 +19,7 @@ RUN pnpm install --frozen-lockfile
 # *****************************
 FROM node:22.14.0-alpine AS builder
 RUN apk add --no-cache --upgrade libc6-compat bash jq
-RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
+RUN corepack enable && corepack prepare pnpm@11.5.1 --activate
 
 # pass build args to env variables
 ARG GIT_COMMIT_SHA
@@ -78,6 +78,10 @@ RUN cd ./deploy/tools/essential-dapps-chains-config-generator && pnpm run build
 RUN cd ./deploy/tools/llms-txt-generator && pnpm run build
 
 
+### DEV-SERVER ENV FETCHER
+RUN pnpm exec tsc -p ./tools/dev-server/tsconfig.json
+
+
 # *****************************
 # ******* STAGE 3: Run ********
 # *****************************
@@ -119,6 +123,8 @@ COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 COPY --chmod=755 ./deploy/scripts/download_assets.sh .
 ## OG image generator
 COPY ./deploy/scripts/og_image_generator.js .
+## Pro API support flag
+COPY --chmod=755 ./deploy/scripts/export_pro_api_flag.sh .
 ## Favicon generator
 COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
 COPY --from=builder /app/favicon-generator-bundle ./deploy/tools/favicon-generator
@@ -132,10 +138,13 @@ COPY --from=builder /app/sitemap-generator-bundle ./deploy/tools/sitemap-generat
 COPY --from=builder /app/.env.registry .
 COPY --from=builder /app/.env .
 
-# Copy ENVs presets
-ARG ENVS_PRESET
-ENV ENVS_PRESET=$ENVS_PRESET
-COPY ./configs/envs ./configs/envs
+# Dev-server env fetcher (compiled script + registry/rules data + committed overrides).
+# The image is preset-agnostic: ENVS_PRESET is supplied at runtime (k8s env), and at startup
+# the entrypoint runs fetch.js to pull that instance's public config over HTTP.
+COPY --from=builder /app/tools/dev-server/fetch.js ./tools/dev-server/fetch.js
+COPY ./tools/dev-server/registry.json ./tools/dev-server/registry.json
+COPY ./tools/dev-server/envs-rules.json ./tools/dev-server/envs-rules.json
+COPY ./.env.extra ./.env.extra
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
