@@ -101,6 +101,11 @@ jobs:
         if: steps.target.outputs.skip == 'false' && steps.merge.outputs.result == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Pin gh to this fork. Without this, gh resolves the default repo
+          # from git remotes and prefers the one named "upstream"
+          # (blockscout/frontend, added earlier in this job), so release
+          # create/delete hits the upstream repo and fails with HTTP 403.
+          GH_REPO: ${{ github.repository }}
         run: |
           TAG="${{ steps.target.outputs.tag }}"
           # Delete existing release if any (from upstream fork sync)
