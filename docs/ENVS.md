@@ -302,9 +302,13 @@ Operator-supplied favicon override. The app ships with the generic Blockscout fa
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_BACKEND_REPO_URL | `string` | Repository base URL used by the backend version link in the footer | - | `https://github.com/blockscout/blockscout` | `https://github.com/my-org/blockscout` | v2.9.5+ |
+| NEXT_PUBLIC_FRONTEND_REPO_URL | `string` | Repository base URL used by the frontend version link in the footer | - | `https://github.com/blockscout/frontend` | `https://github.com/my-org/blockscout-frontend` | v2.9.5+ |
 | NEXT_PUBLIC_FOOTER_LINKS | `string` | URL of configuration file (`.json` format only) or file content string representation. It contains list of link groups to be displayed in the footer. See [below](#footer-links-configuration-properties) list of available properties for particular group | - | - | `https://example.com/footer_links_config.json` \| `[{'title':'My chain','links':[{'text':'About','url':'https://example.com/about'},{'text':'Contacts','url':'https://example.com/contacts'}]}]` | v1.1.1+ |
+| NEXT_PUBLIC_VERSION_LINK_TYPE | `tree \| release` | Link version labels to a repository tree or a GitHub release. Commit-only frontend builds always link to the commit | - | `tree` | `release` | v2.9.5+ |
 
 The app version shown in the footer is derived from build-time ENV variables `NEXT_PUBLIC_GIT_TAG` and `NEXT_PUBLIC_GIT_COMMIT_SHA` and cannot be overwritten at run-time.
+The repository targets and link type can be overwritten at run-time with the variables above. When `release` is selected, a backend value such as `v11.2.3.+commit.f64bbacb` links to `/releases/tag/v11.2.3`.
 
 #### Footer links configuration properties
 
