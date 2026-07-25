@@ -204,10 +204,13 @@ const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
   });
 
 export const footerSchema = yup.object({
+    NEXT_PUBLIC_BACKEND_REPO_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_FRONTEND_REPO_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_FOOTER_LINKS: yup
       .array()
       .json()
       .of(footerLinkGroupSchema),
+    NEXT_PUBLIC_VERSION_LINK_TYPE: yup.string().oneOf([ 'tree', 'release' ]),
 });
 
 const fontFamilySchema: yup.ObjectSchema<FontFamily> = yup

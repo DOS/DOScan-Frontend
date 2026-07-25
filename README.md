@@ -20,6 +20,18 @@ Alternatively, you can build your own docker image and run your app from that. P
 
 For more information on migrating from the previous frontend, please see the [frontend migration docs](https://docs.blockscout.com/setup/deployment/frontend-migration).
 
+### Custom footer version links
+
+This image supports runtime configuration of the repository links behind the backend and frontend version labels in the footer:
+
+```sh
+NEXT_PUBLIC_BACKEND_REPO_URL=https://github.com/my-org/blockscout
+NEXT_PUBLIC_FRONTEND_REPO_URL=https://github.com/my-org/blockscout-frontend
+NEXT_PUBLIC_VERSION_LINK_TYPE=release
+```
+
+The defaults remain the upstream Blockscout repositories with `tree` links. Set `NEXT_PUBLIC_VERSION_LINK_TYPE=release` when your fork publishes matching GitHub releases. See the [footer environment variables](https://github.com/DOS/DOScan-Frontend/blob/main/docs/ENVS.md#footer) for details.
+
 ## Contributing
 
 See our [Contribution guide](./docs/CONTRIBUTING.md) for pull request protocol. We expect contributors to follow our [code of conduct](./CODE_OF_CONDUCT.md) when submitting code or comments.

@@ -64,3 +64,12 @@ jobs:
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
             GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
+
+      - name: Update Docker Hub description
+        if: vars.DOCKERHUB_USERNAME != '' && vars.DOCKERHUB_ORG != ''
+        uses: peter-evans/dockerhub-description@432a30c9e07499fd01da9f8a49f0faf9e0ca5b77 # v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ vars.DOCKERHUB_ORG }}/blockscout-frontend
+          readme-filepath: ./README.md
