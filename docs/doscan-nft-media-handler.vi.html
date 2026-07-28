@@ -47,7 +47,7 @@
       <div class="card"><strong>Testnet: hoạt động</strong><span><code>testnet/nft-media</code></span></div>
       <div class="card"><strong>Public chỉ GET</strong><span>Không cho list hoặc ghi object</span></div>
     </div>
-    <div class="ok"><strong class="good">Đã deploy ngày 28/07/2026.</strong> PR backend #115 cùng các hotfix #116, #117, #119 và #120 đã merge. Workflow #30331379243 hoàn tất runtime probe thành công cho cả Mainnet và Testnet.</div>
+    <div class="ok"><strong class="good">Đã deploy ngày 28/07/2026.</strong> PR backend #115 cùng các hotfix #116, #117, #119, #120 và #122 đã merge. Workflow #30331379243 hoàn tất runtime probe GCS; workflow #30343254663 khắc phục Metadata Service CORS và xác minh cả Mainnet lẫn Testnet.</div>
   </section>
 
   <h2>1. Kiến trúc đang chạy</h2>
@@ -99,6 +99,7 @@ NFT_MEDIA_HANDLER_BACKFILL_ENABLED=true</pre>
       <tr><td>Database</td><td>Có template thumbnail, kích thước 60, 250, 500 và không có <code>cdn_upload_error</code>.</td></tr>
       <tr><td>GCS</td><td>Có original cùng ba thumbnail trong <code>testnet/nft-media</code>.</td></tr>
       <tr><td>Runtime probe</td><td><a href="https://github.com/DOS/DOScan/actions/runs/30331379243">Workflow #30331379243</a> xác nhận dispatcher tồn tại và GCS ghi-đọc-xóa thành công ở cả Mainnet và Testnet.</td></tr>
+      <tr><td>Metadata CORS</td><td><a href="https://github.com/DOS/DOScan/actions/runs/30343254663">Workflow #30343254663</a> xác nhận frontend dùng proxy same-origin. Kiểm tra Playwright hậu deploy ngày 28/07/2026 trên <a href="https://test.doscan.io/token/0x9f2accb76defe1735fb55c41e1741c54a2d0fea7/instance/1">NFT Testnet #1</a> xác nhận trang tải thumbnail GCS và không ghi nhận console error.</td></tr>
     </tbody>
   </table>
 
@@ -111,6 +112,7 @@ NFT_MEDIA_HANDLER_BACKFILL_ENABLED=true</pre>
     <li><a href="https://github.com/DOS/DOScan/pull/117">DOScan PR #117</a></li>
     <li><a href="https://github.com/DOS/DOScan/pull/119">DOScan PR #119</a></li>
     <li><a href="https://github.com/DOS/DOScan/pull/120">DOScan PR #120</a></li>
+    <li><a href="https://github.com/DOS/DOScan/pull/122">DOScan PR #122</a></li>
   </ul>
 </main>
 </body>
