@@ -9,8 +9,9 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 
+import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
+
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
-import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
@@ -74,6 +75,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                     token={ item.source_token }
                     amount={ item.source_amount }
                     chain={ item.source_chain }
+                    transactionHash={ item.source_transaction_hash }
                     loading={ isLoading }
                   />
                 ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
@@ -86,6 +88,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                     token={ item.destination_token }
                     amount={ item.destination_amount }
                     chain={ item.destination_chain }
+                    transactionHash={ item.destination_transaction_hash }
                     loading={ isLoading }
                   />
                 ) : <chakra.span color="text.secondary">Unknown</chakra.span> }

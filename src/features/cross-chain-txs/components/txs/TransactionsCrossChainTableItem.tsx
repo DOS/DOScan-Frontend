@@ -10,10 +10,11 @@ import AddressEntityInterchain from 'src/slices/address/components/entity/Addres
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
+import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
+
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'src/shared/external-chains/ChainLabel';
-import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
