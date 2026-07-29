@@ -30,7 +30,7 @@ const localTransfer = {
   },
 };
 
-describe('resolveInterchainTokenAddress', () => {
+describe('cross-chain resolveInterchainTokenAddress', () => {
   it('resolves an ICTT TokenHome address to the ERC-20 token emitted by the local transaction', () => {
     expect(resolveInterchainTokenAddress(interchainToken, '5000000000000000', [ localTransfer ])).toBe(wrappedDos);
   });

@@ -14,7 +14,7 @@ interface LocalTokenTransfer {
   total?: unknown;
 }
 
-function isSameAddress(left: string | undefined, right: string) {
+function isSameAddress(left: string | undefined, right: string): boolean {
   return left?.toLowerCase() === right.toLowerCase();
 }
 

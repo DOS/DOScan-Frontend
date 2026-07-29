@@ -10,12 +10,13 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
+import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
+
 import config from 'src/config';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
 import ListItemMobile from 'src/shared/lists/ListItemMobile';
 import TextSeparator from 'src/shared/texts/TextSeparator';
-import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
