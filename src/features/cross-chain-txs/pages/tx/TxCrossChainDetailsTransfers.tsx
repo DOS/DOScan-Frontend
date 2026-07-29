@@ -74,6 +74,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                     token={ item.source_token }
                     amount={ item.source_amount }
                     chain={ item.source_chain }
+                    transactionHash={ item.source_transaction_hash }
                     loading={ isLoading }
                   />
                 ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
@@ -86,6 +87,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                     token={ item.destination_token }
                     amount={ item.destination_amount }
                     chain={ item.destination_chain }
+                    transactionHash={ item.destination_transaction_hash }
                     loading={ isLoading }
                   />
                 ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
