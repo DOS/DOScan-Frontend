@@ -107,10 +107,20 @@ const AddressPageContent = () => {
     isDegradedData: addressQuery.isDegradedData,
   });
 
+  const isUserOpsEnabled = areQueriesEnabled && Boolean(hash) && config.features.userOps.isEnabled;
+  const userOpsPresenceQuery = useApiQuery('core:user_ops', {
+    queryParams: { sender: hash, page_size: 1 },
+    queryOptions: {
+      enabled: isUserOpsEnabled,
+      placeholderData: { items: [], next_page_params: null },
+    },
+  });
+
+  const hasUserOps = Boolean(userOpsPresenceQuery.data?.items.length);
   const userOpsAccountQuery = useApiQuery('core:user_ops_account', {
     pathParams: { hash },
     queryOptions: {
-      enabled: areQueriesEnabled && Boolean(hash) && config.features.userOps.isEnabled,
+      enabled: isUserOpsEnabled && hasUserOps,
       placeholderData: USER_OPS_ACCOUNT,
     },
   });
@@ -146,7 +156,10 @@ const AddressPageContent = () => {
     isLoading ||
     addressTabsCountersQuery.isPlaceholderData ||
     (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData) ||
-    (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
+    (config.features.userOps.isEnabled && (
+      userOpsPresenceQuery.isPlaceholderData ||
+      (hasUserOps && userOpsAccountQuery.isPlaceholderData)
+    ));
 
   const handleFetchedBytecodeMessage = React.useCallback(() => {
     addressQuery.refetch();
@@ -216,7 +229,7 @@ const AddressPageContent = () => {
           component: <AddressAccountHistory shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
+      config.features.userOps.isEnabled && hasUserOps && Boolean(userOpsAccountQuery.data?.total_ops) ?
         {
           id: 'user_ops',
           title: 'User operations',
@@ -307,6 +320,7 @@ const AddressPageContent = () => {
     countersQuery,
     addressTabsCountersQuery.data,
     userOpsAccountQuery.data,
+    hasUserOps,
     isTabsLoading,
     areQueriesEnabled,
     address3rdPartyWidgets,
@@ -363,7 +377,7 @@ const AddressPageContent = () => {
           tagUrl: addressProfileAPIFeature.tagLinkTemplate ? addressProfileAPIFeature.tagLinkTemplate.replace('{username}', usernameApiTag) : undefined,
         },
       } : undefined,
-      config.features.userOps.isEnabled && userOpsAccountQuery.data ?
+      config.features.userOps.isEnabled && hasUserOps && userOpsAccountQuery.data ?
         { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
       ...formatAccountTags(addressQuery.data),
@@ -389,6 +403,7 @@ const AddressPageContent = () => {
     hash,
     isSafeAddress,
     userOpsAccountQuery.data,
+    hasUserOps,
     usernameApiTag,
     xStarQuery.data?.data,
   ]);
@@ -399,7 +414,10 @@ const AddressPageContent = () => {
       addressHash={ addressQuery.data?.hash }
       isLoading={
         isLoading ||
-        (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
+        (config.features.userOps.isEnabled && (
+          userOpsPresenceQuery.isPlaceholderData ||
+          (hasUserOps && userOpsAccountQuery.isPlaceholderData)
+        )) ||
         (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) ||
         (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending) ||
         (xScoreFeature.isEnabled && xStarQuery.isPlaceholderData)
