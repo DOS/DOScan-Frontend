@@ -16,9 +16,8 @@ const getResources = (): Array<PrimedResource> => {
     { resource: 'core:address', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
     { resource: 'core:address_tabs_counters', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
     { resource: 'core:address_counters', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
-    ...(config.features.userOps.isEnabled ?
-      [ { resource: 'core:user_ops_account', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] } satisfies PrimedResource ] :
-      []),
+    // The account endpoint is requested only after the operations presence query confirms data.
+    // That query needs the route hash in a query parameter, which the primer cannot derive yet.
     ...(config.features.xStarScore.isEnabled ?
       [ { resource: 'core:address_xstar_score', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] } satisfies PrimedResource ] :
       []),
