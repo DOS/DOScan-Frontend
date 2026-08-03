@@ -44,7 +44,7 @@ npm-debug.log*
 .pnpm-debug.log*
 
 # local env files
-# NOTE: .env.extra is intentionally NOT ignored — it is committed so branch/feature ENVs
+# NOTE: .env.extra is intentionally NOT ignored - it is committed so branch/feature ENVs
 # reach the demo deploy. Purely-local overrides go in .env.local (matched by .env*.local below).
 .env*.local
 /.env.secrets
@@ -75,3 +75,4 @@ license.json
 release-prs-data.json
 
 .ai
+.codex/worktrees/

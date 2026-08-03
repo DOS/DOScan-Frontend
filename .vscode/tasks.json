@@ -321,7 +321,7 @@
             "id": "dev_config_preset",
             "description": "Choose dev server config preset:",
             "options": [
-              // presets:start — generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
+              // presets:start - generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
               "arbitrum",
               "arbitrum_sepolia",
               "base",
