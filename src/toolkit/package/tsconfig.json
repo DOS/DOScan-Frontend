@@ -50,4 +50,4 @@
     "../**/*.test.*",
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
-} 
+}
