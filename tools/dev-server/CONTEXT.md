@@ -23,8 +23,9 @@ unnecessary.
 | `envs-rules.json` | `localEnvs` (local APP_* substitutions) + `ignoredEnvs` / `deprecatedEnvs` (keys to drop — see "Dropped envs" below). |
 | `fetch.ts` (→ `fetch.js`) | Fetches `<url>/node-api/config`, drops `ignoredEnvs` + `deprecatedEnvs`, applies/omits `localEnvs`, writes `.env.tmp`. |
 | `fetch.sh` | Compile-on-run wrapper (`tsc` + `node fetch.js`). Resolves its own path, so callable from any cwd. |
-| `dev.preset.sh` | `pnpm dev:preset <alias>` — fetch + run `next dev`. |
-| `dev.local.sh` | `pnpm dev:local` — run against a local backend using `.env.localhost` (no fetch). |
+| `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` — fetch + run `next dev`. |
+| `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). |
+| `prod.preset.sh` | `pnpm prod:preset <alias> [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. |
 | `.env.localhost` | Committed base config for local-backend dev. |
 | `sync-preset-lists.mjs` | Regenerates / checks the alias dropdowns from `registry.json`. |
 | `fetch.js`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
@@ -43,7 +44,9 @@ lives here):
   the old key from its config, so unless it's dropped the demo deploy's envs-validator
   fails on a variable that no longer exists in the schema. This list grows every time a
   variable is removed for good (see the `deprecate-env-var` skill) — add the removed
-  variable here.
+  variable here. It also holds still-valid variables whose deployed value would mask the
+  app's default behavior locally (`NEXT_PUBLIC_API_DOCS_TABS`): hosted instances set them
+  while the defaults are what a local run should exercise.
 
 ## Gotchas (these bit us; don't re-learn them)
 
@@ -52,7 +55,8 @@ lives here):
   (e.g. `HOMEPAGE_HERO_BANNER_CONFIG`, `MARKETPLACE_ESSENTIAL_DAPPS_CONFIG`). So `fetch.ts`
   emits raw values, exactly like the old committed presets. Because raw values are **not
   `source`-safe**, the container entrypoint reads `.env.tmp` via a `while IFS='=' read` loop,
-  never `source`.
+  never `source`. That loop uses `read … || [ -n "$name" ]` so a file with no trailing
+  newline doesn't silently drop its last variable (this bit us with `.env.extra`).
 - **dotenv-cli precedence: the FIRST `-e` file wins** (not the last). The run scripts therefore
   list env files **highest-priority-first**.
 - **`--omit-local-envs` is the dev/container switch.** Dev mode applies `localEnvs` (so APP_HOST
@@ -61,8 +65,14 @@ lives here):
 
 ## Env layering (highest → lowest priority)
 
-- `dev:preset`: `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
-- `dev:local`: `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+- `dev:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
+- `dev:local`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+
+The `--port` flag sets `NEXT_PUBLIC_APP_PORT` via dotenv-cli's `-v` (applied AFTER all `-e`
+files, so it beats every env file). It overrides the env var rather than just `next dev -p`
+so the generated `envs.js` / `config.app.baseUrl` stay consistent with the actual port.
+Without the flag, the port comes from the env files as before (default `3000` from
+`localEnvs` / `.env.localhost`; a persistent personal override belongs in `.env.local`).
 
 | File | Committed? | Purpose |
 |---|---|---|
