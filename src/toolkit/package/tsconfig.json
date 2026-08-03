@@ -41,7 +41,7 @@
   ],
   "exclude": [
     "node_modules",
-    "node_modules_linux", 
+    "node_modules_linux",
     "dist",
     "../../node_modules",
     "vite.config.ts",
