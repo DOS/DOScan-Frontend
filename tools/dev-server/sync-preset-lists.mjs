@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-// Keeps the preset/alias dropdowns in the GitHub workflows and .vscode/tasks.json in sync with
+// Keeps the preset/alias dropdown in .vscode/tasks.json in sync with
 // tools/dev-server/registry.json (the single source of truth).
 //
-//   node tools/dev-server/sync-preset-lists.mjs            # check mode (CI) — exits 1 on drift
+//   node tools/dev-server/sync-preset-lists.mjs            # check mode (CI) - exits 1 on drift
 //   node tools/dev-server/sync-preset-lists.mjs --write     # rewrite the lists from the registry
 //
 // Each target file brackets its registry-managed aliases with `presets:start` / `presets:end`
@@ -22,13 +22,12 @@ const END = 'presets:end';
 const aliases = Object.keys(JSON.parse(fs.readFileSync(path.join(__dirname, 'registry.json'), 'utf8')));
 
 const targets = [
-  { file: '.github/workflows/deploy-review.yml', indent: 12, comment: '#', line: (a) => `- ${ a }` },
   { file: '.vscode/tasks.json', indent: 14, comment: '//', line: (a) => `"${ a }",` },
 ];
 
 function buildBlock(t) {
   const pad = ' '.repeat(t.indent);
-  const header = `${ pad }${ t.comment } ${ START } — generated from tools/dev-server/registry.json (run \`pnpm presets:sync\`)`;
+  const header = `${ pad }${ t.comment } ${ START } - generated from tools/dev-server/registry.json (run \`pnpm presets:sync\`)`;
   const footer = `${ pad }${ t.comment } ${ END }`;
   const body = aliases.map((a) => `${ pad }${ t.line(a) }`);
   return [ header, ...body, footer ].join('\n');
