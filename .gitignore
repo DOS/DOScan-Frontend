@@ -75,3 +75,4 @@ license.json
 release-prs-data.json
 
 .ai
+.codex/worktrees/
