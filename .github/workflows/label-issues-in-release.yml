@@ -62,7 +62,7 @@ jobs:
         steps:
             -   name: Getting tags of the two latest releases
                 id: tags
-                uses: actions/github-script@v7
+                uses: actions/github-script@v9
                 env:
                     TAG: ${{ inputs.tag }}
                 with:
@@ -111,7 +111,7 @@ jobs:
             
             -   name: Looking for commits between two releases
                 id: commits
-                uses: actions/github-script@v7
+                uses: actions/github-script@v9
                 env:
                     PREVIOUS_TAG: ${{ steps.tags.outputs.previous }}
                     LATEST_TAG: ${{ steps.tags.outputs.latest }}
@@ -140,7 +140,7 @@ jobs:
 
             -   name: Looking for issues linked to commits
                 id: linked_issues
-                uses: actions/github-script@v7
+                uses: actions/github-script@v9
                 env:
                     COMMITS: ${{ steps.commits.outputs.result }}
                 with:
@@ -234,7 +234,7 @@ jobs:
 
             -   name: Creating label
                 id: label_creating
-                uses: actions/github-script@v7
+                uses: actions/github-script@v9
                 env:
                     LABEL_NAME: ${{ inputs.label_name }}
                     LABEL_COLOR: ${{ inputs.label_color }}
@@ -262,7 +262,7 @@ jobs:
 
             -   name: Adding label to issues
                 id: labeling_issues
-                uses: actions/github-script@v7
+                uses: actions/github-script@v9
                 env:
                     LABEL_NAME: ${{ inputs.label_name }}
                     ISSUES: ${{ steps.linked_issues.outputs.result }}

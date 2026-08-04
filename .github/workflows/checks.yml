@@ -37,16 +37,16 @@ jobs:
     if: ${{ github.event.pull_request.draft != true && !contains(github.event.pull_request.labels.*.name, 'skip checks') && !(github.event.action == 'unlabeled' && github.event.label.name != 'skip checks') }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.1
           cache: true
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22.14.0
           cache: 'pnpm'
@@ -76,16 +76,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.1
           cache: true
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22.14.0
           cache: 'pnpm'
@@ -124,16 +124,16 @@ jobs:
     needs: [ code_quality ]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.1
           cache: true
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22.14.0
           cache: 'pnpm'
@@ -150,18 +150,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.1
           cache: true
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22.14.0
           cache: 'pnpm'
@@ -179,18 +179,18 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.1
           cache: true
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22.14.0
           cache: 'pnpm'
@@ -202,7 +202,7 @@ jobs:
         run: pnpm test:pw:detect-affected
 
       - name: Upload result file
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-affected-tests
           path: ./playwright/affected-tests.txt
@@ -230,18 +230,18 @@ jobs:
         run: apt-get update && apt-get install git-lfs
 
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           lfs: 'true'
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.1
           cache: true
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22.14.0
           cache: 'pnpm'
@@ -251,7 +251,7 @@ jobs:
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         continue-on-error: true
         with:
           name: playwright-affected-tests
@@ -265,7 +265,7 @@ jobs:
 
       - name: Upload blob report to GitHub Actions Artifacts
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: blob-report-${{ matrix.project }}
           path: blob-report
@@ -280,7 +280,7 @@ jobs:
     steps:
       - name: Download blob reports from GitHub Actions Artifacts
         id: download-reports
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         continue-on-error: true
         with:
           path: ${{ runner.temp }}/all-blob-reports
@@ -298,18 +298,18 @@ jobs:
 
       - name: Checkout repo
         if: steps.check-reports.outputs.has_reports == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
         if: steps.check-reports.outputs.has_reports == 'true'
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11.5.1
           cache: true
 
       - name: Setup node
         if: steps.check-reports.outputs.has_reports == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22.14.0
           cache: 'pnpm'
@@ -324,7 +324,7 @@ jobs:
 
       - name: Upload HTML report artifact
         if: steps.check-reports.outputs.has_reports == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-html-report
           path: playwright-report
