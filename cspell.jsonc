@@ -14,7 +14,7 @@
         "tools/dev-server/.env.localhost",
         "vitest/.env.vitest",
         "playwright/.env.pw",
-        "docs/*.vi.html",
+        "docs/**/*.vi.html",
         "src/features/chain-variants/zeta-chain/mocks/cctx.ts",
         "src/features/address-metadata/mocks/tags.ts",
         "playwright/mocks/file_mock_with_very_long_name.json",
