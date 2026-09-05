@@ -610,6 +610,7 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
 | NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
 | NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. On chains supported by the Blockscout Pro API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
+| NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code. Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
 
 **Dependencies**
 
@@ -962,11 +963,11 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 
 ### Flashblocks
 
-This feature allows users to view [Flashblocks](https://docs.base.org/base-chain/flashblocks/apps)-related content in the explorer, including the Flashblocks real-time feed. It currently supports only Base chains.
+Real-time feed of sub-second pre-confirmation blocks. The same feature backs two stacks: on OP Stack chains these blocks are called **Subblocks** (OP Labs' current name; formerly "Flashblocks") and are streamed from the endpoint below; on **MegaETH** they are called **mini-blocks** and are streamed from the MegaETH RPC endpoint (see [MegaETH](#megaeth)). The `FLASHBLOCKS` variable name is retained across both.
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Flashblocks data | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
+| NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Subblocks data on OP Stack chains | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
 
 &nbsp;
 

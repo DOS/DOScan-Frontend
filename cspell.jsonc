@@ -8,6 +8,7 @@
         "**/*.svg",
         "**/*.sfd",
         ".git",
+        ".env.*",
         // agent worktrees are full checkouts of the repo — checking them duplicates every file
         ".claude/worktrees",
         "pnpm-lock.yaml",
@@ -35,7 +36,9 @@
         // Posthog project key
         "phc_\\w+",
         // GitHub account names
-        "@(\\w|-)+"
+        "@(\\w|-)+",
+        // Russian copy in agent skills (DevOps / Slack templates)
+        "[А-Яа-яЁё]+"
     ],
     // words - list of words to be always considered correct
     "words": [
@@ -48,6 +51,7 @@
         "addrs",
         "adsbyslise",
         "aeiou",
+        "APFS",
         "Ahrefs",
         "airtable",
         "Alexa",
@@ -116,6 +120,8 @@
         "Emelyanov",
         "Enkrypt",
         "esbuild",
+        "Evgenii",
+        "evstack",
         "explorable",
         "facebookexternalhit",
         "favicons",
@@ -160,6 +166,7 @@
         "LCIA",
         "libc",
         "libp",
+        "linkedinbot",
         "Liquality",
         "llms",
         "lokijs",
@@ -168,6 +175,9 @@
         "megaeth",
         "merkle",
         "metasuites",
+        "miscompilation",
+        "miscompiles",
+        "mipd",
         "mgas",
         "mload",
         "mmss",
@@ -200,6 +210,7 @@
         "pjpeg",
         "posthog",
         "protobufjs",
+        "PRRT",
         "PWDEBUG",
         "pwstory",
         "pyftsubset",
@@ -256,6 +267,7 @@
         "superchain",
         "svgr",
         "tabler",
+        "Tatyana",
         "TBXN",
         "testnetv",
         "thinsp",
@@ -272,6 +284,7 @@
         "uidotdev",
         "Ulyana",
         "unfinalized",
+        "unminified",
         "UNKN",
         "unparse",
         "unrs",
@@ -304,6 +317,7 @@
         "xname",
         "xstar",
         "yatki",
+        "zagjs",
         "zerion",
         "zerossl",
         "zetachain",

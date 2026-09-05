@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, VStack } from '@chakra-ui/react';
+import { chakra, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
@@ -9,9 +9,12 @@ import AddressEntityInterchain from 'src/slices/address/components/entity/Addres
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
+<<<<<<< HEAD
 import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
 
 import config from 'src/config';
+=======
+>>>>>>> v2.11.0
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'src/shared/external-chains/ChainLabel';
 
@@ -35,17 +38,19 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
 
   return (
     <TableRow>
-      <TableCell w="42px">
-        <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
+      <TableCell>
+        <HStack gap={ 1 }>
+          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
+          { currentAddress && (
+            <CrossChainFromToTag
+              currentAddress={ currentAddress }
+              sender={ data.sender?.hash }
+              recipient={ data.recipient?.hash }
+              isLoading={ isLoading }
+            />
+          ) }
+        </HStack>
       </TableCell>
-      { currentAddress && (
-        <TableCell>
-          <CrossChainFromToTag
-            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
-            isLoading={ isLoading }
-          />
-        </TableCell>
-      ) }
       <TableCell maxW="150px">
         <VStack alignItems="start">
           { data.source_token && (

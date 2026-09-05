@@ -18,7 +18,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101"}' ],
+    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101","id":11155111,"rpcUrls":["https://localhost:3101"],"currency":{"name":"Ether","symbol":"ETH","decimals":18},"isTestnet":true}' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', '0x1234' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],
@@ -135,5 +135,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   proApi: [
     [ 'NEXT_PUBLIC_PRO_API_SUPPORTED', 'true' ],
+  ],
+  verifiedAddresses: [
+    [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'true' ],
+    [ 'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML', 'Send <b>99 USDC/USDT</b> to one of the addresses below:<br>Duck Chain: 0xFB74767C1ce1aadA0a0E114441173b57f8C1571b<br>Goose Chaing: 0x4675C7e5BaAFBFFbca748158bEcBA61ef3b0a263' ],
   ],
 };
