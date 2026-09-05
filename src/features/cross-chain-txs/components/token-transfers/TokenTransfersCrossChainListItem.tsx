@@ -8,12 +8,8 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
-<<<<<<< HEAD
 import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
 
-import config from 'src/config';
-=======
->>>>>>> v2.11.0
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
 import ListItemMobile from 'src/shared/lists/ListItemMobile';

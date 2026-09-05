@@ -29,16 +29,10 @@ its name.
 | `envs-rules.json` | `localEnvs` (local APP_* substitutions) + `ignoredEnvs` / `deprecatedEnvs` (keys to drop - see "Dropped envs" below). |
 | `fetch.ts` (→ `fetch.js`) | Fetches `<url>/node-api/config`, drops `ignoredEnvs` + `deprecatedEnvs`, applies/omits `localEnvs`, writes `.env.tmp`. |
 | `fetch.sh` | Compile-on-run wrapper (`tsc` + `node fetch.js`). Resolves its own path, so callable from any cwd. |
-<<<<<<< HEAD
-| `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` - fetch + run `next dev`. |
-| `dev.local.sh` | `pnpm dev:local [--port <number>]` - run against a local backend using `.env.localhost` (no fetch). |
-| `prod.preset.sh` | `pnpm prod:preset <alias> [--skip-build]` - fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. |
-=======
 | `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` — fetch + run `next dev`. |
 | `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). Skips the multichain config: a local backend serves a single chain. |
 | `prod.preset.sh` | `pnpm prod:preset <alias> [--port <number>] [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
 | `run_steps.sh` | Sourced by all three run scripts: env layering (`build_port_args`, `build_env_args`), asset regeneration (`prepare_assets`), and the launch wrapper (`run_with_envs`). What stays in a run script is its argument parsing and the command it finally runs. |
->>>>>>> v2.11.0
 | `.env.localhost` | Committed base config for local-backend dev. |
 | `sync-preset-lists.mjs` | Regenerates / checks the alias dropdowns from `registry.json`. |
 | `fetch.js`, `tsconfig.tsbuildinfo` | Build artifacts - git-ignored, regenerated on run. |

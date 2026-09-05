@@ -9,12 +9,8 @@ import AddressEntityInterchain from 'src/slices/address/components/entity/Addres
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
-<<<<<<< HEAD
 import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
 
-import config from 'src/config';
-=======
->>>>>>> v2.11.0
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'src/shared/external-chains/ChainLabel';
 
