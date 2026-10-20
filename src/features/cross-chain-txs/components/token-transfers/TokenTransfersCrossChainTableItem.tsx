@@ -6,7 +6,6 @@ import React from 'react';
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
-import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
 import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
@@ -72,9 +71,6 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
             ) : dashElement
           }
         </VStack>
-      </TableCell>
-      <TableCell>
-        <AddressFromToIcon type="unspecified" isLoading={ isLoading } mt={ 0.5 }/>
       </TableCell>
       <TableCell maxW="150px">
         <VStack alignItems="start">
@@ -148,7 +144,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
         <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id } lineHeight="24px"/>
       </TableCell>
       <TableCell>
-        <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px"/>
+        <CrossChainMessageEntity id={ data.message_id } bridgeId={ data.bridge?.id } isLoading={ isLoading } lineHeight="24px"/>
       </TableCell>
       <TableCell>
         <TimeWithTooltip
