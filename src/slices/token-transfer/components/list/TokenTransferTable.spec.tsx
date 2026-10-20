@@ -9,7 +9,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render } from 'vitest/lib';
 
 import { erc20 } from '../../mocks';
+<<<<<<< HEAD
 import TokenTransferList from './TokenTransferList';
+=======
+>>>>>>> v2.12.0
 import TokenTransferTable from './TokenTransferTable';
 
 // The backend can push a transfer whose token is not catalogued yet (seen on
@@ -26,10 +29,13 @@ describe('token transfer rows without a token', () => {
     expect(container.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(container.textContent).toContain(erc20.transaction_hash?.slice(0, 10));
   });
+<<<<<<< HEAD
 
   it('list renders the item instead of crashing', () => {
     const { container } = render(<TokenTransferList data={ [ withoutToken ] } showTxInfo/>);
 
     expect(container.textContent).toContain(erc20.transaction_hash?.slice(0, 10));
   });
+=======
+>>>>>>> v2.12.0
 });

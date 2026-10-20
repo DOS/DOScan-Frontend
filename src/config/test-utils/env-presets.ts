@@ -132,6 +132,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   crossChainTxs: [
     [ 'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST', 'http://localhost:3014' ],
     [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', '[1,2]' ],
   ],
   proApi: [
     [ 'NEXT_PUBLIC_PRO_API_SUPPORTED', 'true' ],
@@ -139,11 +140,16 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   flashblocks: [
     [ 'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL', 'wss://localhost:3120/ws' ],
   ],
+<<<<<<< HEAD
   tokenActionButton: [
     [
       'NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG',
       '{"text":"Buy on Duck Portal","url":"https://portal.duck.io/swap?chainId=1&token={hash}","colors":{"_default":{"bg":["rgb(179, 167, 0)","rgb(134, 86, 239)"],"text":["white"]}}}',
     ],
+=======
+  additionalTokenTypes: [
+    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-7984","name":"ERC-7984"},{"id":"ERC-8056","name":"ERC-8056"}]' ],
+>>>>>>> v2.12.0
   ],
   verifiedAddresses: [
     [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'true' ],

@@ -8,7 +8,11 @@ export const data: operations['OptimismController.games']['json'] = {
       game_type: 0,
       index: 6662,
       l2_block_number: 12542890,
+<<<<<<< HEAD
       l2_timestamp: null,
+=======
+      l2_timestamp: '2022-05-27T01:13:00.000000Z',
+>>>>>>> v2.12.0
       resolved_at: null,
       status: 'In progress',
     },
@@ -18,7 +22,11 @@ export const data: operations['OptimismController.games']['json'] = {
       game_type: 0,
       index: 6662,
       l2_block_number: 12542890,
+<<<<<<< HEAD
       l2_timestamp: null,
+=======
+      l2_timestamp: '2022-05-27T01:13:00.000000Z',
+>>>>>>> v2.12.0
       resolved_at: '2022-05-27T01:13:48.000000Z',
       status: 'Defender wins',
     },

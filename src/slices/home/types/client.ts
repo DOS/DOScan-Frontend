@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type React from 'react';
-import type { ReactElement } from 'react';
 
 import type { ColorModeValue } from 'src/config/types';
+<<<<<<< HEAD
 import type { ChainIndicatorId, HomeStatsWidgetId } from 'src/slices/home/types/config';
 
 import type { Props as StatsWidgetProps } from 'src/shared/stats/StatsWidget';
+=======
+import type { ChainIndicatorId } from 'src/slices/home/types/config';
+>>>>>>> v2.12.0
 
 export interface HighlightsBannerConfig {
   title: string;
@@ -29,8 +32,3 @@ export interface TChainIndicator {
   icon: React.ReactNode;
   hint?: string;
 }
-
-export type HomeStatsComponentItem = { id: HomeStatsWidgetId; component: ReactElement };
-export type HomeStatsWidgetItem = StatsWidgetProps & { id: HomeStatsWidgetId; component?: undefined };
-
-export type HomeStatsItem = HomeStatsComponentItem | HomeStatsWidgetItem;
