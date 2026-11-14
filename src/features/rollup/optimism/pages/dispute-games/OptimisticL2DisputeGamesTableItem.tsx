@@ -9,10 +9,12 @@ import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShorten from 'src/shared/texts/HashStringShorten';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+
+import OptimisticL2DisputeGameL2Position from './OptimisticL2DisputeGameL2Position';
 
 import OptimisticL2DisputeGameL2Position from './OptimisticL2DisputeGameL2Position';
 
@@ -34,7 +36,7 @@ const OptimisticL2DisputeGamesTableItem = ({ item, isLoading }: Props) => {
       <TableCell verticalAlign="middle">
         <Flex overflow="hidden" w="100%" alignItems="center">
           <Skeleton loading={ isLoading }>
-            <HashStringShorten hash={ item.contract_address_hash } type="long"/>
+            <Truncate value={ item.contract_address_hash } type="middle-static" maxSymbols={ 16 }/>
           </Skeleton>
           <CopyToClipboard text={ item.contract_address_hash } ml={ 2 } isLoading={ isLoading }/>
         </Flex>
