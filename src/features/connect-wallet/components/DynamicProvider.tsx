@@ -16,17 +16,22 @@ import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
 import useGetCsrfToken from 'src/features/account/hooks/useGetCsrfToken';
 import useLogout from 'src/features/account/hooks/useLogout';
+import useAccountDynamic from 'src/features/connect-wallet/hooks/account/useAccountDynamic';
+import useWalletDynamic from 'src/features/connect-wallet/hooks/wallet/useWalletDynamic';
 import { chains } from 'src/features/connect-wallet/utils/chains';
+import { registerDynamicHooks } from 'src/features/connect-wallet/utils/dynamic-hooks';
 import wagmiConfig from 'src/features/connect-wallet/utils/wagmi-config';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import getErrorMessage from 'src/shared/errors/get-error-message';
 
 import { toaster } from 'src/toolkit/chakra/toaster';
 import { castToString } from 'src/toolkit/utils/guards';
 
 const feature = config.features.connectWallet;
+
+registerDynamicHooks({ useWallet: useWalletDynamic, useAccount: useAccountDynamic });
 
 const walletConnectors = [
   EthereumWalletConnectors,
@@ -75,7 +80,7 @@ const DynamicProvider = ({ children }: Props) => {
       }
       queryClient.setQueryData(getResourceKey('core:user_info'), () => response);
       csrfQuery.refetch();
-      mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+      analytics.logEvent(analytics.EventTypes.LOGIN, {
         Action: 'Success',
         Source: 'Dynamic',
       });
