@@ -4,7 +4,11 @@
 import React from 'react';
 
 import { afterEach, describe, expect, it } from 'vitest';
+<<<<<<< HEAD
 import { cleanup, render, screen } from 'vitest/lib';
+=======
+import { cleanup, screen } from 'vitest/lib';
+>>>>>>> v2.13.0
 import withEnvs from 'vitest/utils/mockEnvs';
 
 const ITEMS_ENV: [ string, string ] = [
@@ -14,6 +18,10 @@ const ITEMS_ENV: [ string, string ] = [
 
 async function renderDropdown(envs: Array<[ string, string ]>): Promise<void> {
   return withEnvs(envs, async() => {
+<<<<<<< HEAD
+=======
+    const { render } = await import('vitest/lib');
+>>>>>>> v2.13.0
     const { 'default': DeFiDropdown } = await import('./DeFiDropdown');
     render(<DeFiDropdown/>);
   });

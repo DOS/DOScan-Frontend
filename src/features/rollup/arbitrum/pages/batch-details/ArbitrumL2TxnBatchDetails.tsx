@@ -2,8 +2,6 @@
 
 import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -20,12 +18,14 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
+import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
 import { CollapsibleDetails } from 'src/toolkit/chakra/collapsible';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import ArbitrumL2TxnBatchDA from '../../components/ArbitrumL2TxnBatchDA';
 import ArbitrumL2TxnBatchDetailsAnyTrustDA from './ArbitrumL2TxnBatchDetailsAnyTrustDA';
@@ -48,7 +48,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.number + increment);
 
-    router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
+    router.push({ pathname: '/batches/[number]', query: { number: nextId } });
   }, [ data, router ]);
 
   if (isError) {
@@ -145,7 +145,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { data.commitment_transaction.block_number && (
+      { data.commitment_transaction.block_number !== null && (
         <>
           <DetailedInfo.ItemLabel
             isLoading={ isPlaceholderData }
@@ -183,7 +183,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap" >
         <Skeleton loading={ isPlaceholderData } overflow="hidden">
-          <HashStringShortenDynamic hash={ data.before_acc_hash }/>
+          <Truncate value={ data.before_acc_hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.before_acc_hash } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
@@ -196,7 +196,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap">
         <Skeleton loading={ isPlaceholderData } overflow="hidden">
-          <HashStringShortenDynamic hash={ data.after_acc_hash }/>
+          <Truncate value={ data.after_acc_hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.after_acc_hash } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
