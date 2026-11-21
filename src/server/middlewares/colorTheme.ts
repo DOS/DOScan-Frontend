@@ -2,7 +2,12 @@
 
 import type { NextRequest, NextResponse } from 'next/server';
 
+<<<<<<< HEAD
 import { getDefaultColorTheme, isColorThemeAvailable } from 'src/shell/top-bar/settings/color-theme/utils';
+=======
+import { isConcreteColorTheme } from 'src/shell/top-bar/settings/fields/color-theme/config';
+import { getDefaultColorTheme, isColorThemeAvailable } from 'src/shell/top-bar/settings/fields/color-theme/utils';
+>>>>>>> v2.13.0
 
 import appConfig from 'src/config';
 import * as cookiesLib from 'src/shared/storage/cookies';
@@ -33,6 +38,13 @@ export default function colorThemeMiddleware(req: NextRequest, res: NextResponse
     return;
   }
 
+<<<<<<< HEAD
   res.cookies.set(cookiesLib.NAMES.COLOR_MODE, nextTheme.colorMode, cookiesLib.getDefaultAttributes());
+=======
+  // the server cannot see the OS color scheme, so a system theme leaves the color mode to the client
+  if (isConcreteColorTheme(nextTheme)) {
+    res.cookies.set(cookiesLib.NAMES.COLOR_MODE, nextTheme.colorMode, cookiesLib.getDefaultAttributes());
+  }
+>>>>>>> v2.13.0
   res.cookies.set(cookiesLib.NAMES.COLOR_THEME, nextTheme.id, cookiesLib.getDefaultAttributes());
 }

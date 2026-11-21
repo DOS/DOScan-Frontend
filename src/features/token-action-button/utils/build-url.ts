@@ -2,7 +2,11 @@
 
 const HASH_PLACEHOLDER = '{hash}';
 
+<<<<<<< HEAD
 export const buildUrl = (template: string, tokenHash: string): string | undefined => {
+=======
+export const buildTokenActionUrl = (template: string, tokenHash: string): string | undefined => {
+>>>>>>> v2.13.0
   try {
     // substituted before parsing: the URL parser percent-encodes braces in the path, which would break a later replace
     const urlObj = new URL(template.replaceAll(HASH_PLACEHOLDER, tokenHash.toLowerCase()));

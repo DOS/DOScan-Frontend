@@ -6,7 +6,6 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'src/server/types';
@@ -21,6 +20,7 @@ import getSocketUrl from 'src/api/socket/get-socket-url';
 import { AppContextProvider } from 'src/shell/app/context';
 import Layout from 'src/shell/layout/Layout';
 import { SettingsContextProvider } from 'src/shell/top-bar/settings/context';
+import { SettingsModalContextProvider } from 'src/shell/top-bar/settings/modal/context';
 
 import { Web3Provider } from 'src/features/connect-wallet/context';
 import { CsvExportContextProvider } from 'src/features/csv-export/utils/context';
@@ -33,6 +33,8 @@ import { Provider as RollbarProvider } from 'src/services/rollbar';
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'src/shared/errors/AppErrorGlobalContainer';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
+import NextRouterProvider from 'src/shared/router/NextRouterProvider';
+import type { Route } from 'src/shared/router/routes';
 import { FallbackProvider } from 'src/shared/utils/fallback-provider';
 import SpriteInjector from 'src/sprite/SpriteInjector';
 
@@ -124,9 +126,11 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
           <RewardsProvider>
             <MarketplaceContextProvider>
               <SettingsContextProvider>
-                <CsvExportContextProvider>
-                  { content }
-                </CsvExportContextProvider>
+                <SettingsModalContextProvider>
+                  <CsvExportContextProvider>
+                    { content }
+                  </CsvExportContextProvider>
+                </SettingsModalContextProvider>
               </SettingsContextProvider>
             </MarketplaceContextProvider>
           </RewardsProvider>
@@ -138,13 +142,8 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   );
 
   const walletBoundary = walletConnectorType === 'dynamic' ? (
-    // The dynamic wallet hooks resolve their heavy connector through a dynamic import and suspend on first
-    // render; the pages-router dynamic() wrapper provides no Suspense boundary of its own, so one is needed
-    // here. A null fallback keeps the pre-connector window blank instead of remounting once it resolves.
     <DynamicProvider>
-      <React.Suspense fallback={ null }>
-        { appTree }
-      </React.Suspense>
+      { appTree }
     </DynamicProvider>
   ) : (
     // reown / fallback: `<Web3Provider>` renders children provider-less at first paint (no wallet chunk on
@@ -157,7 +156,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   );
 
   return (
-    <>
+    <NextRouterProvider>
       <PageMetadata pathname={ router.pathname as Route['pathname'] } query={ pageProps.query } apiData={ pageProps.apiData }/>
       <SpriteInjector/>
       <ChakraProvider>
@@ -172,7 +171,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
           </AppErrorBoundary>
         </RollbarProvider>
       </ChakraProvider>
-    </>
+    </NextRouterProvider>
   );
 }
 

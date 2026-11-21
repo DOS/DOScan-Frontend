@@ -21,6 +21,11 @@ on:
                 default: 'FFFFFF'
                 required: false
                 type: string
+            dry_run:
+                description: 'List the PRs and issues without labeling them'
+                default: false
+                required: false
+                type: boolean
     workflow_call:
         inputs:
             tag:
@@ -41,30 +46,64 @@ on:
                 default: 'FFFFFF'
                 required: false
                 type: string
+            dry_run:
+                description: 'List the PRs and issues without labeling them'
+                default: false
+                required: false
+                type: boolean
         outputs:
             issues:
-                description: "JSON encoded list of issues linked to commits in the release"
+                description: "JSON encoded list of issues linked to the PRs in the release"
                 value: ${{ jobs.run.outputs.issues }}
 
-# concurrency:
-#   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
-#   cancel-in-progress: true
 permissions:
   contents: read
   issues: write
+  pull-requests: write
 
 jobs:
     run:
         name: Run
         runs-on: ubuntu-latest
         outputs:
-            issues: ${{ steps.linked_issues.outputs.result }}
+            issues: ${{ steps.label.outputs.issues }}
         steps:
+<<<<<<< HEAD
             -   name: Getting tags of the two latest releases
                 id: tags
                 uses: actions/github-script@v9
+=======
+            # Full history and tags: the tool computes the previous tag and the commit range from the checkout.
+            -   name: Checkout repo
+                uses: actions/checkout@v4
+                with:
+                    fetch-depth: 0
+
+            -   name: Install pnpm
+                uses: pnpm/action-setup@v6
+                with:
+                    version: 12.4.1
+                    cache: true
+
+            -   name: Setup node
+                uses: actions/setup-node@v4
+                with:
+                    node-version: 24.21.0
+                    cache: 'pnpm'
+
+            -   name: Install dependencies
+                run: pnpm install --frozen-lockfile
+
+            -   name: Label PRs and issues
+                id: label
+                run: |
+                    issues=$(pnpm --silent release label "$TAG" --label="$LABEL_NAME" --description="$LABEL_DESCRIPTION" --color="$LABEL_COLOR" $DRY_RUN_FLAG)
+                    echo "issues=$issues" >> "$GITHUB_OUTPUT"
+>>>>>>> v2.13.0
                 env:
+                    GH_TOKEN: ${{ github.token }}
                     TAG: ${{ inputs.tag }}
+<<<<<<< HEAD
                 with:
                     script: |
                         const { repository: { releases: { nodes: releases } } } = await github.graphql(`
@@ -236,9 +275,11 @@ jobs:
                 id: label_creating
                 uses: actions/github-script@v9
                 env:
+=======
+>>>>>>> v2.13.0
                     LABEL_NAME: ${{ inputs.label_name }}
-                    LABEL_COLOR: ${{ inputs.label_color }}
                     LABEL_DESCRIPTION: ${{ inputs.label_description }}
+<<<<<<< HEAD
                 with:
                     script: |
                         try {
@@ -289,3 +330,7 @@ jobs:
                                 labels: [ label ],
                             });
                         }
+=======
+                    LABEL_COLOR: ${{ inputs.label_color }}
+                    DRY_RUN_FLAG: ${{ inputs.dry_run && '--dry-run' || '' }}
+>>>>>>> v2.13.0

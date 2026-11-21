@@ -20,7 +20,8 @@ and note it, rather than guessing.
 ## Step 1 — Load
 
 Resolve the task folder from the issue number or the branch (`issue-<number>`), and read its `spec.md`, 
-`questions.md` and `.agents/delegation.md`.
+`questions.md` and `.agents/delegation.md`. An `inbox.md` with a section whose status is `pending` is a
+stop: tell the developer to run `process-task-inbox` first, and end.
 
 ## Step 2 — Explore the codebase (optional)
 
@@ -31,7 +32,7 @@ Look for opportunities to prefactor the code to make the implementation easier. 
 ## Step 3 — Draft slices
 
 Break the work into tracer bullet tickets.
-- Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests) — a vertical slice.
+- Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests) — a vertical slice. Visual tests (`*.pw.tsx`) are not a required layer of that path; read `.agents/rules/tests-visual.md` Purpose before adding a suite.
 - A completed slice is demoable or verifiable on its own
 - Each slice is sized to fit in a single fresh context window
 - Any prefactoring should be done first
@@ -62,16 +63,20 @@ For every `[agent]` leaf that runs a project skill (`add-new-page`, `add-api-res
 **open that skill and run its user-facing interview now**, against the spec — from the skill's current text,
 not from memory of its questions (e.g. `add-new-page` Step 0). Record the answers in the ticket's **Skill
 inputs** section, grouped by skill. Where the spec answers a question, take the answer from it and move on;
-where it has a genuine gap, ask the developer. This is what lets the later `implement-ticket` run go
-uninterrupted.
+where it has a genuine gap, ask the developer. What the developer can't settle is not theirs to guess:
+record it as a `Q<NN>` to the owning contact in `questions.md` and a `Blocked by Q<NN>` edge on the
+ticket. This is what lets the later `implement-ticket` run go uninterrupted.
 
 ## Step 6 — Write the files
 
 Per approved ticket, write `tickets/NN-<slug>/spec.md` from [`ticket-template.md`](ticket-template.md) — What
 to build, Acceptance criteria (tagging `(human)` per the ticket model), the Skill inputs from Step 5, the
 Leaf worklist with each leaf tagged `[agent]` / `[human]` per `.agents/delegation.md`, and the header's
-`Blocked by` edges (`T<NN>` / `Q<NN>`). A ticket that can't be scoped gets a `brief.md` instead — its goal,
-the known context, and the blocking unknowns with their owners.
+`Blocked by` edges (`T<NN>` / `Q<NN>`). UI leaves follow the rule in "Leaves" in `.agents/tasks/concepts.md`: every linked Figma node gets one
+`[agent]` style leaf, after the scaffold leaf when there is one; it links its Figma node and, when the task
+folder has a `design-readout.md`, that node's block in it, and the ticket carries the criterion
+`(human) <component> matches the mockup at every breakpoint`. A ticket that can't be scoped gets a
+`brief.md` instead — its goal, the known context, and the blocking unknowns with their owners.
 
 Create (or append to) `progress.md` from [`progress-template.md`](progress-template.md) — one checkbox line
 per ticket. When scoping a deferred ticket, **append** its siblings and retarget the `Blocked by` edges that

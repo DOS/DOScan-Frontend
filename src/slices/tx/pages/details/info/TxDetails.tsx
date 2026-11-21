@@ -9,7 +9,6 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -50,6 +49,7 @@ import DetailedInfoNativeCoinValue from 'src/shared/detailed-info/DetailedInfoNa
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
+import { route } from 'src/shared/router/routes';
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
@@ -365,6 +365,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                   }
                   return message.relay_chain !== undefined ? (
                     <AddressEntityInterop
+                      key={ message.nonce }
                       chain={ message.relay_chain }
                       address={{ hash: message.target_address_hash }}
                       isLoading={ isLoading }
@@ -372,7 +373,13 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                       w="100%"
                     />
                   ) : (
-                    <AddressEntity address={{ hash: message.target_address_hash }} isLoading={ isLoading } truncation="dynamic" w="100%"/>
+                    <AddressEntity
+                      key={ message.nonce }
+                      address={{ hash: message.target_address_hash }}
+                      isLoading={ isLoading }
+                      truncation="dynamic"
+                      w="100%"
+                    />
                   );
                 }) }
             </VStack>

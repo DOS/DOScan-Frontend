@@ -3,7 +3,11 @@
 
 import React from 'react';
 
+<<<<<<< HEAD
 import { EventTypes } from 'src/services/mixpanel';
+=======
+import { EventTypes } from 'src/shared/analytics';
+>>>>>>> v2.13.0
 
 import { afterEach, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from 'vitest/lib';
@@ -11,7 +15,11 @@ import withEnvs from 'vitest/utils/mockEnvs';
 
 const logEventMock = vi.hoisted(() => vi.fn());
 
+<<<<<<< HEAD
 vi.mock('src/services/mixpanel', async(importOriginal) => ({
+=======
+vi.mock('src/shared/analytics', async(importOriginal) => ({
+>>>>>>> v2.13.0
   ...await importOriginal<object>(),
   logEvent: logEventMock,
 }));
@@ -41,7 +49,11 @@ const envsWithMalformedUrl: Array<[ string, string ]> = [
 it('renders nothing when the button is not configured', async() => {
   const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
+<<<<<<< HEAD
   render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+=======
+  render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
+>>>>>>> v2.13.0
 
   expect(screen.queryByText(BUTTON_TEXT)).toBeNull();
 });
@@ -50,12 +62,17 @@ it('renders nothing when the configured url is malformed', async() => {
   await withEnvs(envsWithMalformedUrl, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
+<<<<<<< HEAD
     render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+=======
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
+>>>>>>> v2.13.0
 
     expect(screen.queryByText(BUTTON_TEXT)).toBeNull();
   });
 });
 
+<<<<<<< HEAD
 it('renders nothing for a token that is not ERC-20', async() => {
   await withEnvs(envs, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
@@ -76,11 +93,17 @@ it('renders while the token type is still unknown', async() => {
   });
 });
 
+=======
+>>>>>>> v2.13.0
 it('opens the configured url in a new tab, with utm params appended', async() => {
   await withEnvs(envs, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
+<<<<<<< HEAD
     render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+=======
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
+>>>>>>> v2.13.0
 
     const link = screen.getByRole('link', { name: BUTTON_TEXT });
     expect(link.getAttribute('href')).toBe(`${ CONFIGURED_URL }?utm_source=blockscout&utm_medium=token`);
@@ -92,7 +115,11 @@ it('substitutes every {hash} placeholder with the lowercased token hash', async(
   await withEnvs(envsWithPlaceholder, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
+<<<<<<< HEAD
     render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+=======
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
+>>>>>>> v2.13.0
 
     const link = screen.getByRole('link', { name: BUTTON_TEXT });
     expect(link.getAttribute('href'))
@@ -100,6 +127,7 @@ it('substitutes every {hash} placeholder with the lowercased token hash', async(
   });
 });
 
+<<<<<<< HEAD
 it('logs a button click event with the configured text', async() => {
   await withEnvs(envs, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
@@ -109,5 +137,20 @@ it('logs a button click event with the configured text', async() => {
     fireEvent.click(screen.getByRole('button', { name: BUTTON_TEXT }));
 
     expect(logEventMock).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: BUTTON_TEXT, Source: 'token' });
+=======
+it('logs an action button event with the destination url', async() => {
+  await withEnvs(envs, async() => {
+    const { 'default': TokenActionButton } = await import('./TokenActionButton');
+
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
+
+    fireEvent.click(screen.getByRole('button', { name: BUTTON_TEXT }));
+
+    expect(logEventMock).toHaveBeenCalledWith(EventTypes.PAGE_WIDGET, {
+      Type: 'Action button',
+      Info: `${ CONFIGURED_URL }?utm_source=blockscout&utm_medium=token`,
+      Source: 'Token',
+    });
+>>>>>>> v2.13.0
   });
 });

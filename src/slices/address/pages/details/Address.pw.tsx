@@ -5,6 +5,9 @@ import * as addressMock from 'src/slices/address/mocks/address';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as addressCountersMock from 'src/slices/address/mocks/counters';
 import * as addressTabCountersMock from 'src/slices/address/mocks/tab-counters';
+import * as statsMock from 'src/slices/chain/stats/mocks';
+
+import { generateAddressMetadataInfo, nameTag } from 'src/features/address-metadata/mocks/tags';
 
 import { USER_OPS_ACCOUNT, USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
@@ -23,6 +26,21 @@ const hooksConfig = {
   },
 };
 
+const addressMetadataQueryParams = {
+  addresses: [ addressParamMock.hash ],
+  chainId: config.chain.id,
+  tagsLimit: '20',
+};
+
+const ensLookupQueryParams = {
+  address: addressParamMock.hash,
+  protocols: [ 'ens' ],
+  resolved_to: true,
+  owned_by: true,
+  only_active: true,
+  order: 'ASC',
+};
+
 test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
 });
@@ -33,6 +51,10 @@ test.describe('fetched bytecode', () => {
     await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressParamMock.hash } });
     await mockApiResponse('core:address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressParamMock.hash } });
     await mockApiResponse('core:address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressParamMock.hash } });
+    await mockApiResponse('core:stats', statsMock.base);
+    await mockApiResponse('metadata:info', generateAddressMetadataInfo(addressParamMock.hash, nameTag), { queryParams: addressMetadataQueryParams });
+    await mockApiResponse('metadata:address_submit', null as never);
+    await mockApiResponse('bens:addresses_lookup', { items: [], next_page_params: undefined }, { queryParams: ensLookupQueryParams });
     await render(<Address/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
@@ -50,11 +72,23 @@ test('degradation view', async({ render, page, mockRpcResponse, mockApiResponse 
   await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressParamMock.hash } });
   await mockApiResponse('core:address_tabs_counters', null as never, { pathParams: { hash: addressParamMock.hash }, status: 500 });
   await mockApiResponse('core:address_txs', null as never, { pathParams: { hash: addressParamMock.hash }, status: 500 });
-  await mockRpcResponse([ {
-    Method: 'eth_getBalance',
-    Parameters: [ addressParamMock.hash, 'latest' ],
-    ReturnType: numberToHex(1234567890123456),
-  } ]);
+  await mockApiResponse('core:stats', null as never, { status: 500 });
+  await mockApiResponse('metadata:info', null as never, { queryParams: addressMetadataQueryParams, status: 500 });
+  await mockApiResponse('bens:addresses_lookup', null as never, { queryParams: ensLookupQueryParams, status: 500 });
+  await mockRpcResponse([
+    {
+      Method: 'eth_getBalance',
+      Parameters: [ addressParamMock.hash, 'latest' ],
+      ReturnType: numberToHex(1234567890123456),
+    },
+    // the node is down for the tx count too, which keeps the row in its loading state like the balance-only run
+    {
+      Method: 'eth_getTransactionCount',
+      Parameters: [ addressParamMock.hash, 'latest' ],
+      ReturnType: numberToHex(0),
+      status: 500,
+    },
+  ]);
 
   const component = await render(<Address/>, { hooksConfig });
   await page.waitForResponse(config.chain.rpcUrls[0]);

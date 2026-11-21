@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { ApiKey } from 'src/features/account/types/api';
@@ -15,23 +15,25 @@ import { API_KEY } from 'src/features/account/stubs';
 
 import config from 'src/config';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import { sanitizeHtml } from 'src/shared/texts/sanitize-html';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { BoxHtml } from 'src/toolkit/chakra/box';
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 import { space } from 'src/toolkit/utils/htmlEntities';
 
 import ApiKeyModal from './ApiKeyModal/ApiKeyModal';
-import ApiKeyListItem from './ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from './ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from './DeleteApiKeyModal';
 
 const DATA_LIMIT = 3;
 
 const feature = config.features.account;
+const alertHtml = feature.isEnabled ? sanitizeHtml(feature.apiKeys.alertMessage || '') : '';
 
 const ApiKeysPage: React.FC = () => {
   const apiKeyModalProps = useDisclosure();
@@ -69,8 +71,7 @@ const ApiKeysPage: React.FC = () => {
 
   const description = config.chain.isProApiSupported ? (
     <AccountPageDescription>
-      Blockscout APIs require a key. Create a <Link href="https://dev.blockscout.com" external noIcon>
-        free PRO API key</Link> to access all multichain endpoints.
+      Create a <Link href="https://dev.blockscout.com" external noIcon>free Blockscout API key</Link> to access all multichain endpoints.
     </AccountPageDescription>
   ) : (
     <AccountPageDescription>
@@ -85,35 +86,22 @@ const ApiKeysPage: React.FC = () => {
     }
 
     const list = (
-      <>
-        <Box display={{ base: 'block', lg: 'none' }}>
-          { data?.map((item, index) => (
-            <ApiKeyListItem
-              key={ item.api_key + (isPlaceholderData ? index : '') }
-              item={ item }
-              isLoading={ isPlaceholderData }
-              onDeleteClick={ onDeleteClick }
-              onEditClick={ onEditClick }
-            />
-          )) }
-        </Box>
-        <Box display={{ base: 'none', lg: 'block' }}>
-          <ApiKeyTable
-            data={ data }
-            isLoading={ isPlaceholderData }
-            onDeleteClick={ onDeleteClick }
-            onEditClick={ onEditClick }
-            limit={ DATA_LIMIT }
-          />
-        </Box>
-      </>
+      <TableContainerScrollable>
+        <ApiKeyTable
+          data={ data }
+          isLoading={ isPlaceholderData }
+          onDeleteClick={ onDeleteClick }
+          onEditClick={ onEditClick }
+          limit={ DATA_LIMIT }
+        />
+      </TableContainerScrollable>
     );
 
     const canAdd = !isPlaceholderData ? (data?.length || 0) < DATA_LIMIT : true;
 
-    const alert = feature.isEnabled && feature.apiKeys.alertMessage ? (
+    const alert = alertHtml ? (
       <Alert status="warning" mb={ 6 }>
-        <BoxHtml html={ feature.apiKeys.alertMessage }/>
+        <BoxHtml html={ alertHtml }/>
       </Alert>
     ) : null;
 

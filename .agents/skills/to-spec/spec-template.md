@@ -7,12 +7,16 @@
 | PM | <name> |
 | Designer | <name> |
 | Backend | <name> |
-| Minimum API version | <API version(s) this task requires, e.g. "Core API v11.2.4+"; list several for a multi-service raise; "—" if none> |
-| Slack channel | <#feature-channel if the task has one; otherwise "—" (default routing per `grill-the-task`)> |
+| Minimum API version | <API version(s) this task requires, e.g. "Core API v11.2.4+"; list several for a multi-service raise> |
+| Slack channel | <#feature-channel, when the task has one> |
+| Demo | <from grilling; shape in `.agents/skills/deploy-demo/demo-entries.md`> |
 
 <!-- Header is static identity — no status row: task status is derived from `progress.md` (see
-`.agents/tasks/structure.md`). People default from `.agents/TEAM.md`; override here per task. The spec body
-below is immutable once written; only `progress.md` and `questions.md` change as work proceeds. -->
+`.agents/tasks/structure.md`). Drop a row that has nothing to say (no designer, no API raise, no feature
+channel) instead of filling it with "—"; readers treat an absent row as "none". `Demo` is the one row that
+always stays, because its value drives the land step's deploys. People default from `.agents/TEAM.md`;
+override here per task. The spec body below is immutable once written; only `progress.md` and
+`questions.md` change as work proceeds. -->
 
 ## Context & goal
 
@@ -32,8 +36,8 @@ staging-only) and the backend release version that ships the changes (for releas
 ## UI inventory
 
 <!-- Affected pages/tabs/components: routes, navigation entry points, cross-links to existing entity
-pages. One Figma node link per screen. State behavioral facts and placement; leave appearance to the
-mockups and the [human] style leaves. When you must lean on existing code, point to it by component or
+pages. One Figma node link per screen and state. State behavioral facts and placement; leave appearance
+to the mockups and the style leaves. When you must lean on existing code, point to it by component or
 symbol name ("match `LogDecodedInputDataTable`") — never transcribe its values, class names, or line
 numbers; those rot and the code owns them. Capture only a deliberate deviation and its reason. See "What
 the spec holds" in `.agents/tasks/concepts.md`. -->

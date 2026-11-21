@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex, GridItem } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
@@ -12,6 +11,11 @@ import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFrom
 import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
+<<<<<<< HEAD
+=======
+import { route } from 'src/shared/router/routes';
+import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
+>>>>>>> v2.13.0
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
@@ -22,10 +26,11 @@ const MAX_NUM = 5;
 interface Props {
   data: Array<InterchainTransfer>;
   id: string;
+  bridgeId: number | undefined;
   isLoading?: boolean;
 }
 
-const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
+const TxCrossChainDetailsTransfers = ({ data, id, bridgeId, isLoading }: Props) => {
   return (
     <>
       <DetailedInfo.ItemLabel
@@ -97,14 +102,17 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
           }) }
         </Flex>
       </DetailedInfo.ItemValue>
-      { data.length > MAX_NUM && (
+      { data.length > MAX_NUM && bridgeId !== undefined && (
         <>
           <GridItem hideBelow="lg"/>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
             { /* FIXME use non-navigation icon */ }
             <SpriteIcon name="navigation/tokens" boxSize={ 6 }/>
             <Link
-              href={ route({ pathname: '/cross-chain-tx/[id]', query: { id, tab: 'transfers' } }) }
+              href={ route({
+                pathname: '/bridge/[bridgeId]/cross-chain-tx/[id]',
+                query: { bridgeId: String(bridgeId), id, tab: 'transfers' },
+              }) }
             >
               View all
             </Link>
