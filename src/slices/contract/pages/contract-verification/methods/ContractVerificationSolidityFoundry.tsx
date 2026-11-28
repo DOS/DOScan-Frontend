@@ -44,7 +44,11 @@ const ContractVerificationSolidityFoundry = () => {
           </Link>
           { config.chain.isProApiSupported && (
             <Box mt={ 1 }>
+<<<<<<< HEAD
               <span>Get your Pro API key in the </span>
+=======
+              <span>Get your Blockscout API key in the </span>
+>>>>>>> v2.13.0
               <Link href="https://dev.blockscout.com/?utm_source=blockscout&utm_medium=contract_verification" external>
                 Blockscout Dev Portal
               </Link>

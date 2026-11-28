@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MetadataTag } from 'src/features/address-metadata/components/tag/types';
@@ -48,7 +47,6 @@ import AlternativeExplorers from 'src/features/alternative-explorers/components/
 import AddressDeposits from 'src/features/chain-variants/beacon-chain/pages/address/AddressDeposits';
 import AddressWithdrawals from 'src/features/chain-variants/beacon-chain/pages/address/AddressWithdrawals';
 import AddressEpochRewards from 'src/features/chain-variants/celo/pages/address/AddressEpochRewards';
-import AddressMultichainInfoButton from 'src/features/multichain-button/pages/address/AddressMultichainInfoButton';
 import { useAddressClusters } from 'src/features/name-services/clusters/hooks/useAddressClusters';
 import AddressClusters from 'src/features/name-services/clusters/pages/address/AddressClusters';
 import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
@@ -65,6 +63,7 @@ import useFetchXStarScore from 'src/features/x-star-score/hooks/useFetchXStarSco
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'src/shared/router/useEtherscanRedirects';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
@@ -475,7 +474,6 @@ const AddressPageContent = () => {
       <AddressQrCode hash={ addressQuery.data?.filecoin?.robust ?? checkSummedHash } isLoading={ isLoading }/>
       <ActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
-      <AddressMultichainInfoButton loading={ isLoading } addressData={ addressQuery.data }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.slices.contract.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled &&
@@ -495,8 +493,10 @@ const AddressPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
-      { !addressMetadataQuery.isPending &&
-        <AddressAlerts tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }/> }
+      <AddressAlerts
+        tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }
+        isScamAddress={ addressQuery.data?.is_scam }
+      />
       { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
       <RoutedTabs tabs={ tabs } isLoading={ isTabsLoading }/>
     </>

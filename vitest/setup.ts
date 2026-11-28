@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { vi } from 'vitest';
 import createFetchMock from 'vitest-fetch-mock';
 
-const envs = dotenv.config({ path: './vitest/.env.vitest' });
+const envs = dotenv.config({ path: './vitest/.env.vitest', quiet: true });
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
@@ -18,16 +18,6 @@ Object.defineProperty(globalThis, '__envs', {
 vi.mock('use-font-face-observer', () => ({
   'default': () => true,
 }));
-
-// Default next/router so vitest/lib's TestApp.
-vi.mock('next/router', async() => {
-  const { buildRouterMock } = await import('./utils/mockRouter');
-  const router = buildRouterMock('/', '/');
-  return {
-    useRouter: () => router,
-    'default': router,
-  };
-});
 
 // browser APIs that jsdom does not implement but app components rely on
 if (typeof window !== 'undefined') {
