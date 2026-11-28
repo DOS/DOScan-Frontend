@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -16,6 +15,7 @@ import { CELO_EPOCH } from 'src/features/chain-variants/celo/stubs/epoch';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Tag } from 'src/toolkit/chakra/tag';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
@@ -75,7 +75,7 @@ const EpochPageContent = () => {
           variant="subheading"
           { ...truncationProps }
         />
-        { epochQuery.data.end_block_number && (
+        { epochQuery.data.end_block_number !== null && (
           <>
             <Box color="text.secondary">to</Box>
             <BlockEntity number={ epochQuery.data.end_block_number } variant="subheading" { ...truncationProps }/>

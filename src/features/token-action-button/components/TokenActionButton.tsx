@@ -2,17 +2,26 @@
 
 import React from 'react';
 
+<<<<<<< HEAD
 import { buildUrl } from 'src/features/token-action-button/utils/build-url';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import * as mixpanel from 'src/services/mixpanel';
+=======
+import { buildTokenActionUrl } from 'src/features/token-action-button/utils/build-url';
+
+import config from 'src/config';
+import { getFeaturePayload } from 'src/config/utils/features';
+import * as analytics from 'src/shared/analytics';
+>>>>>>> v2.13.0
 
 import { Button } from 'src/toolkit/chakra/button';
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 import { Image } from 'src/toolkit/chakra/image';
 import { Link, LinkExternalIcon } from 'src/toolkit/chakra/link';
 
+<<<<<<< HEAD
 const feature = config.features.tokenActionButton;
 const button = getFeaturePayload(feature)?.button;
 
@@ -29,12 +38,31 @@ const TokenActionButton = ({ tokenHash, tokenType, isLoading }: Props) => {
       mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: feature.button.text, Source: 'token' });
     }
   }, []);
+=======
+const button = getFeaturePayload(config.features.tokenActionButton)?.button;
+
+interface Props {
+  tokenHash: string;
+  isLoading?: boolean;
+}
+
+const TokenActionButton = ({ tokenHash, isLoading }: Props) => {
+  const href = button ? buildTokenActionUrl(button.url, tokenHash) : undefined;
+
+  const handleClick = React.useCallback(() => {
+    // Stryker disable next-line ConditionalExpression: always true here (no href, no button); it narrows href for analytics
+    if (href) {
+      analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Action button', Info: href, Source: 'Token' });
+    }
+  }, [ href ]);
+>>>>>>> v2.13.0
 
   const logoSrc = useColorModeValue(
     button?.logo?.[0],
     button?.logo?.[1] || button?.logo?.[0],
   );
 
+<<<<<<< HEAD
   if (!button) {
     return null;
   }
@@ -46,6 +74,9 @@ const TokenActionButton = ({ tokenHash, tokenType, isLoading }: Props) => {
   const href = buildUrl(button.url, tokenHash);
 
   if (!href) {
+=======
+  if (!button || !href) {
+>>>>>>> v2.13.0
     return null;
   }
 

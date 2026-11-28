@@ -46,11 +46,18 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   xStarScore: [
     [ 'NEXT_PUBLIC_XSTAR_SCORE_URL', 'https://localhost:3115' ],
   ],
+  bubblemaps: [
+    [ 'NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG', 'eth' ],
+    [ 'NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID', 'demo' ],
+  ],
   hasContractAuditReports: [
     [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
   ],
   blockHiddenFields: [
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', '["burnt_fees", "total_reward", "nonce"]' ],
+  ],
+  blockHiddenViews: [
+    [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS', '["reorgs", "uncles"]' ],
   ],
   stabilityEnvs: [
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS', '["top_accounts"]' ],
@@ -100,7 +107,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
   ],
   tac: [
-    [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3100' ],
+    [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3010' ],
     [ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL', 'https://testnet.tonviewer.com' ],
   ],
   celo: [
@@ -132,6 +139,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   crossChainTxs: [
     [ 'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST', 'http://localhost:3014' ],
     [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', '[1,2]' ],
   ],
   proApi: [
     [ 'NEXT_PUBLIC_PRO_API_SUPPORTED', 'true' ],
@@ -139,6 +147,12 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   flashblocks: [
     [ 'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL', 'wss://localhost:3120/ws' ],
   ],
+<<<<<<< HEAD
+=======
+  additionalTokenTypes: [
+    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-7984","name":"ERC-7984"},{"id":"ERC-8056","name":"ERC-8056"}]' ],
+  ],
+>>>>>>> v2.13.0
   tokenActionButton: [
     [
       'NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG',

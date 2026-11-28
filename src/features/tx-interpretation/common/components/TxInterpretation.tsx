@@ -2,7 +2,6 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -20,10 +19,11 @@ import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Badge } from 'src/toolkit/chakra/badge';
@@ -61,15 +61,15 @@ const TxInterpretationElementByType = (
   { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, schemas['Address']> },
 ) => {
   const onAddressClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
+    analytics.logEvent(analytics.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
   }, []);
 
   const onTokenClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Token click' });
+    analytics.logEvent(analytics.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Token click' });
   }, []);
 
   const onDomainClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Domain click' });
+    analytics.logEvent(analytics.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Domain click' });
   }, []);
 
   if (!variable) {

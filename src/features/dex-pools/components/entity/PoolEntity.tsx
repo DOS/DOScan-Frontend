@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type * as contractsInfo from '@blockscout/contracts-info-types';
@@ -12,9 +11,9 @@ import { getPoolTitle } from 'src/features/dex-pools/utils/get-pool-title';
 
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps } from 'src/shared/entities/utils';
+import { route } from 'src/shared/router/routes';
 
-import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedTextTooltip } from 'src/toolkit/components/truncation/TruncatedTextTooltip';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'pool'>;
 
@@ -88,18 +87,7 @@ const Content = chakra((props: ContentProps) => {
   const nameString = getPoolTitle(props.pool);
 
   return (
-    <TruncatedTextTooltip label={ nameString }>
-      <Skeleton
-        loading={ props.isLoading }
-        display="inline-block"
-        whiteSpace="nowrap"
-        overflow="hidden"
-        textOverflow="ellipsis"
-        height="fit-content"
-      >
-        { nameString }
-      </Skeleton>
-    </TruncatedTextTooltip>
+    <Truncate value={ nameString } type="end" loading={ props.isLoading }/>
   );
 });
 

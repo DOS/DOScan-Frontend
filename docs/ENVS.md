@@ -21,6 +21,11 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 ### Note about escaping variables values
 All json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution) for the reference)
 
+### HTML values
+A variable whose description says it accepts HTML code is rendered as HTML on the app's own origin, so its markup is limited to text formatting, links and images. `<script>`, `<iframe>`, `<form>`, `<svg>`, `<object>`, inline `style` attributes, `on*` event handlers and `javascript:` links are rejected at startup, with a message naming what was found, and stripped from the rendered markup.
+
+The value is used as set: apostrophes and single-quoted attribute values stay as they are (unlike json-like values, no quote rewriting happens). A variable typed `Array<string>` takes a JSON list of such strings. Double-quote its items and put HTML attribute values in single quotes or escape their double quotes, for example `["Hello", "<a href='https://example.com'>Link!</a>"]`; the single-quoted form `['Hello', '<b>World</b>']` also works as long as no item itself contains a single quote.
+
 &nbsp;
 
 ## Table of contents
@@ -69,6 +74,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [API documentation](#api-documentation)
   - [Blockchain statistics](#blockchain-statistics)
   - [Bridged tokens](#bridged-tokens)
+  - [Bubblemaps](#bubblemaps)
   - [Chain variants](#chain-variants)
   - [Connect wallet](#connect-wallet)
   - [Cross-chain transactions](#cross-chain-transactions)
@@ -102,12 +108,13 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Google ReCaptcha](#google-recaptcha)
   - [GrowthBook](#growthbook)
   - [Mixpanel](#mixpanel)
+  - [PostHog](#posthog)
   - [OpenTelemetry](#opentelemetry)
   - [Rollbar](#rollbar)
   - [Usercentrics CMP](#usercentrics-cmp)
 - [Misc](#misc)
   - [Design system](#design-system)
-  - [Pro API support](#pro-api-support)
+  - [Blockscout API support](#blockscout-api-support)
 
 &nbsp;
 
@@ -323,7 +330,7 @@ The repository targets and link type can be overwritten at run-time with the var
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code. If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. In this case, please ensure that you properly escape the values of HTML attributes or other special symbols (for example, `<a href=\\"https://example.com\\">Link!</a>`). | - | - | `Hello world! 🤪` | v1.13.0+ |
+| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code (see [HTML values](#html-values)). If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. | - | - | `Hello world! 🤪` | v1.13.0+ |
 
 &nbsp;
 
@@ -386,8 +393,13 @@ Meta tags, Open Graph, and SEO.
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) or file content string representation. It contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` \| `[{'title':'Astar(EVM)','url':'https://astar.blockscout.com/','group':'Mainnets','icon':'https://example.com/astar.svg'}]` | v1.0.x+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK | `string` | Link to the all chains resource. Will be displayed at the bottom of featured networks list. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | - | `https://example.com` | v2.3.0+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS_MODE | `tabs \| list` | Indicates how the networks are presented: in one list or in separate tabs. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | `list` | `tabs` | v2.5.0+ |
+<<<<<<< HEAD
 | NEXT_PUBLIC_COLOR_THEMES | `Array<'light' \| 'dim' \| 'midnight' \| 'dark'>` | Color themes the app offers in the settings menu. | - | all themes | `['light', 'dark']` | upcoming |
 | NEXT_PUBLIC_COLOR_THEME_DEFAULT | `'light' \| 'dim' \| 'midnight' \| 'dark'` | Preferred color theme of the app. Must be one of the themes listed in NEXT_PUBLIC_COLOR_THEMES, if that variable is set. | - | none, unless the themes offered by NEXT_PUBLIC_COLOR_THEMES cannot cover both light and dark `prefers-color-scheme`, in which case the last (darkest) one of them | `midnight` | v1.30.0+ |
+=======
+| NEXT_PUBLIC_COLOR_THEMES | `Array<'light' \| 'dim' \| 'midnight' \| 'dark' \| 'system'>` | Color themes the app offers in the settings menu. The `system` theme ("Auto (System)") follows the OS `prefers-color-scheme` and is offered only when the list also covers both a light and a dark theme. | - | all themes | `['light', 'dark', 'system']` | v2.11.2+ |
+| NEXT_PUBLIC_COLOR_THEME_DEFAULT | `'light' \| 'dim' \| 'midnight' \| 'dark' \| 'system'` | Preferred color theme of the app. Must be one of the themes listed in NEXT_PUBLIC_COLOR_THEMES, if that variable is set. | - | `system`, unless the themes offered by NEXT_PUBLIC_COLOR_THEMES cannot cover both light and dark `prefers-color-scheme`, in which case the last (darkest) one of them | `midnight` | v1.30.0+ |
+>>>>>>> v2.13.0
 | NEXT_PUBLIC_COLOR_THEME_OVERRIDES | `string` | Color overrides for the default theme; pass a JSON-like string that represents a subset of the `DEFAULT_THEME_COLORS` object (see `toolkit/theme/foundations/colors.ts`) to customize the app's main colors. See [here](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=29124-23813&t=XOv4ahHUSsTDlNkN-4) the Figma worksheet with description of available color tokens. | - | - | `{'text':{'primary':{'_light':{'value':'rgba(16,17,18,0.80)'},'_dark':{'value':'rgba(222,217,217)'}}}}` | v2.3.0+ |
 
 #### Featured network configuration properties
@@ -427,6 +439,7 @@ Meta tags, Open Graph, and SEO.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
+| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS | `Array<BlockViewId>` | Block views that should be hidden. See below the list of the possible id values. | - | - | `'["reorgs","uncles"]'` | v2.13.0+ |
 | NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | v2.4.0+ |
 
 #### Block fields list
@@ -439,6 +452,12 @@ Meta tags, Open Graph, and SEO.
 | `miner` | Address of block's miner or validator |
 | `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
 | `batch` | Batch index (applicable for Rollup chains) |
+
+#### Block views list
+| Id | Description |
+| --- | --- |
+| `reorgs` | Forked blocks tab on the blocks page |
+| `uncles` | Uncle blocks tab on the blocks page |
 
 &nbsp;
 
@@ -610,8 +629,8 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
 | NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
 | NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
-| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. On chains supported by the Blockscout Pro API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
-| NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code. Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
+| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code (see [HTML values](#html-values)). On chains supported by the Blockscout API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
+| NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code (see [HTML values](#html-values)). Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
 
 **Dependencies**
 
@@ -745,7 +764,7 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. On chains supported by the Blockscout Pro API the page is not rendered unless this variable is set, and the "API" navigation item links to the Blockscout developer portal instead. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
+| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. On chains supported by the Blockscout API the page is not rendered unless this variable is set, and the "API" navigation item links to the Blockscout developer portal instead. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
 | NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API documentation page. Could be a regular string or HTML code. Deprecated — no longer has any effect and will be removed in the next release. | - | - | `Hello world! 🤪` | v2.7.0+ |
 
 **Dependencies**
@@ -798,6 +817,18 @@ This feature allows users to view tokens that have been bridged from other EVM c
 | short_title | `string` | Bridge short title for displaying in the tags | Required | - | `OMNI` |
 
 &nbsp;
+
+### Bubblemaps
+
+Embeds the [Bubblemaps](https://bubblemaps.io) holder map as a "Bubblemaps" sub-tab of the "Holders" tab on the ERC-20 token page.
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG | `string` | Bubblemaps chain identifier of the network, see the [supported chains](https://docs.bubblemaps.io/iframe/quickstart) | Required | - | `eth` | v2.13.0+ |
+| NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID | `string` | Bubblemaps partner ID issued for the explorer's domains | Required | - | `demo` | v2.13.0+ |
+
+&nbsp;
+
 ### Chain variants
 
 #### Beacon chain
@@ -890,6 +921,8 @@ This feature enables cross-chain transaction tracking and visualization, allowin
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | v2.7.0+ |
+| NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS | `Array<number>` | Ids of the interchain indexer bridges whose messages and transfers this instance is allowed to show. The indexer is shared between deployments and indexes every bridge it knows about, so the ids define this instance's slice of it. | Required | - | `'[1,2]'` | v2.12.0+ |
+| NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS | `boolean` | Set to `true` to also show messages and transfers whose counterparty chain is not indexed by any of the configured bridges. Such rows have an incomplete counterparty side. | - | `false` | `true` | v2.12.0+ |
 
 **Dependencies**
 
@@ -928,7 +961,11 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS | `[{ text: string; icon?: string; dappId?: string, url?: string, isEssentialDapp?: boolean }]` | An array of dropdown items containing the button text, icon name and dappId in Dappscout or an external url | - | - | `[{'text':'Swap','icon':'swap','dappId':'swap','isEssentialDapp':true},{'text':'Payment link','icon':'payment_link','dappId':'peanut-protocol'}]` | v1.31.0+ |
+<<<<<<< HEAD
 | NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT | `{ desktop: string; mobile?: string }` | Text on the button that opens the dropdown. `mobile` is the shorter form shown on narrow screens. Keep `desktop` within ~24 characters and `mobile` within ~10. | - | `{'desktop':'Blockscout DeFi','mobile':'DeFi'}` | `{'desktop':'MyChain DeFi','mobile':'DeFi'}` | upcoming |
+=======
+| NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT | `{ desktop: string; mobile?: string }` | Text on the button that opens the dropdown. `mobile` is the shorter form shown on narrow screens. Keep `desktop` within ~24 characters and `mobile` within ~10. | - | `{'desktop':'Blockscout DeFi','mobile':'DeFi'}` | `{'desktop':'MyChain DeFi','mobile':'DeFi'}` | v2.11.2+ |
+>>>>>>> v2.13.0
 
 &nbsp;
 
@@ -1065,7 +1102,7 @@ Essential dapps are built-in dapps that are displayed on the Marketplace page in
 
 | Property | Type | Description | Compulsoriness | Example value |
 | --- | --- | --- | --- | --- |
-| swap | `{ url: string, chains: Array<string>, fee: string, integrator: string }` | Swap config | - | `{'url': 'https://example.com', 'chains': ['1'], 'fee': '0.004', 'integrator': 'blockscout'}` |
+| swap | `{ chains: Array<string>, fee: string, integrator: string }` | Swap config | - | `{'chains': ['1'], 'fee': '0.004', 'integrator': 'blockscout'}` |
 | revoke | `{ chains: Array<string> }` | Revoke config | - | `{'chains': ['100']}` |
 | multisend | `{ chains: Array<string> }` | Multisend config | - | `{'chains': ['1', '10']}` |
 
@@ -1087,7 +1124,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `[{ name: string; url_template: string; dapp_id?: string; logo: string }]` | Multichain portfolio application config. See [below](#multichain-button-configuration-properties) | - | - | `[{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'}]` | v1.31.0+ |
+| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `[{ name: string; url_template: string; dapp_id?: string; logo: string; view?: 'full' \| 'icon' }]` | Multichain portfolio application config. See [below](#multichain-button-configuration-properties) | - | - | `[{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'}]` | v1.31.0+ |
 
 #### Multichain button configuration properties
 
@@ -1097,7 +1134,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
 | dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
 | logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
-| promo | `boolean` | Make the provider stand out by placing their logo prominently at the first place in the section and in the page subheader. | - | - | `true` |
+| view | `'full' \| 'icon'` | Button view: `full` shows the logo with the name, `icon` shows the logo only | - | `full` | `icon` |
 
 &nbsp;
 ### Multichain explorer
@@ -1201,11 +1238,19 @@ Solidity-to-UML smart contract visualizer.
 
 ### Token action button
 
+<<<<<<< HEAD
 An action button on the ERC-20 token page, leading to an external site. On desktop it is right-aligned in the token title row; on mobile it takes a dedicated row below the token tags. In a multichain cluster the variable is cluster-level: one button, shown on the token pages of every chain in the cluster.
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | upcoming |
+=======
+An action button on the ERC-20 token page, leading to an external site. The button is hidden on tokens whose address carries the `token-action-button-hidden` tag of the `service` type in the metadata service.
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | v2.13.0+ |
+>>>>>>> v2.13.0
 
 #### Token action button configuration properties
 
@@ -1322,6 +1367,15 @@ To obtain the variable values, please refer to the [reCAPTCHA documentation](htt
 
 &nbsp;
 
+### PostHog
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_POSTHOG_API_KEY | `string` | Project API key for [PostHog](https://posthog.com/) product analytics | Required | - | `<your-secret>` | v2.12.0+ |
+| NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES | `string` | JSON-like string with a subset of the [posthog-js config](https://posthog.com/docs/libraries/js/config) merged over the app defaults | - | - | `{"disable_session_recording": false}` | v2.12.0+ |
+
+&nbsp;
+
 ### OpenTelemetry
 
 OpenTelemetry SDK for the Node.js server-side process. Configure the OpenTelemetry Protocol Exporter using the generic environment variables described in the [OT docs](https://opentelemetry.io/docs/specs/otel/protocol/exporter/#configuration-options). Note that this Next.js feature is currently experimental. The Docker image must be built with `NEXT_OPEN_TELEMETRY_ENABLED=true` to enable it.
@@ -1367,8 +1421,8 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 &nbsp;
 
-### Pro API support
+### Blockscout API support
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout Pro API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |
+| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |

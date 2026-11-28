@@ -1,6 +1,8 @@
 import type { Page } from '@playwright/test';
 import React from 'react';
 
+import * as indexingStatusMock from 'src/slices/chain/indexing-status/mocks';
+import * as chainMock from 'src/slices/chain/mocks';
 import * as searchMock from 'src/slices/search/mocks';
 
 import { metatag1, metatag2, metatag3 } from 'src/features/address-metadata/mocks/search';
@@ -10,10 +12,21 @@ import { apps as appsMock } from 'src/features/marketplace/mocks/dapps';
 import { domain1 } from 'src/features/name-services/domains/mocks/search';
 import { userOp1 } from 'src/features/user-ops/mocks/search';
 
+import config from 'src/config';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import type { TestFnArgs } from 'playwright/lib';
 import { test, expect } from 'playwright/lib';
 
 import SearchResults from './SearchResults';
+
+// The page renders the layout around the results: the footer asks for the backend version and
+// indexing status, and the marketplace feature (on by default in .env.pw) for the dapps list
+const mockPageChrome = async(mockApiResponse: TestFnArgs['mockApiResponse']) => {
+  await mockApiResponse('core:homepage_indexing_status', indexingStatusMock.finished);
+  await mockApiResponse('core:config_backend_version', chainMock.backendVersion);
+  await mockApiResponse('admin:marketplace_dapps', [], { pathParams: { instanceId: config.apis.admin?.instanceId } });
+};
 
 // Might not be the best solution but simply scrolling to the top doesn't work
 async function resetScroll(page: Page) {
@@ -42,7 +55,7 @@ async function resetScroll(page: Page) {
 }
 
 test.describe('search by name', () => {
-  test('+@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs, page }) => {
+  test('+@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs, page }) => {
     const hooksConfig = {
       router: {
         query: { q: 'o' },
@@ -63,6 +76,7 @@ test.describe('search by name', () => {
       [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'false' ],
     ]);
     await mockApiResponse('core:search', data, { queryParams: { q: 'o' } });
+    await mockPageChrome(mockApiResponse);
     await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
     const component = await render(<SearchResults/>, { hooksConfig });
     await resetScroll(page);
@@ -71,7 +85,7 @@ test.describe('search by name', () => {
   });
 });
 
-test('search by address hash +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by address hash', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.address1.address_hash },
@@ -82,6 +96,7 @@ test('search by address hash +@mobile', async({ render, mockApiResponse, page })
     next_page_params: null,
   };
   await mockApiResponse('core:search', data, { queryParams: { q: searchMock.address1.address_hash } });
+  await mockPageChrome(mockApiResponse);
 
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
@@ -89,7 +104,7 @@ test('search by address hash +@mobile', async({ render, mockApiResponse, page })
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by meta tag +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by meta tag', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: 'utko' },
@@ -100,6 +115,7 @@ test('search by meta tag +@mobile', async({ render, mockApiResponse, page }) => 
     next_page_params: null,
   };
   await mockApiResponse('core:search', data, { queryParams: { q: 'utko' } });
+  await mockPageChrome(mockApiResponse);
 
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
@@ -107,7 +123,7 @@ test('search by meta tag +@mobile', async({ render, mockApiResponse, page }) => 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by block number +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by block number', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: String(searchMock.block1.block_number) },
@@ -118,13 +134,14 @@ test('search by block number +@mobile', async({ render, mockApiResponse, page })
     next_page_params: null,
   };
   await mockApiResponse('core:search', data, { queryParams: { q: searchMock.block1.block_number } });
+  await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by block hash +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by block hash', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.block1.block_hash },
@@ -135,13 +152,14 @@ test('search by block hash +@mobile', async({ render, mockApiResponse, page }) =
     next_page_params: null,
   };
   await mockApiResponse('core:search', data, { queryParams: { q: searchMock.block1.block_hash } });
+  await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by tx hash +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by tx hash', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.tx1.transaction_hash },
@@ -152,13 +170,14 @@ test('search by tx hash +@mobile', async({ render, mockApiResponse, page }) => {
     next_page_params: null,
   };
   await mockApiResponse('core:search', data, { queryParams: { q: searchMock.tx1.transaction_hash } });
+  await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by tac operation hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by tac operation hash', async({ render, mockApiResponse, mockEnvs, page }) => {
   await mockEnvs(ENVS_MAP.tac);
   const hooksConfig = {
     router: {
@@ -170,13 +189,14 @@ test('search by tac operation hash +@mobile', async({ render, mockApiResponse, m
     next_page_params: null,
   };
   await mockApiResponse('core:search', data, { queryParams: { q: tacOperation1.tac_operation.operation_id } });
+  await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by blob hash', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
       query: { q: blob1.blob_hash },
@@ -188,13 +208,14 @@ test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs, 
   };
   await mockEnvs(ENVS_MAP.dataAvailability);
   await mockApiResponse('core:search', data, { queryParams: { q: blob1.blob_hash } });
+  await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by domain name +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by domain name', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
       query: { q: domain1.ens_info.name },
@@ -206,13 +227,14 @@ test('search by domain name +@mobile', async({ render, mockApiResponse, mockEnvs
   };
   await mockEnvs(ENVS_MAP.nameService);
   await mockApiResponse('core:search', data, { queryParams: { q: domain1.ens_info.name } });
+  await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by user op hash', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
       query: { q: userOp1.user_operation_hash },
@@ -224,6 +246,7 @@ test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnv
   };
   await mockEnvs(ENVS_MAP.userOps);
   await mockApiResponse('core:search', data, { queryParams: { q: userOp1.user_operation_hash } });
+  await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
@@ -231,7 +254,7 @@ test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnv
 });
 
 test.describe('with apps', () => {
-  test('default view +@mobile', async({ render, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs, page }) => {
+  test('default view', async({ render, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs, page }) => {
     const MARKETPLACE_CONFIG_URL = 'https://localhost:4000/marketplace-config.json';
     const hooksConfig = {
       router: {
@@ -257,9 +280,11 @@ test.describe('with apps', () => {
       [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
     ]);
     await mockApiResponse('core:search', data, { queryParams: { q: 'o' } });
+    await mockPageChrome(mockApiResponse);
     await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
     await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(appsMock[1].logo, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
     const component = await render(<SearchResults/>, { hooksConfig });
     await resetScroll(page);
 
@@ -277,18 +302,21 @@ test.describe('block countdown', () => {
 
   test('no results', async({ render, mockApiResponse, page }) => {
     await mockApiResponse('core:search', { items: [], next_page_params: null }, { queryParams: { q: blockHeight } });
+    await mockPageChrome(mockApiResponse);
     const component = await render(<SearchResults/>, { hooksConfig });
     await resetScroll(page);
 
     await expect(component.locator('main')).toHaveScreenshot();
   });
 
-  test('with results +@mobile', async({ render, mockApiResponse, page }) => {
+  test('with results', async({ render, mockApiResponse, mockAssetResponse, page }) => {
+    await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse(
       'core:search',
       { items: [ { ...searchMock.token1, name: '1234567890123456789' } ], next_page_params: null },
       { queryParams: { q: blockHeight } },
     );
+    await mockPageChrome(mockApiResponse);
     const component = await render(<SearchResults/>, { hooksConfig });
     await resetScroll(page);
 

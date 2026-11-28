@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
+import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -19,10 +19,10 @@ const feature = config.features.deFiDropdown;
 
 const DeFiDropdown = () => {
   const router = useRouter();
-  const source = mixpanel.getPageType(router.pathname);
+  const source = analytics.getPageType(router.pathname);
 
   const handleClick = React.useCallback((content: string) => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: `DeFi button: ${ content }`, Source: source });
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: `DeFi button: ${ content }`, Source: source });
   }, [ source ]);
 
   if (!feature.isEnabled) {

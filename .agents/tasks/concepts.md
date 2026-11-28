@@ -18,6 +18,10 @@ this file carries the meaning they act on. Layout and file ownership live in
 - **Questions** — every open question the task raised, each with a stable id (`Q01`), its owner, Slack
   permalink, status, and answer once it lands; `questions.md`. A ticket that a question gates names that id
   in its `Blocked by`.
+- **Inbox** — decisions about the task made in the **outer loop**: the part of the work no session sees,
+  where the team meets, chats and writes docs. Each source is one section of `inbox.md`, `pending` until
+  `process-task-inbox` folds it into the questions, the spec and the tickets. A pending section blocks
+  `to-tickets`, `implement-ticket` and `finalize-task`: the task does not move on context it has not read.
 - **Brief** — the marker of a **deferred** ticket: a ticket folder with a `brief.md` and no `spec.md`,
   because the ticket can't be scoped until something happens first (a prototype, a spike, an answer nobody
   has yet).
@@ -42,9 +46,11 @@ rather than a linear plan.
 
 Each leaf carries `[agent]` or `[human]` per the capability boundary in
 [`../delegation.md`](../delegation.md) — exactly one, written explicitly, because `implement-ticket` reads
-the tag as its state machine. UI work is **two linked leaves** by default: an `[agent]` scaffold, then a
-`[human]` style leaf that takes it to the mockup — layout, spacing, styling, icons — with the exact Figma
-node linked on that leaf and the scaffold's `TODO (design):` markers as its worklist.
+the tag as its state machine. 
+
+UI work follows the rule:
+- an optional leaf per project scaffold skill the ticket runs (`add-new-page`), before the style leaf
+- a style leaf per linked Figma node that takes it to the mockup and links the exact node and, when the task has a `design-readout.md`, that node's block beside it.
 
 A leaf's checkbox is **progress state**: a ticket has no commit until it finishes, so the boxes are the
 only durable record of how far it has got inside the ticket. They mark which leaves are done, never what
@@ -58,11 +64,10 @@ criterion marked `(human)` is one only a person looking at the running product c
 whole-task review contract is the spec's Functional Requirements (below), so acceptance criteria are not
 needed once the ticket lands.
 
-The test for a `(human)` criterion: *does this change what a user sees or does?*
+The test for a `(human)` criterion: *does this change what a user sees or does in a way that the agent cannot fully verify itself?*
 
-- **Earns one** — component scaffolds (placeholder ones included), data wiring that renders, page
-  behaviour, perf-sensitive changes, anything touching CSP or security, and new dependencies.
-- **Does not** — env vars, API resources and response types, route plumbing, metadata, sitemap, analytics,
+- **Earns one** — final component styling to match the provided mockups, page behaviour, perf-sensitive changes, anything touching CSP or security, and new dependencies.
+- **Does not** — component scaffolds, data wiring that renders, env vars, API resources and response types, route plumbing, metadata, sitemap, analytics,
   unit tests, glossary and docs, behaviour-preserving refactors.
 
 Getting it wrong costs in both directions: a needless `(human)` criterion stalls an unattended chain, and a
@@ -94,7 +99,7 @@ Three rules keep the artifacts a *final statement of intent*, never a log of how
 
 `to-spec` runs **once** per task; there is no update or merge mode. The spec body — Functional Requirements,
 Data & API, UI inventory — is **immutable**. The mutable artifacts are `progress.md` checkboxes,
-`questions.md`, and — each until it freezes — the ticket specs, their leaf checkboxes included. A rare
+`questions.md`, `inbox.md`, and — each until it freezes — the ticket specs, their leaf checkboxes included. A rare
 genuine requirement change is a plain in-place edit: no superseding history, no
 changelog. The spec is always the *final* statement, never a record of iterations.
 
@@ -117,11 +122,12 @@ as a whole.
 
 ### Disposability and pruning
 
-At land, `finalize-task` prunes `tickets/`, `progress.md`, and `questions.md` — **only `spec.md` survives**
-in the tree. The decomposition is preserved in git history (one commit per ticket), so nothing is lost:
-precedent to browse is the accumulated specs; decomposition precedent is git history. Pruning runs
-**before** the whole-task `review-changes` pass, which reads the spec and the diff via inline PR comments
-and so needs no ticket files.
+At land, `finalize-task` prunes `tickets/`, `progress.md`, `questions.md`, `inbox.md` and any review file — **only
+`spec.md` survives** in the tree. The decomposition is preserved in git history (one commit per ticket), so
+nothing is lost: precedent to browse is the accumulated specs; decomposition precedent is git history.
+Pruning runs **before** the whole-task `review-changes` pass, which reads the spec and the diff and posts to
+the PR, so it needs no ticket files. A mid-ticket review in `md` mode is disposable for the same reason:
+its findings were resolved before the ticket was committed, and the diff is the record.
 
 ## What the spec holds, and what it doesn't
 

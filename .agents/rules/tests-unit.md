@@ -108,17 +108,16 @@ Don't mock:
 
 ## File naming and location
 
-Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test. Run all tests:
+Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test.
 
 ```bash
-pnpm test:vitest
+pnpm test:vitest                         # entire suite
+pnpm test:vitest path/to/file.spec.ts    # one file
+pnpm test:vitest --changed               # tests related to uncommitted work (staged and unstaged)
+pnpm test:vitest --changed origin/main   # tests related to this branch vs origin/main
 ```
 
-Run a single file:
-
-```bash
-pnpm test:vitest path/to/file.spec.ts
-```
+`--changed` uses git, then the Vitest module graph, so editing a source file still runs the spec that imports it. Untracked files are invisible until `git add`. If nothing matches, the command fails unless you add `--passWithNoTests` (CI does this on PRs). Fetch `origin/main` first if that ref is missing locally.
 
 ## Setup
 
@@ -136,7 +135,7 @@ pnpm test:vitest path/to/file.spec.ts
 import { render, screen } from 'vitest/lib';
 ```
 
-`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom.
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.spec.tsx`) is the one exception, since the adapter is what wraps that module.
 
 The `wrapper` export is also available if you need to pass it separately to RTL hooks:
 
@@ -146,6 +145,8 @@ const { result } = renderHook(() => useMyHook(), { wrapper });
 ```
 
 ## Utilities
+
+**`vitest/utils/mockRouter.ts`** and **`vitest/utils/routerStandIn.ts`** — router values for the toolkit router provider: `buildRouterMock` is frozen (`push` / `replace` are spies, `query` never changes), `routerStandIn` is live (consumers re-render on `push` / `replace`). Their header comments say when each applies and how to install it.
 
 **`vitest/utils/flushPromises.ts`** — call after an action that triggers async effects (e.g. a state update followed by a data fetch) to flush all pending microtasks before asserting:
 
@@ -157,7 +158,7 @@ await flushPromises();
 expect(screen.getByText('Loaded')).toBeInTheDocument();
 ```
 
-**`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
+**`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join, or that react to live socket messages. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
 
 ```tsx
 import { mockSocket, MOCK_SOCKET_URL } from 'vitest/utils/mockSocket';
@@ -168,7 +169,16 @@ render(<TestApp socketUrl={ MOCK_SOCKET_URL }><Token/></TestApp>);
 await flushPromises();
 ```
 
-It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all. Server-sent events are not simulated yet.
+It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all.
+
+A spec that imports the component statically installs it with a top-level `vi.mock` instead, and delivers server events with `sendSocketMessage`, which throws if nothing subscribes to that topic and event (see `AddressTokenTransfers.spec.tsx`):
+
+```tsx
+vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
+
+render(<SocketProvider url={ MOCK_SOCKET_URL }><AddressTokenTransfers/></SocketProvider>);
+act(() => sendSocketMessage('addresses:0x…', 'token_transfer', { token_transfers: [ … ] }));
+```
 
 ## Mocking fetch responses
 
@@ -195,6 +205,8 @@ await withEnvs(ENVS_MAP.arbitrumRollup, async () => {
 ```
 
 `src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
+
+The reset also splits React contexts: a component imported inside the callback holds a fresh toolkit router context, which a statically imported `render` / `wrapper` from `vitest/lib` does not feed — the component silently gets the no-provider default (`pathname: ''`, no-op `push`), and a `routerStandIn` imported statically is never read. When the rendered tree reads the router (`useRouter`, `usePathname`, a non-external `Link`), import `vitest/lib` or `vitest/utils/routerStandIn` inside the callback as well (see `useBridgedTokensQuery.spec.ts`, `DeFiDropdown.spec.tsx`).
 
 ## Primed-requests drift tests (`*.primed.spec.tsx`)
 

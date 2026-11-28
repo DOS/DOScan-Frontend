@@ -43,6 +43,7 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Hot Contracts** | feature | Ranked list of the most recently and frequently interacted-with smart contracts on the network. |
 | **Interchain Indexer** | service | Microservice that indexes cross-chain messages and token transfers across heterogeneous chains. General-purpose interop indexer, not ZetaChain-specific. Provides "Cross chain txs" feature. Distinct from **CCTX**. |
 | **Interop Messages** | entity | **Deprecated** Cross-rollup messages passed between OP Stack chains using the native interoperability protocol. Distinct from **Interchain Indexer** messages. |
+| **Jev** | service | TypeSafe's typed-judgment model: answers a structured question (yes/no, a choice) with a probability, never a claim, so whatever consumes a score verifies it before acting on it. |
 | **Kettle** | entity | In the **SUAVE** architecture, a Kettle is a trusted execution environment (TEE) node that processes MEV bundles. SUAVE transactions are associated with a Kettle. |
 | **Marketplace** | feature | Curated directory of dApps and DeFi applications integrated with Blockscout. |
 | **MetaSuites** | service | Third-party browser extension that enhances the Blockscout UI with additional data and links. |
@@ -50,6 +51,7 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Operation** | entity | **TAC**-specific entity representing a bridge operation between the TON and EVM ecosystems. No equivalent on standard EVM chains. |
 | **Pools** | entity | DEX liquidity pool positions tracked on-chain. |
 | **Public Tags** | feature | Community-submitted labels for addresses, visible on address pages. A sub-feature of **Address Metadata**. |
+| **Readout (design readout)** | concept | The mapping of a Figma node to repo components, props and design tokens, with every ambiguous, unrecognized and layout item listed for a developer to resolve before markup. The tool of the same name extracts the values and recognizes signals and tokens; the skill maps those to components — the tool names none. Recognition only, never implementation. |
 | **Rewards** | feature | The Blockscout Merits program — a token rewards and incentives system operated by Blockscout. Entirely distinct from **Block Reward** (on-chain block-producer payouts). |
 | **Rollup** | concept | A chain that settles transactions on a parent (L1) chain. Introduces specific entities: deposits, withdrawals, transaction batches, output roots. Contrast with **Chain Variant**. |
 | **SolidityScan** | service | Third-party smart contract security vulnerability scanner integrated into contract detail pages. |
